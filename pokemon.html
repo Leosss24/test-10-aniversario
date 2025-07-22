@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Qué Pokémon Inicial Eres?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #cceaff, #fff6f6);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      margin-top: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .btn-nav {
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      background-color: #eee;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #333;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+    .btn-nav:hover {
+      background-color: #ddd;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .options button {
+      background-color: #f0f8ff;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 5px 0;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .options button:hover {
+      background-color: #d0ebff;
+    }
+    #navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #result {
+      text-align: center;
+      margin-top: 40px;
+    }
+    #result img {
+      max-width: 200px;
+      margin-top: 20px;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué Pokémon Inicial Eres?</h1>
+    <div id="quiz"></div>
+    <div id="navigation">
+      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+      <a href="../index.html" class="btn-nav">🏠 Inicio</a>
+    </div>
+    <div id="result"></div>
+  </div>
+
+<script>
+const pokemonImages = {
+  Bulbasaur: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+  Snivy: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/495.png",
+  Sprigatito: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/906.png",
+  Charmander: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+  Scorbunny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/813.png",
+  Fuecoco: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/909.png",
+  Squirtle: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+  Froakie: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/656.png",
+  Quaxly: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/912.png",
+};
+
+const pokemonDescriptions = {
+  Bulbasaur: "Eres tranquilo, leal y te adaptas a cualquier situación. Tienes una energía verde que calma a todos a tu alrededor.",
+  Snivy: "Eres estratega y elegante, con una inteligencia sutil. No hablas mucho, pero cuando lo haces, todos escuchan.",
+  Sprigatito: "Creativo, curioso y con carisma natural. Amas lo bonito y tienes la habilidad de hacer que todo sea más estético.",
+  Charmander: "Pasión y chispa son tu motor. Aunque puedes ser impulsivo, tu energía es contagiosa y empuja a otros a moverse.",
+  Scorbunny: "Inquieto, divertido y competitivo. Donde tú estás, hay movimiento. Nunca sabes quedarte quieto… ni aburrido.",
+  Fuecoco: "El alma caótica del grupo. No te importa parecer raro si eso significa disfrutar el momento. Tienes más profundidad de la que dejas ver.",
+  Squirtle: "Relajado y confiable. Eres el que mantiene la calma cuando todo arde. Siempre encuentras una salida práctica.",
+  Froakie: "Observador, reservado y muy adaptable. Aunque no lo digas, lo ves todo. Eres un ninja emocional.",
+  Quaxly: "Estilo y seguridad. Tienes personalidad para rato y una confianza que arrastras sin esfuerzo. Eres la diva elegante del grupo."
+};
+
+const questions = [
+  {
+    question: "¿Cuál de estas actividades disfrutas más en tu tiempo libre?",
+    answers: [
+      { text: "Leer un buen libro bajo un árbol.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
+      { text: "Salir a correr o hacer ejercicio.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
+      { text: "Relajarme viendo una serie o película.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
+    ]
+  },
+  {
+    question: "Si te invitan a una fiesta, ¿cómo sueles comportarte?",
+    answers: [
+      { text: "Soy el alma tranquila y calmada del lugar.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
+      { text: "Me gusta ser el centro de atención y bailar mucho.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
+      { text: "Prefiero observar y conversar con pocos amigos.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
+    ]
+  },
+  {
+    question: "¿Cuál es tu comida favorita?",
+    answers: [
+      { text: "Ensaladas y comidas saludables.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
+      { text: "Comida picante y con mucho sabor.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
+      { text: "Comidas reconfortantes y dulces.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
+    ]
+  },
+  {
+    question: "¿Cómo te describirías en una palabra?",
+    answers: [
+      { text: "Tranquilo y paciente.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
+      { text: "Apasionado y energético.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
+      { text: "Elegante y reservado.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
+    ]
+  },
+  {
+    question: "¿Qué prefieres hacer en un día lluvioso?",
+    answers: [
+      { text: "Leer o hacer manualidades.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
+      { text: "Salir a bailar o jugar videojuegos.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
+      { text: "Ver películas o descansar.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
+    ]
+  }
+];
+
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const questionHTML = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>`;
+  quizContainer.innerHTML = questionHTML;
+  resultContainer.innerHTML = "";
+}
+
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let poke in selected.points) {
+    scores[poke] = (scores[poke] || 0) + selected.points[poke];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let poke in lastAnswer.points) {
+      scores[poke] -= lastAnswer.points[poke];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null;
+  let max = -1;
+  for (let poke in scores) {
+    if (scores[poke] > max) {
+      max = scores[poke];
+      best = poke;
+    }
+  }
+  const description = pokemonDescriptions[best];
+  const image = pokemonImages[best];
+  const tweetText = `¡Descubrí que soy ${best}, el Pokémon inicial! 💫🧪 ¿Y tú? Haz el test aquí:`;
+  const shareUrl = encodeURIComponent("https://tupagina.com/test-pokemon");
+  const tweetLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${shareUrl}`;
+
+  resultContainer.innerHTML = `
+    <h2>¡Tu Pokémon inicial es <span style="color:#2d72fc">${best}</span>!</h2>
+    <img src="${image}" alt="${best}" />
+    <p style="font-size:18px; margin-top:15px;">${description}</p>
+    <a href="${tweetLink}" target="_blank" class="btn-nav" style="background:#1da1f2; color:white;">Compartir en Twitter/X</a>
+  `;
+}
+
+showQuestion();
+</script>
+</body>
+</html>
