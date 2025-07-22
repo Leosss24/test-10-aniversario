@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test de Personalidad - ¿Quién Eres?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #fce4ec);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .quiz-btn {
+      display: block;
+      padding: 20px;
+      border-radius: 16px;
+      font-size: 18px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .quiz-btn:hover {
+      transform: scale(1.05);
+    }
+    .pokemon { background: #6dcff6; }
+    .lol { background: #8e24aa; }
+    .valorant { background: #d32f2f; }
+    .disney { background: #f06292; }
+    .hamburguesa { background: #ffb74d; }
+    .pixar { background: #29b6f6; }
+    .dictadores { background: #616161; }
+    .postres { background: #f8bbd0; }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 ¿Qué personaje eres? ¡Descúbrelo!</h1>
+    <div class="quiz-grid">
+      <a href="tests/pokemon.html" class="quiz-btn pokemon">Pokémon Inicial</a>
+      <a href="tests/lol.html" class="quiz-btn lol">League of Legends</a>
+      <a href="tests/valorant.html" class="quiz-btn valorant">Valorant</a>
+      <a href="tests/dictadores.html" class="quiz-btn dictadores">Dictadores famosos</a>
+      <a href="tests/disney.html" class="quiz-btn disney">Princesas Disney</a>
+      <a href="tests/hamburguesa.html" class="quiz-btn hamburguesa">Tipo de Hamburguesa</a>
+      <a href="tests/pixar.html" class="quiz-btn pixar">Personaje de Pixar</a>
+      <a href="tests/postres.html" class="quiz-btn postres">Postre Ideal</a>
+    </div>
+  </div>
+</body>
+</html>
