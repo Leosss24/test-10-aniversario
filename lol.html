@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Qué Campeón de League of Legends Eres?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #efdbff, #e1bee7);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      margin-top: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .btn-nav {
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      background-color: #eee;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #333;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+    .btn-nav:hover {
+      background-color: #ddd;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .options button {
+      background-color: #f3e5f5;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 5px 0;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .options button:hover {
+      background-color: #e1bee7;
+    }
+    #navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #result {
+      text-align: center;
+      margin-top: 40px;
+    }
+    #result img {
+      max-width: 200px;
+      margin-top: 20px;
+      border-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué Campeón de LoL Eres?</h1>
+    <div id="quiz"></div>
+    <div id="navigation">
+      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+      <a href="../index.html" class="btn-nav">🏠 Inicio</a>
+    </div>
+    <div id="result"></div>
+  </div>
+
+<script>
+const champions = {
+  Ahri: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
+  Jinx: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg",
+  Garen: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg",
+  Thresh: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Thresh_0.jpg",
+  Yasuo: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
+  Lux: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lux_0.jpg"
+};
+
+const descriptions = {
+  Ahri: "Eres carismático, astuto y encantador. Siempre sabes qué decir en el momento justo. Mueves las emociones como nadie.",
+  Jinx: "El caos es tu segundo nombre. Energía impredecible, humor desbordante y una creatividad que roza la locura (pero bien).",
+  Garen: "Honor, deber y fuerza. Siempre estás para los demás, aunque a veces te tilden de clásico. Eres el escudo del grupo.",
+  Thresh: "Oscuro, filosófico y misterioso. Das miedo… pero también curiosidad. Nadie sabe qué tramas, y tú prefieres que sea así.",
+  Yasuo: "Solitario pero profundo. Tienes estilo, drama y habilidad. A veces te malinterpretan, pero sabes quién eres.",
+  Lux: "Eres alegría, luz y esperanza. Inspiras con tu energía positiva y siempre buscas el lado bueno, incluso en tiempos oscuros."
+};
+
+const questions = [
+  { question: "¿Tu café ideal sería…", answers: [
+    { text: "Un café con leche, clásico pero confiable.", points: {Garen: 2, Lux: 1} },
+    { text: "Un espresso intenso, rápido y directo.", points: {Yasuo: 2, Thresh: 1} },
+    { text: "Una bebida rara que nadie entienda, pero tú sí.", points: {Jinx: 2, Ahri: 1} }
+  ]},
+  { question: "¿Qué prefieres en una pelea?", answers: [
+    { text: "Ir de frente y con honor.", points: {Garen: 2} },
+    { text: "Jugar con la mente del rival.", points: {Ahri: 2, Thresh: 1} },
+    { text: "Explotar cosas sin pensar mucho.", points: {Jinx: 2} }
+  ]},
+  { question: "¿En una cita tú…", answers: [
+    { text: "Encantas con tu conversación.", points: {Ahri: 2, Lux: 1} },
+    { text: "Llegas tarde pero con una flor robada.", points: {Yasuo: 2, Jinx: 1} },
+    { text: "Hablas poco, pero eres puro magnetismo.", points: {Thresh: 2} }
+  ]},
+  { question: "¿Cuál de estas frases te representa mejor?", answers: [
+    { text: "La justicia prevalecerá.", points: {Garen: 2} },
+    { text: "¿Quién necesita razón cuando tienes explosivos?", points: {Jinx: 2} },
+    { text: "La espada recuerda.", points: {Yasuo: 2} }
+  ]},
+  { question: "¿Tu entorno ideal es…", answers: [
+    { text: "Una ciudad vibrante y moderna.", points: {Ahri: 2, Lux: 1} },
+    { text: "Una cabaña solitaria entre montañas.", points: {Yasuo: 2, Thresh: 1} },
+    { text: "Un campo de batalla, donde probar tu valía.", points: {Garen: 2} }
+  ]},
+  { question: "¿Te gusta destacar?", answers: [
+    { text: "Sí, brillo sin miedo.", points: {Ahri: 2, Lux: 2} },
+    { text: "No, prefiero pasar desapercibido.", points: {Thresh: 2, Yasuo: 1} },
+    { text: "¡Sí, con fuegos artificiales!", points: {Jinx: 2} }
+  ]},
+  { question: "¿Eres más de estrategia o impulso?", answers: [
+    { text: "Estrategia fría.", points: {Thresh: 2, Garen: 1} },
+    { text: "Un poco de ambos.", points: {Ahri: 2, Lux: 1} },
+    { text: "Puro instinto y locura.", points: {Jinx: 2, Yasuo: 1} }
+  ]},
+  { question: "¿Cómo reaccionas cuando te critican?", answers: [
+    { text: "Lo acepto y mejoro.", points: {Garen: 2, Lux: 1} },
+    { text: "Exploto, literal o figuradamente.", points: {Jinx: 2} },
+    { text: "Me alejo y reflexiono solo.", points: {Yasuo: 2, Thresh: 1} }
+  ]},
+  { question: "¿Qué harías con una lámpara mágica?", answers: [
+    { text: "Pediría paz mundial.", points: {Lux: 2} },
+    { text: "Pediría caos solo por diversión.", points: {Jinx: 2} },
+    { text: "Rechazaría el deseo y seguiría mi camino.", points: {Yasuo: 2, Thresh: 1} }
+  ]},
+  { question: "¿Tu lema secreto sería…", answers: [
+    { text: "Lo importante es lo que ocultas, no lo que muestras.", points: {Thresh: 2, Ahri: 1} },
+    { text: "Hazlo con estilo, o no lo hagas.", points: {Yasuo: 2, Lux: 1} },
+    { text: "¡BOOM!", points: {Jinx: 2} }
+  ]},
+  { question: "¿Cuál es tu hobby favorito?", answers: [
+    { text: "Leer sobre historia o filosofía.", points: {Thresh: 2, Garen: 1} },
+    { text: "Bailar o hacer tik toks.", points: {Ahri: 2, Lux: 1} },
+    { text: "Explorar lugares abandonados.", points: {Yasuo: 2, Jinx: 1} }
+  ]},
+  { question: "¿Cómo manejas el estrés?", answers: [
+    { text: "Respiro hondo y sigo adelante.", points: {Garen: 2, Lux: 1} },
+    { text: "Lo transformo en arte o caos.", points: {Jinx: 2} },
+    { text: "Desaparezco por un rato.", points: {Yasuo: 2, Thresh: 1} }
+  ]},
+  { question: "¿Cuál es tu mayor virtud?", answers: [
+    { text: "La valentía.", points: {Garen: 2} },
+    { text: "El ingenio.", points: {Ahri: 2} },
+    { text: "El misterio.", points: {Thresh: 2} }
+  ]},
+  { question: "¿Eres más de seguir reglas o romperlas?", answers: [
+    { text: "Seguirlas, son necesarias.", points: {Garen: 2, Lux: 1} },
+    { text: "Romperlas, claramente.", points: {Jinx: 2, Yasuo: 1} },
+    { text: "Hacer que parezca que las sigo.", points: {Ahri: 2, Thresh: 1} }
+  ]},
+  { question: "¿Qué tipo de música prefieres?", answers: [
+    { text: "Épica y orquestal.", points: {Garen: 2, Lux: 1} },
+    { text: "Rock o electrónica agresiva.", points: {Jinx: 2, Yasuo: 1} },
+    { text: "Ambiental o lo-fi oscuro.", points: {Thresh: 2, Ahri: 1} }
+  ]},
+  { question: "¿Qué opinas del trabajo en equipo?", answers: [
+    { text: "Indispensable.", points: {Lux: 2, Garen: 1} },
+    { text: "A veces útil… pero no siempre lo uso.", points: {Yasuo: 2, Ahri: 1} },
+    { text: "¿Eso qué es? Yo solo necesito mi locura.", points: {Jinx: 2} }
+  ]}
+];
+
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const questionHTML = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>`;
+  quizContainer.innerHTML = questionHTML;
+  resultContainer.innerHTML = "";
+}
+
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let champ in selected.points) {
+    scores[champ] = (scores[champ] || 0) + selected.points[champ];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let champ in lastAnswer.points) {
+      scores[champ] -= lastAnswer.points[champ];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null;
+  let max = -1;
+  for (let champ in scores) {
+    if (scores[champ] > max) {
+      max = scores[champ];
+      best = champ;
+    }
+  }
+  const description = descriptions[best];
+  const image = champions[best];
+  resultContainer.innerHTML = `
+    <h2>¡Eres <span style="color:#8e24aa">${best}</span>!</h2>
+    <img src="${image}" alt="${best}" />
+    <p style="font-size:18px; margin-top:15px;">${description}</p>
+  `;
+}
+
+showQuestion();
+</script>
+</body>
+</html>
