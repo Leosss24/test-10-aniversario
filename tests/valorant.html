@@ -89,190 +89,156 @@
     </div>
     <div id="result"></div>
   </div>
-  <script>
-    const questions = [
-      {
-        q: "Te despiertas y…",
-        a: [
-          { text: "Revisas tácticas nuevas", scores: { brimstone: 2, cypher: 1 } },
-          { text: "Estiras, respiras y meditas", scores: { sage: 2, harbor: 1 } },
-          { text: "Te lanzas a lo loco", scores: { phoenix: 2, jett: 1 } },
-          { text: "Analizas todo con calma", scores: { sova: 2, killjoy: 1 } }
-        ]
-      },
-      {
-        q: "Tu frase de guerra sería:",
-        a: [
-          { text: "Uno menos", scores: { omen: 2, reyna: 1 } },
-          { text: "Vamos equipo, juntos", scores: { breach: 2, skye: 1 } },
-          { text: "Que empiece el caos", scores: { raze: 2, yoru: 1 } },
-          { text: "Control total, victoria segura", scores: { viper: 2, killjoy: 1 } }
-        ]
-      },
-      {
-        q: "Un buen compañero de equipo es…",
-        a: [
-          { text: "El que cura", scores: { sage: 2, skye: 1 } },
-          { text: "El que entra primero", scores: { phoenix: 2, raze: 1 } },
-          { text: "El que da info", scores: { fade: 2, sova: 1 } },
-          { text: "El que cubre la espalda", scores: { brimstone: 2, omen: 1 } }
-        ]
-      },
-      {
-        q: "Tu frase de guerra sería:",
-        a: [
-          { text: "Uno menos", scores: { omen: 2, reyna: 1 } },
-          { text: "Vamos equipo, juntos", scores: { breach: 2, skye: 1 } },
-          { text: "Que empiece el caos", scores: { raze: 2, yoru: 1 } },
-          { text: "Control total, victoria segura", scores: { viper: 2, killjoy: 1 } }
-        ]
-      },
-      {
-        q: "Un buen compañero de equipo es…",
-        a: [
-          { text: "El que cura", scores: { sage: 2, skye: 1 } },
-          { text: "El que entra primero", scores: { phoenix: 2, raze: 1 } },
-          { text: "El que da info", scores: { fade: 2, sova: 1 } },
-          { text: "El que cubre la espalda", scores: { brimstone: 2, omen: 1 } }
-        ]
-      },
-      {
-        q: "¿Qué harías si quedas solo contra cinco enemigos?",
-        a: [
-          { text: "Lo intento, no tengo miedo", scores: { jett: 2, phoenix: 1 } },
-          { text: "Me escondo y trato de pillar por sorpresa", scores: { yoru: 2, omen: 1 } },
-          { text: "Busco información y evalúo", scores: { cypher: 2, fade: 1 } },
-          { text: "Intento salvar algo útil", scores: { killjoy: 2, chamber: 1 } }
-        ]
-      },
-      {
-        q: "Tu estilo de juego ideal sería…",
-        a: [
-          { text: "Agresivo, sin miedo", scores: { reyna: 2, raze: 1 } },
-          { text: "Preciso y elegante", scores: { chamber: 2, jett: 1 } },
-          { text: "Apoyo y estrategia", scores: { sage: 2, brimstone: 1 } },
-          { text: "Confundir y manipular", scores: { yoru: 2, viper: 1 } }
-        ]
-      },
-      {
-        q: "El mapa ideal para ti es…",
-        a: [
-          { text: "Uno con muchos ángulos y sitios donde esconderse", scores: { omen: 2, cypher: 1 } },
-          { text: "Abierto, para controlar visión", scores: { sova: 2, fade: 1 } },
-          { text: "Compacto y caótico", scores: { raze: 2, phoenix: 1 } },
-          { text: "Con zonas altas para flanquear", scores: { jett: 2, yoru: 1 } }
-        ]
-      },
-      {
-        q: "Tu mayor virtud en equipo es…",
-        a: [
-          { text: "Calma y cabeza fría", scores: { viper: 2, cypher: 1 } },
-          { text: "Motivar a los demás", scores: { breach: 2, skye: 1 } },
-          { text: "Tomar la iniciativa", scores: { raze: 2, reyna: 1 } },
-          { text: "Cubrir lo que otros no ven", scores: { omen: 2, brimstone: 1 } }
-        ]
-      },
-      {
-        q: "Si fueras un animal, serías…",
-        a: [
-          { text: "Un halcón", scores: { sova: 2, fade: 1 } },
-          { text: "Una serpiente", scores: { viper: 2, killjoy: 1 } },
-          { text: "Un lobo", scores: { skye: 2, breach: 1 } },
-          { text: "Un gato", scores: { chamber: 2, reyna: 1 } }
-        ]
-      },
-      {
-        q: "Te llaman para una misión, tú…",
-        a: [
-          { text: "Dices '¿Cuándo y dónde?'", scores: { phoenix: 2, raze: 1 } },
-          { text: "Preguntas todos los detalles", scores: { cypher: 2, killjoy: 1 } },
-          { text: "Ya estás ahí antes de que terminen de hablar", scores: { jett: 2, breach: 1 } },
-          { text: "Solo si puedo hacerlo a mi manera", scores: { yoru: 2, chamber: 1 } }
-        ]
-      },
-      {
-        q: "Una palabra que te define es…",
-        a: [
-          { text: "Pasión", scores: { phoenix: 2, skye: 1 } },
-          { text: "Frialdad", scores: { viper: 2, omen: 1 } },
-          { text: "Lealtad", scores: { sage: 2, brimstone: 1 } },
-          { text: "Ingenio", scores: { killjoy: 2, cypher: 1 } }
-        ]
-      },
-      {
-        q: "Tu bebida ideal es…",
-        a: [
-          { text: "Un café bien cargado", scores: { brimstone: 2, sova: 1 } },
-          { text: "Algo dulce, como un batido", scores: { raze: 2, jett: 1 } },
-          { text: "Un té frío y elegante", scores: { chamber: 2, viper: 1 } },
-          { text: "Agua, lo simple funciona", scores: { fade: 2, omen: 1 } }
-        ]
-      },
-      {
-        q: "Tu lugar de entrenamiento favorito sería…",
-        a: [
-          { text: "Un campo de batalla real", scores: { breach: 2, raze: 1 } },
-          { text: "Un laboratorio con datos", scores: { killjoy: 2, cypher: 1 } },
-          { text: "Un entorno natural", scores: { skye: 2, sova: 1 } },
-          { text: "Un sitio donde nadie me vea", scores: { yoru: 2, fade: 1 } }
-        ]
-      },
-      {
-        q: "¿Qué música escuchas antes de jugar?",
-        a: [
-          { text: "Metal o rock", scores: { breach: 2, raze: 1 } },
-          { text: "Electrónica o lo-fi", scores: { chamber: 2, viper: 1 } },
-          { text: "Clásica o ambiental", scores: { omen: 2, sage: 1 } },
-          { text: "Rap o hip hop", scores: { jett: 2, phoenix: 1 } }
-        ]
-      },
-      {
-        q: "Tu mayor miedo en partida es…",
-        a: [
-          { text: "No aportar al equipo", scores: { sage: 2, skye: 1 } },
-          { text: "Que no escuchen mi info", scores: { sova: 2, fade: 1 } },
-          { text: "Perder el control", scores: { viper: 2, omen: 1 } },
-          { text: "Que me ignoren", scores: { reyna: 2, yoru: 1 } }
-        ]
-      },
-      {
-        q: "Tu idea de una buena partida es…",
-        a: [
-          { text: "Que todos trabajen como uno solo", scores: { breach: 2, brimstone: 1 } },
-          { text: "Mucho caos y risas", scores: { raze: 2, jett: 1 } },
-          { text: "Dominar al enemigo mentalmente", scores: { cypher: 2, fade: 1 } },
-          { text: "Ganar, pero con estilo", scores: { chamber: 2, phoenix: 1 } }
-        ]
-      },
-      {
-        q: "Si fueras una herramienta sería…",
-        a: [
-          { text: "Un dron", scores: { sova: 2, fade: 1 } },
-          { text: "Una bomba", scores: { raze: 2, phoenix: 1 } },
-          { text: "Una red de vigilancia", scores: { cypher: 2, killjoy: 1 } },
-          { text: "Un escudo", scores: { harbor: 2, sage: 1 } }
-        ]
-      }
-    ];
 
-    const agents = {
-      jett: { name: "Jett", image: "https://static.valorant-api.com/agents/jett.png", description: "Ágil y letal, Jett es pura velocidad." },
-      phoenix: { name: "Phoenix", image: "https://static.valorant-api.com/agents/phoenix.png", description: "El fuego corre por sus venas. Literalmente." },
-      sova: { name: "Sova", image: "https://static.valorant-api.com/agents/sova.png", description: "Nadie escapa de su visión. Letal y preciso." },
-      sage: { name: "Sage", image: "https://static.valorant-api.com/agents/sage.png", description: "La protectora del equipo. Siempre serena." },
-      viper: { name: "Viper", image: "https://static.valorant-api.com/agents/viper.png", description: "Veneno, control y manipulación." },
-      raze: { name: "Raze", image: "https://static.valorant-api.com/agents/raze.png", description: "Explosiva, creativa y caótica." },
-      omen: { name: "Omen", image: "https://static.valorant-api.com/agents/omen.png", description: "Oscuro, impredecible y enigmático." },
-      killjoy: { name: "Killjoy", image: "https://static.valorant-api.com/agents/killjoy.png", description: "Tecnología alemana para el control total." },
-      fade: { name: "Fade", image: "https://static.valorant-api.com/agents/fade.png", description: "El miedo es su mejor aliado." },
-      cypher: { name: "Cypher", image: "https://static.valorant-api.com/agents/cypher.png", description: "Nadie escapa a su vigilancia." },
-      brimstone: { name: "Brimstone", image: "https://static.valorant-api.com/agents/brimstone.png", description: "Líder estratégico, el general del campo." },
-      yoru: { name: "Yoru", image: "https://static.valorant-api.com/agents/yoru.png", description: "Engaños, portales y confusión." },
-      harbor: { name: "Harbor", image: "https://static.valorant-api.com/agents/harbor.png", description: "Controla el agua con precisión y poder." },
-      breach: { name: "Breach", image: "https://static.valorant-api.com/agents/breach.png", description: "El demoledor que siempre abre camino." },
-      skye: { name: "Skye", image: "https://static.valorant-api.com/agents/skye.png", description: "Naturaleza y curación en estado puro." },
-      reyna: { name: "Reyna", image: "https://static.valorant-api.com/agents/reyna.png", description: "Caza sola, y le gusta hacerlo." }
-    };
+<script>
+const agents = {
+  Jett: "https://static.valorant-api.com/images/agents/jett.png",
+  Phoenix: "https://static.valorant-api.com/images/agents/phoenix.png",
+  Sage: "https://static.valorant-api.com/images/agents/sage.png",
+  Sova: "https://static.valorant-api.com/images/agents/sova.png",
+  Raze: "https://static.valorant-api.com/images/agents/raze.png",
+  Omen: "https://static.valorant-api.com/images/agents/omen.png",
+  Viper: "https://static.valorant-api.com/images/agents/viper.png",
+  Killjoy: "https://static.valorant-api.com/images/agents/killjoy.png",
+  Breach: "https://static.valorant-api.com/images/agents/breach.png",
+  Skye: "https://static.valorant-api.com/images/agents/skye.png",
+  Reyna: "https://static.valorant-api.com/images/agents/reyna.png",
+  Yoru: "https://static.valorant-api.com/images/agents/yoru.png",
+  Fade: "https://static.valorant-api.com/images/agents/fade.png",
+  Chamber: "https://static.valorant-api.com/images/agents/chamber.png",
+  Harbor: "https://static.valorant-api.com/images/agents/harbor.png",
+  Neon: "https://static.valorant-api.com/images/agents/neon.png"
+};
+
+const descriptions = {
+  Jett: "Rápido, impredecible y siempre con estilo. Te lanzas a la acción sin pensarlo dos veces.",
+  Phoenix: "Fuego en el alma y confianza al máximo. Te gusta destacar y brillar.",
+  Sage: "Eres el equilibrio del equipo. Calmo, protector y necesario.",
+  Sova: "Analítico y calmado. Siempre encuentras al enemigo antes de que te vean.",
+  Raze: "Explosivo, divertido y caótico. Nada de estrategias, todo instinto.",
+  Omen: "Misterioso y silencioso. Prefieres la sombra, pero siempre tienes el control.",
+  Viper: "Calculador y tóxico. Te encanta tener el control total del terreno.",
+  Killjoy: "Tecnología y eficiencia. Nada se escapa a tu sistema de defensa.",
+  Breach: "Bruto pero efectivo. Te abres paso con fuerza y determinación.",
+  Skye: "Naturaleza y apoyo. Siempre cuidas al equipo y lideras desde atrás.",
+  Reyna: "Individualista, agresivo, letal. Te alimentas del caos.",
+  Yoru: "Engañoso, veloz e imprevisible. Te encanta confundir.",
+  Fade: "Oscura y aterradora. Dominas el miedo como arma.",
+  Chamber: "Elegante, preciso, letal. Nunca fallas una oportunidad.",
+  Harbor: "Fuerte, calmado y fluido. Como el agua, te adaptas sin perder fuerza.",
+  Neon: "Velocidad y electricidad. Eres energía pura."
+};
+
+const questions = [
+  {
+    question: "¿Tu frase de guerra sería…",
+    answers: [
+      { text: "Uno menos", points: { omen: 2, reyna: 1 } },
+      { text: "Vamos equipo, juntos", points: { brimstone: 2, skye: 1 } },
+      { text: "Que empiece el caos", points: { raze: 2, yoru: 1 } },
+      { text: "Control total, victoria segura", points: { viper: 2, killjoy: 1 } }
+    ]
+  },
+  {
+    question: "Un buen compañero de equipo es…",
+    answers: [
+      { text: "El que cura", points: { sage: 2, skye: 1 } },
+      { text: "El que entra primero", points: { phoenix: 2, raze: 1 } },
+      { text: "El que da info", points: { fade: 2, sova: 1 } },
+      { text: "El que cubre la espalda", points: { brimstone: 2, omen: 1 } }
+    ]
+  },
+  {
+    question: "¿Cómo enfrentas un problema?",
+    answers: [
+      { text: "Directamente y con fuego", points: { phoenix: 2, raze: 1 } },
+      { text: "Desde la sombra", points: { omen: 2, yoru: 1 } },
+      { text: "Buscando datos primero", points: { sova: 2, killjoy: 1 } },
+      { text: "Respirando hondo y ayudando", points: { sage: 2, skye: 1 } }
+    ]
+  },
+  {
+    question: "¿Qué animal te representa mejor?",
+    answers: [
+      { text: "Zorro", points: { yoru: 2, jett: 1 } },
+      { text: "Águila", points: { sova: 2, brimstone: 1 } },
+      { text: "Serpiente", points: { viper: 2, omen: 1 } },
+      { text: "Perro", points: { skye: 2, raze: 1 } }
+    ]
+  },
+  {
+    question: "Tu fin de semana ideal es...",
+    answers: [
+      { text: "Montando dispositivos inteligentes", points: { killjoy: 2, sova: 1 } },
+      { text: "En una rave o fiesta loca", points: { raze: 2, phoenix: 1 } },
+      { text: "Solo, planificando todo", points: { omen: 2, viper: 1 } },
+      { text: "Explorando la naturaleza", points: { skye: 2, sage: 1 } }
+    ]
+  },
+  {
+    question: "¿Qué valoras más en combate?",
+    answers: [
+      { text: "Velocidad", points: { jett: 2, yoru: 1 } },
+      { text: "Precisión", points: { sova: 2, killjoy: 1 } },
+      { text: "Supervivencia del equipo", points: { sage: 2, brimstone: 1 } },
+      { text: "Dominar el terreno", points: { viper: 2, skye: 1 } }
+    ]
+  },
+  {
+    question: "¿Tu estilo de ropa sería…",
+    answers: [
+      { text: "Chándal con estilo", points: { raze: 2, jett: 1 } },
+      { text: "Militar funcional", points: { brimstone: 2, viper: 1 } },
+      { text: "Ropa de calle y urbana", points: { yoru: 2, phoenix: 1 } },
+      { text: "Minimalista, cómodo", points: { sage: 2, omen: 1 } }
+    ]
+  },
+  {
+    question: "Cuando alguien te molesta, tú…",
+    answers: [
+      { text: "Te lo tomas con calma", points: { sage: 2, skye: 1 } },
+      { text: "Explotas, literal", points: { raze: 2, phoenix: 1 } },
+      { text: "Te alejas en silencio", points: { omen: 2, yoru: 1 } },
+      { text: "Lo controlas y le das la vuelta", points: { killjoy: 2, viper: 1 } }
+    ]
+  },
+  {
+    question: "¿Qué gadget te gustaría tener?",
+    answers: [
+      { text: "Un dron espía", points: { sova: 2, fade: 1 } },
+      { text: "Un bot que cure", points: { sage: 2, skye: 1 } },
+      { text: "Granadas de pintura", points: { raze: 2, phoenix: 1 } },
+      { text: "Una trampa de humo", points: { omen: 2, viper: 1 } }
+    ]
+  },
+  {
+    question: "En un grupo tú eres...",
+    answers: [
+      { text: "El líder natural", points: { brimstone: 2, phoenix: 1 } },
+      { text: "El estratega callado", points: { omen: 2, killjoy: 1 } },
+      { text: "El alma de la fiesta", points: { raze: 2, jett: 1 } },
+      { text: "La persona calmada", points: { sage: 2, skye: 1 } }
+    ]
+  },
+  {
+    question: "¿Cuál es tu miedo secreto?",
+    answers: [
+      { text: "Perder el control", points: { viper: 2, omen: 1 } },
+      { text: "Que me dejen atrás", points: { jett: 2, phoenix: 1 } },
+      { text: "No saber todo lo que pasa", points: { killjoy: 2, sova: 1 } },
+      { text: "No poder ayudar a tiempo", points: { sage: 2, skye: 1 } }
+    ]
+  },
+  {
+    question: "¿Cómo defines el éxito?",
+    answers: [
+      { text: "Estar siempre preparado", points: { brimstone: 2, killjoy: 1 } },
+      { text: "Marcar la diferencia", points: { jett: 2, phoenix: 1 } },
+      { text: "Control total del entorno", points: { viper: 2, omen: 1 } },
+      { text: "Salvar a los demás", points: { sage: 2, skye: 1 } }
+    ]
+  }
+];
 
 let currentQuestion = 0;
 let scores = {};
@@ -332,7 +298,7 @@ function showResult() {
   const description = descriptions[best];
   const image = agents[best];
   resultContainer.innerHTML = `
-    <h2>¡Eres <span style="color:#ff4654">${best.toUpperCase()}</span>!</h2>
+    <h2>¡Eres <span style="color:#ff4654">${best}</span>!</h2>
     <img src="${image}" alt="${best}" />
     <p style="font-size:18px; margin-top:15px;">${description}</p>
   `;
@@ -342,4 +308,3 @@ showQuestion();
 </script>
 </body>
 </html>
-
