@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Qué Dictador Famoso Eres?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+      color: #eee;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #333;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      margin-top: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #f44336;
+    }
+    .btn-nav {
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      background-color: #555;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #eee;
+      border: 1px solid #777;
+      cursor: pointer;
+    }
+    .btn-nav:hover {
+      background-color: #777;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .options button {
+      background-color: #444;
+      border: 2px solid #666;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 5px 0;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+      color: #eee;
+    }
+    .options button:hover {
+      background-color: #555;
+    }
+    #navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #result {
+      text-align: center;
+      margin-top: 40px;
+    }
+    #result img {
+      max-width: 200px;
+      margin-top: 20px;
+      border-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué Dictador Famoso Eres?</h1>
+    <div id="quiz"></div>
+    <div id="navigation">
+      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+      <a href="../index.html" class="btn-nav">🏠 Inicio</a>
+    </div>
+    <div id="result"></div>
+  </div>
+
+<script>
+const characters = {
+  Hitler: "https://upload.wikimedia.org/wikipedia/commons/7/74/Hitler_portrait_crop.jpg",
+  Franco: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Francisco_Franco_1964_%28cropped%29.jpg",
+  Mussolini: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Benito_Mussolini_ritratto.jpg",
+  Stalin: "https://upload.wikimedia.org/wikipedia/commons/1/16/Joseph_Stalin_cropped.jpg",
+  Pinochet: "https://upload.wikimedia.org/wikipedia/commons/0/02/Augusto_Pinochet_1990.jpg",
+  Trump: "https://upload.wikimedia.org/wikipedia/commons/5/56/Donald_Trump_official_portrait.jpg"
+};
+
+const descriptions = {
+  Hitler: "Eres extremo, implacable y tienes una idea clara (y peligrosa) del orden. Nadie te ignora, aunque muchos lo desearían.",
+  Franco: "Te gusta la disciplina, el silencio y el control por debajo de la mesa. No haces olas, pero cuando lo haces…",
+  Mussolini: "Te encanta hacer discursos, mirar al horizonte y que todos te escuchen (aunque nadie entienda por qué).",
+  Stalin: "Frío, calculador y siempre con un plan. No te importa sacrificarlo todo por el control absoluto.",
+  Pinochet: "De apariencia seria, pero mano dura de verdad. No esperas que te entiendan, solo que obedezcan.",
+  Trump: "No eres dictador… oficialmente. Pero tu ego y carisma te acercan peligrosamente al club. Y tú encantado."
+};
+
+const questions = [
+  { question: "¿Cuál es tu estilo de liderazgo?", answers: [
+    { text: "Discurso, brazo en alto y mucha épica.", points: { Mussolini: 2, Trump: 1 } },
+    { text: "Todo bajo control, aunque no se note.", points: { Franco: 2, Stalin: 1 } },
+    { text: "Mando fuerte y sin titubeos.", points: { Pinochet: 2, Hitler: 1 } }
+  ]},
+  { question: "Tu bigote ideal sería…", answers: [
+    { text: "Pequeño y peculiar.", points: { Hitler: 2 } },
+    { text: "Ausente, mejor perfil limpio.", points: { Trump: 2 } },
+    { text: "Imponente y perfectamente recortado.", points: { Stalin: 2, Franco: 1 } }
+  ]},
+  { question: "¿Tu forma favorita de convencer masas?", answers: [
+    { text: "Con propaganda y muchos colores.", points: { Mussolini: 2, Hitler: 1 } },
+    { text: "Redes sociales a todo trapo.", points: { Trump: 2 } },
+    { text: "El miedo es más efectivo.", points: { Stalin: 2, Pinochet: 1 } }
+  ]},
+  { question: "¿Qué te molesta más?", answers: [
+    { text: "La disidencia. Silencio total, gracias.", points: { Stalin: 2, Franco: 1 } },
+    { text: "La prensa libre. ¿Dónde está el botón de bloquear?", points: { Trump: 2 } },
+    { text: "La gente que no me escucha lo suficiente.", points: { Mussolini: 2 } }
+  ]},
+  { question: "¿Dónde harías tu cuartel general?", answers: [
+    { text: "Un búnker bien oculto.", points: { Hitler: 2 } },
+    { text: "Un palacio con televisión por cable.", points: { Trump: 2, Pinochet: 1 } },
+    { text: "Un ministerio gris con muchas oficinas.", points: { Franco: 2, Stalin: 1 } }
+  ]},
+  { question: "Tu frase favorita podría ser:", answers: [
+    { text: "Lo importante es quién cuenta los votos.", points: { Stalin: 2 } },
+    { text: "¡Haremos a este país grande otra vez!", points: { Trump: 2 } },
+    { text: "El orden antes que el caos.", points: { Franco: 2, Pinochet: 1 } }
+  ]},
+  { question: "¿Cómo reaccionas a una crítica?", answers: [
+    { text: "Elimino al crítico (digital o no).", points: { Stalin: 2, Hitler: 1 } },
+    { text: "Le grito en Twitter. Con mayúsculas.", points: { Trump: 2 } },
+    { text: "No contesto, pero no lo olvido.", points: { Franco: 2 } }
+  ]},
+  { question: "¿Qué animal te representa mejor?", answers: [
+    { text: "Un halcón vigilante.", points: { Pinochet: 2, Hitler: 1 } },
+    { text: "Un oso que lo controla todo.", points: { Stalin: 2 } },
+    { text: "Un pavo real (¡mira qué plumaje!).", points: { Mussolini: 2, Trump: 1 } }
+  ]},
+  { question: "¿Qué harías en vacaciones?", answers: [
+    { text: "¿Vacaciones? ¿Eso qué es?", points: { Stalin: 2 } },
+    { text: "Golf y ruedas de prensa.", points: { Trump: 2 } },
+    { text: "Releer mis discursos antiguos.", points: { Mussolini: 2 } }
+  ]},
+  { question: "¿Tu política económica?", answers: [
+    { text: "Todo nacionalizado. Incluso el pan.", points: { Stalin: 2, Hitler: 1 } },
+    { text: "Libre mercado… controlado por mí.", points: { Pinochet: 2 } },
+    { text: "Subvenciones para quien me aplauda.", points: { Trump: 2, Mussolini: 1 } }
+  ]},
+  { question: "¿Te gusta que te obedezcan?", answers: [
+    { text: "Sí. Punto.", points: { Hitler: 2 } },
+    { text: "Que parezca que hay elección, pero no.", points: { Franco: 2, Stalin: 1 } },
+    { text: "¡Obvio! ¿Quién no?", points: { Trump: 2 } }
+  ]},
+  { question: "¿Cuál es tu peor enemigo?", answers: [
+    { text: "La democracia liberal.", points: { Hitler: 2, Franco: 1 } },
+    { text: "La prensa crítica.", points: { Trump: 2 } },
+    { text: "La traición interna.", points: { Stalin: 2 } }
+  ]},
+  { question: "Tu símbolo de poder sería:", answers: [
+    { text: "Un águila imponente.", points: { Hitler: 2, Pinochet: 1 } },
+    { text: "Un micrófono dorado.", points: { Mussolini: 2, Trump: 1 } },
+    { text: "Una sombra que lo cubre todo.", points: { Franco: 2, Stalin: 1 } }
+  ]},
+  { question: "¿Qué haces con los libros que no te gustan?", answers: [
+    { text: "Fuego purificador.", points: { Hitler: 2 } },
+    { text: "Los prohíbo discretamente.", points: { Franco: 2, Stalin: 1 } },
+    { text: "Los ridiculizo en vivo.", points: { Trump: 2 } }
+  ]},
+  { question: "¿Qué opinas de las elecciones?", answers: [
+    { text: "Solo si ya sé quién gana.", points: { Stalin: 2, Franco: 1 } },
+    { text: "Perfectas para hacer campaña eterna.", points: { Trump: 2 } },
+    { text: "¿No es mejor un plebiscito cada 10 años?", points: { Pinochet: 2 } }
+  ]},
+  { question: "¿Tu estilo de vestir?", answers: [
+    { text: "Uniforme militar y cara seria.", points: { Hitler: 2, Franco: 1 } },
+    { text: "Traje caro y sonrisa falsa.", points: { Trump: 2 } },
+    { text: "Gabardina soviética. Siempre elegante.", points: { Stalin: 2 } }
+  ]}
+];
+
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const questionHTML = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>`;
+  quizContainer.innerHTML = questionHTML;
+  resultContainer.innerHTML = "";
+}
+
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let champ in selected.points) {
+    scores[champ] = (scores[champ] || 0) + selected.points[champ];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let champ in lastAnswer.points) {
+      scores[champ] -= lastAnswer.points[champ];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null;
+  let max = -1;
+  for (let champ in scores) {
+    if (scores[champ] > max) {
+      max = scores[champ];
+      best = champ;
+    }
+  }
+  const description = descriptions[best];
+  const image = characters[best];
+  resultContainer.innerHTML = `
+    <h2>¡Eres <span style="color:#f44336">${best}</span>!</h2>
+    <img src="${image}" alt="${best}" />
+    <p style="font-size:18px; margin-top:15px;">${description}</p>
+  `;
+}
+
+showQuestion();
+</script>
+</body>
+</html>
