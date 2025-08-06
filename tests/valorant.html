@@ -3,41 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>¿Qué agente de Valorant eres?</title>
+  <title>¿Qué Agente de Valorant Eres?</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #111823, #282F38);
+      background: #111823;
+      color: #ffffff;
       margin: 0;
       padding: 0;
     }
     .container {
       max-width: 800px;
       margin: auto;
-      background: white;
+      background: #1a1a1a;
       padding: 30px;
       border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
       margin-top: 40px;
     }
     h1 {
       text-align: center;
       margin-bottom: 30px;
+      color: #ff4654;
     }
     .btn-nav {
       display: inline-block;
       margin: 10px 5px;
       padding: 10px 15px;
       font-size: 14px;
-      background-color: #eee;
+      background-color: #ba3a46;
       border-radius: 8px;
       text-decoration: none;
-      color: #333;
-      border: 1px solid #ccc;
+      color: #ffffff;
+      border: 1px solid #ff4654;
       cursor: pointer;
     }
     .btn-nav:hover {
-      background-color: #ddd;
+      background-color: #ff4654;
     }
     .question {
       margin-bottom: 20px;
@@ -47,8 +49,8 @@
       margin-bottom: 10px;
     }
     .options button {
-      background-color: #ba3a46;
-      border: 2px solid #ccc;
+      background-color: #1a1a1a;
+      border: 2px solid #ba3a46;
       border-radius: 12px;
       padding: 12px;
       margin: 5px 0;
@@ -57,9 +59,10 @@
       cursor: pointer;
       font-size: 16px;
       transition: background 0.3s;
+      color: #ffffff;
     }
     .options button:hover {
-      background-color: #ff4654;
+      background-color: #ba3a46;
     }
     #navigation {
       text-align: center;
@@ -72,18 +75,13 @@
     #result img {
       max-width: 200px;
       margin-top: 20px;
-    }
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-        margin-top: 20px;
-      }
+      border-radius: 16px;
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container">
-    <h1>¿Qué agente de Valorant eres?</h1>
+  <div class="container">
+    <h1>¿Qué Agente de Valorant Eres?</h1>
     <div id="quiz"></div>
     <div id="navigation">
       <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
@@ -91,7 +89,6 @@
     </div>
     <div id="result"></div>
   </div>
-
   <script>
     const questions = [
       {
@@ -277,66 +274,72 @@
       reyna: { name: "Reyna", image: "https://static.valorant-api.com/agents/reyna.png", description: "Caza sola, y le gusta hacerlo." }
     };
 
-    let currentQuestion = 0;
-    let scores = {};
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
 
-    const quizDiv = document.getElementById("quiz");
-    const navigation = document.getElementById("navigation");
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const questionHTML = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>`;
+  quizContainer.innerHTML = questionHTML;
+  resultContainer.innerHTML = "";
+}
 
-    function showQuestion() {
-      navigation.style.display = "none";
-      if (currentQuestion >= questions.length) {
-        showResult();
-        return;
-      }
-      const q = questions[currentQuestion];
-      quizDiv.innerHTML = `<div class="question">${q.q}</div><div class="answers"></div>`;
-      const answersDiv = quizDiv.querySelector(".answers");
-      q.a.forEach(answer => {
-        const btn = document.createElement("button");
-        btn.textContent = answer.text;
-        btn.onclick = () => {
-          Object.entries(answer.scores).forEach(([agent, score]) => {
-            scores[agent] = (scores[agent] || 0) + score;
-          });
-          currentQuestion++;
-          showQuestion();
-        };
-        answersDiv.appendChild(btn);
-      });
-    }
-
-    function showResult() {
-      const topAgent = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-      const agent = agents[topAgent];
-      quizDiv.innerHTML = `
-        <div class="result">
-          <h2>Eres ${agent.name}</h2>
-          <img src="${agent.image}" alt="${agent.name}" />
-          <p>${agent.description}</p>
-        </div>
-      `;
-      navigation.style.display = "block";
-    }
-
-    function restartQuiz() {
-      currentQuestion = 0;
-      scores = {};
-      showQuestion();
-    }
-
-    function prevQuestion() {
-      if (currentQuestion > 0) {
-        currentQuestion--;
-        showQuestion();
-      }
-    }
-
-    function goHome() {
-      window.location.href = "../index.html";
-    }
-
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let agent in selected.points) {
+    scores[agent] = (scores[agent] || 0) + selected.points[agent];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
     showQuestion();
-  </script>
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let agent in lastAnswer.points) {
+      scores[agent] -= lastAnswer.points[agent];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null;
+  let max = -1;
+  for (let agent in scores) {
+    if (scores[agent] > max) {
+      max = scores[agent];
+      best = agent;
+    }
+  }
+  const description = descriptions[best];
+  const image = agents[best];
+  resultContainer.innerHTML = `
+    <h2>¡Eres <span style="color:#ff4654">${best.toUpperCase()}</span>!</h2>
+    <img src="${image}" alt="${best}" />
+    <p style="font-size:18px; margin-top:15px;">${description}</p>
+  `;
+}
+
+showQuestion();
+</script>
 </body>
 </html>
+
