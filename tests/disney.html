@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Qué Princesa Disney Eres?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f5c3c1, #f2a7a2);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      margin-top: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #f44336;
+    }
+    .btn-nav {
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      background-color: #555;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #eee;
+      border: 1px solid #777;
+      cursor: pointer;
+    }
+    .btn-nav:hover {
+      background-color: #777;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .options button {
+      background-color: #444;
+      border: 2px solid #666;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 5px 0;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+      color: #eee;
+    }
+    .options button:hover {
+      background-color: #555;
+    }
+    #navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #result {
+      text-align: center;
+      margin-top: 40px;
+    }
+    #result img {
+      max-width: 200px;
+      margin-top: 20px;
+      border-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué Princesa Disney Eres?</h1>
+    <div id="quiz"></div>
+    <div id="navigation">
+      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+      <a href="../index.html" class="btn-nav">🏠 Inicio</a>
+    </div>
+    <div id="result"></div>
+  </div>
+
+<script>
+const characters = {
+  BlancaNieves: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Snow_White_Disney.jpg",
+  Cenicienta: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Cinderella_Disney_Character.jpg",
+  Aurora: "https://upload.wikimedia.org/wikipedia/commons/a/a1/Aurora_Disney_Character.jpg",
+  Ariel: "https://upload.wikimedia.org/wikipedia/commons/6/68/Ariel_Disney.png",
+  Bella: "https://upload.wikimedia.org/wikipedia/commons/6/67/Belle_Disney_Character.jpg",
+  Jasmine: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Jasmine_Disney_Character.jpg",
+  Pocahontas: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pocahontas_Disney.jpg",
+  Mulan: "https://upload.wikimedia.org/wikipedia/commons/7/75/Mulan_Disney_Character.jpg",
+  Rapunzel: "https://upload.wikimedia.org/wikipedia/commons/a/a7/Rapunzel_Disney.jpg",
+  Merida: "https://upload.wikimedia.org/wikipedia/commons/6/65/Merida_Disney_Character.jpg",
+  Elsa: "https://upload.wikimedia.org/wikipedia/commons/5/58/Elsa_Disney.jpg",
+  Anna: "https://upload.wikimedia.org/wikipedia/commons/4/47/Anna_Disney_Character.jpg",
+  Moana: "https://upload.wikimedia.org/wikipedia/commons/4/44/Moana_Disney.jpg"
+};
+
+const descriptions = {
+  BlancaNieves: "Tienes un corazón puro y la capacidad de hacer amistad con todo tipo de criaturas. Aunque te pongas a cantar por la mañana, no te preocupes, ¡te perdonamos! No te gusta trabajar mucho, pero todo se soluciona con una canción.",
+  Cenicienta: "A veces todo lo que necesitas es un par de zapatos nuevos. Sabes cómo hacer todo por ti misma, pero te viene bien un poco de magia de vez en cuando, especialmente para escapar de tus responsabilidades.",
+  Aurora: "Tienes un don para dormir y, si te molestas en despertarte, probablemente seas la reina de la fiesta. Eso sí, las responsabilidades no son lo tuyo, prefieres esperar que alguien más lo solucione.",
+  Ariel: "Eres una alma libre, dispuesta a sumergirte en lo desconocido. A veces, un cambio de escenario es todo lo que necesitas, pero cuidado, porque tu curiosidad podría meterte en problemas… como hacer un pacto con una bruja.",
+  Bella: "Te consideras más profunda que las historias románticas. Te encanta leer y siempre buscas algo más, incluso si eso implica enamorarte de una Bestia rara. Nadie te detiene cuando te sumerges en tu mundo.",
+  Jasmine: "Independiente, rebelde, y completamente harta de estar atrapada en un palacio. Si pudieras, escaparías en tu alfombra voladora y jamás volverías. Pero por suerte, el príncipe tiene algo que ofrecer.",
+  Pocahontas: "Te gusta ser una fuerza de la naturaleza. Prefieres tomar decisiones por ti misma y, a veces, prefieres hablar con los árboles que con la gente. Pero cuando te enamoras, lo haces con toda tu alma.",
+  Mulan: "La perfección no es suficiente para ti. Tienes que luchar, no solo por tu honor, sino para demostrar que puedes hacer lo que los demás creen que no puedes. Los estereotipos no te afectan.",
+  Rapunzel: "A veces, el mundo parece pequeño desde tu torre, pero eso no te detiene. Sabes cómo hacer que las cosas sucedan, incluso si eso implica confiar en un ladrón para escapar. La aventura te llama.",
+  Merida: "Eres todo fuego y rebeldía. No te importa lo que piensen los demás, siempre sigues tus propios caminos. El arco es tu mejor amigo, y no dudas en demostrarlo.",
+  Elsa: "Con gran poder viene una gran responsabilidad, y en tu caso, la responsabilidad es mantener el hielo bajo control. A veces te sientes aislada, pero no hay nada que un poco de magia no pueda arreglar.",
+  Anna: "Tienes un corazón tan grande como el mundo, y aunque te metes en problemas por ser un poco impulsiva, siempre haces todo con amor. No te importa lo que piensen los demás, siempre sigues tu instinto.",
+  Moana: "La aventura y el océano son tu hogar. No tienes miedo de dejar todo atrás para cumplir tu destino, aunque eso implique desafiar a los dioses. Siempre eres fiel a ti misma, incluso cuando todo parece estar en tu contra."
+};
+
+const questions = [
+  { question: "¿Cómo te enfrentas a un desafío?", answers: [
+    { text: "Lo enfrento con valentía y a veces un poco de magia.", points: { Mulan: 3, Elsa: 2, Moana: 1 } },
+    { text: "Busco una solución práctica, aunque eso signifique buscar ayuda de un príncipe.", points: { Cenicienta: 3, Bella: 2, Pocahontas: 1 } },
+    { text: "Me sumerjo en la aventura, sin importar los riesgos.", points: { Jasmine: 3, Ariel: 2, Merida: 1 } }
+  ]},
+  { question: "¿Qué harías si te encuentras un tesoro?", answers: [
+    { text: "Lo usaría para ayudar a los demás, claro.", points: { Pocahontas: 3, Anna: 2, Jasmine: 1 } },
+    { text: "Lo escondería, no quiero que me molesten.", points: { Rapunzel: 3, Elsa: 2, Moana: 1 } },
+    { text: "¡A gastar y disfrutar, por supuesto!", points: { Ariel: 3, Elsa: 2, Merida: 1 } }
+  ]},
+  { question: "¿Cómo prefieres pasar tu día libre?", answers: [
+    { text: "Durmiendo, mucho mejor que estar ocupada.", points: { Aurora: 3, Bella: 2, Pocahontas: 1 } },
+    { text: "Investigando algo nuevo o mejorando mis habilidades.", points: { Mulan: 3, Merida: 2, Moana: 1 } },
+    { text: "En la playa o nadando en el mar.", points: { Ariel: 3, Moana: 2, Jasmine: 1 } }
+  ]},
+  { question: "¿Qué harías si alguien te desafía?", answers: [
+    { text: "Lo aceptaría y demostraría mi fuerza.", points: { Mulan: 3, Merida: 2, Elsa: 1 } },
+    { text: "Correría a donde nadie pueda encontrarme.", points: { Aurora: 3, Pocahontas: 2, Rapunzel: 1 } },
+    { text: "Desafiaría las reglas y probaría que puedo hacerlo mejor.", points: { Jasmine: 3, Bella: 2, Anna: 1 } }
+  ]},
+  { question: "¿Qué te hace sentir mejor?", answers: [
+    { text: "Un buen libro y algo de tiempo para mí.", points: { Bella: 3, Rapunzel: 2, Anna: 1 } },
+    { text: "Escuchar la naturaleza y estar al aire libre.", points: { Pocahontas: 3, Moana: 2, Elsa: 1 } },
+    { text: "La aventura y la posibilidad de hacer algo grandioso.", points: { Elsa: 3, Jasmine: 2, Merida: 1 } }
+  ]},
+  { question: "Si pudieras tener un poder, ¿cuál elegirías?", answers: [
+    { text: "El control sobre la magia o el hielo.", points: { Elsa: 3, Anna: 2, Mulan: 1 } },
+    { text: "La habilidad de cambiar el mundo con solo hablar.", points: { Pocahontas: 3, Jasmine: 2, Merida: 1 } },
+    { text: "Ser increíblemente fuerte y siempre capaz de ganar.", points: { Mulan: 3, Merida: 2, Ariel: 1 } }
+  ]},
+  { question: "¿Cuál es tu estilo de vestir?", answers: [
+    { text: "Cómodo y funcional, listo para la acción.", points: { Merida: 3, Mulan: 2, Pocahontas: 1 } },
+    { text: "Elegante, siempre con algo especial.", points: { Bella: 3, Cenicienta: 2, Jasmine: 1 } },
+    { text: "Casual, pero siempre con algo para impresionar.", points: { Jasmine: 3, Ariel: 2, Elsa: 1 } }
+  ]},
+  { question: "¿Qué harías si te quedaras atrapada en un lugar?", answers: [
+    { text: "Buscaría una salida con calma, tal vez incluso cantando.", points: { BlancaNieves: 3, Moana: 2, Pocahontas: 1 } },
+    { text: "Tomaría el control y organizaría una escapatoria.", points: { Mulan: 3, Rapunzel: 2, Merida: 1 } },
+    { text: "¡Esperaría que me rescaten! Aunque no tengo mucha esperanza.", points: { Aurora: 3, Elsa: 2, Jasmine: 1 } }
+  ]},
+  { question: "Si pudieras tener una mascota, ¿cuál sería?", answers: [
+    { text: "Un halcón, siempre listo para volar conmigo.", points: { Pocahontas: 3, Elsa: 2, Moana: 1 } },
+    { text: "Un delfín, para nadar juntos por siempre.", points: { Ariel: 3, Jasmine: 2, Anna: 1 } },
+    { text: "Un caballo, para recorrer el mundo a toda velocidad.", points: { Mulan: 3, Merida: 2, Rapunzel: 1 } }
+  ]},
+  { question: "¿Qué te motiva?", answers: [
+    { text: "El deseo de mejorar y demostrar que puedo hacerlo.", points: { Mulan: 3, Merida: 2, Pocahontas: 1 } },
+    { text: "La libertad de vivir como quiero, sin restricciones.", points: { Jasmine: 3, Moana: 2, Anna: 1 } },
+    { text: "El amor y la posibilidad de cambiar el mundo para mejor.", points: { Pocahontas: 3, Bella: 2, Elsa: 1 } }
+  ]},
+  { question: "Si tuvieras un día libre, ¿qué harías?", answers: [
+    { text: "Iría a explorar el mundo, todo puede suceder.", points: { Moana: 3, Jasmine: 2, Mulan: 1 } },
+    { text: "Pasaría el día con mis seres queridos, disfrutando de la tranquilidad.", points: { Aurora: 3, Anna: 2, Pocahontas: 1 } },
+    { text: "Correría hacia una nueva aventura, sin mirar atrás.", points: { Merida: 3, Ariel: 2, Elsa: 1 } }
+  ]}
+];
+
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const questionHTML = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>`;
+  quizContainer.innerHTML = questionHTML;
+  resultContainer.innerHTML = "";
+}
+
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let champ in selected.points) {
+    scores[champ] = (scores[champ] || 0) + selected.points[champ];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let champ in lastAnswer.points) {
+      scores[champ] -= lastAnswer.points[champ];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null;
+  let max = -1;
+  for (let champ in scores) {
+    if (scores[champ] > max) {
+      max = scores[champ];
+      best = champ;
+    }
+  }
+  const description = descriptions[best];
+  const image = characters[best];
+  resultContainer.innerHTML = `
+    <h2>¡Eres <span style="color:#f44336">${best}</span>!</h2>
+    <img src="${image}" alt="${best}" />
+    <p style="font-size:18px; margin-top:15px;">${description}</p>
+  `;
+}
+
+showQuestion();
+</script>
+</body>
+</html>
