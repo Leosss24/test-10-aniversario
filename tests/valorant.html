@@ -92,150 +92,199 @@
 
 <script>
 const agents = {
-  Jett: "https://static.valorant-api.com/images/agents/jett.png",
-  Phoenix: "https://static.valorant-api.com/images/agents/phoenix.png",
-  Sage: "https://static.valorant-api.com/images/agents/sage.png",
-  Sova: "https://static.valorant-api.com/images/agents/sova.png",
-  Raze: "https://static.valorant-api.com/images/agents/raze.png",
-  Omen: "https://static.valorant-api.com/images/agents/omen.png",
-  Viper: "https://static.valorant-api.com/images/agents/viper.png",
-  Killjoy: "https://static.valorant-api.com/images/agents/killjoy.png",
-  Breach: "https://static.valorant-api.com/images/agents/breach.png",
-  Skye: "https://static.valorant-api.com/images/agents/skye.png",
-  Reyna: "https://static.valorant-api.com/images/agents/reyna.png",
-  Yoru: "https://static.valorant-api.com/images/agents/yoru.png",
-  Fade: "https://static.valorant-api.com/images/agents/fade.png",
-  Chamber: "https://static.valorant-api.com/images/agents/chamber.png",
-  Harbor: "https://static.valorant-api.com/images/agents/harbor.png",
-  Neon: "https://static.valorant-api.com/images/agents/neon.png"
+  Jett: "https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/displayicon.png",
+  Phoenix: "https://media.valorant-api.com/agents/eb93336a-449b-9c1b-0a54-a891f7921d69/displayicon.png",
+  Sage: "https://media.valorant-api.com/agents/569fdd95-4d10-43ab-ca70-79becc718b46/displayicon.png",
+  Sova: "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/displayicon.png",
+  Raze: "https://media.valorant-api.com/agents/f94c3b30-42be-e959-889c-5aa313dba261/displayicon.png",
+  Omen: "https://media.valorant-api.com/agents/8e253930-4c05-31dd-1b6c-968525494517/displayicon.png",
+  Viper: "https://media.valorant-api.com/agents/707eab51-4836-f488-046a-cda6bf494859/displayicon.png",
+  Killjoy: "https://media.valorant-api.com/agents/1e58de9c-4950-5125-93e9-a0aee9f98746/displayicon.png",
+  Breach: "https://media.valorant-api.com/agents/5f8d3a7f-467b-97f3-062c-13acf203c006/displayicon.png",
+  Skye: "https://media.valorant-api.com/agents/6f2a04ca-43e0-be17-7f36-b3908627744d/displayicon.png",
+  Reyna: "https://media.valorant-api.com/agents/a3bfb853-43b2-7238-a4f1-ad90e9e46bcc/displayicon.png",
+  Yoru: "https://media.valorant-api.com/agents/7f94d92c-4234-0a36-9646-3a87eb8b5c89/displayicon.png",
+  Fade: "https://media.valorant-api.com/agents/dade69b4-4f5a-8528-247b-219e5a1facd6/displayicon.png",
+  Chamber: "https://media.valorant-api.com/agents/22697a3d-45bf-8dd7-4fec-84a9e28c69d7/displayicon.png",
+  Harbor: "https://media.valorant-api.com/agents/95b78ed7-4637-86d9-7e41-71ba8c293152/displayicon.png",
+  Neon: "https://media.valorant-api.com/agents/bb2a4828-46eb-8cd1-e765-15848195d751/displayicon.png",
+  Gekko: "https://media.valorant-api.com/agents/e370fa57-4757-3604-3648-499e1f642d3f/displayicon.png",
+  Astra: "https://media.valorant-api.com/agents/41fb69c1-4189-7b37-f117-bcaf1e96f1bf/displayicon.png",
+  Deadlock: "https://media.valorant-api.com/agents/cc8b64c8-4b25-4ff9-6e7f-37b4da43d235/displayicon.png", 
+  Tejo: "https://media.valorant-api.com/agents/b444168c-4e35-8076-db47-ef9bf368f384/displayicon.png",
+  KAYO: "https://media.valorant-api.com/agents/601dbbe7-43ce-be57-2a40-4abd24953621/displayicon.png",
+  Cypher: "https://media.valorant-api.com/agents/117ed9e3-49f3-6512-3ccf-0cada7e3823b/displayicon.png",
+  Waylay: "https://media.valorant-api.com/agents/df1cb487-4902-002e-5c17-d28e83e78588/displayicon.png",
+  Vyse: "https://media.valorant-api.com/agents/efba5359-4016-a1e5-7626-b1ae76895940/displayicon.png",
+  Brimstone: "https://media.valorant-api.com/agents/9f0d8ba9-4140-b941-57d3-a7ad57c6b417/displayicon.png",
+  Iso: "https://media.valorant-api.com/agents/0e38b510-41a8-5780-5e8f-568b2a4f2d6c/displayicon.png", 
+  Clove: "https://media.valorant-api.com/agents/1dbf2edd-4729-0984-3115-daa5eed44993/displayicon.png"
 };
 
 const descriptions = {
-  Jett: "Rápido, impredecible y siempre con estilo. Te lanzas a la acción sin pensarlo dos veces.",
-  Phoenix: "Fuego en el alma y confianza al máximo. Te gusta destacar y brillar.",
-  Sage: "Eres el equilibrio del equipo. Calmo, protector y necesario.",
-  Sova: "Analítico y calmado. Siempre encuentras al enemigo antes de que te vean.",
-  Raze: "Explosivo, divertido y caótico. Nada de estrategias, todo instinto.",
-  Omen: "Misterioso y silencioso. Prefieres la sombra, pero siempre tienes el control.",
-  Viper: "Calculador y tóxico. Te encanta tener el control total del terreno.",
-  Killjoy: "Tecnología y eficiencia. Nada se escapa a tu sistema de defensa.",
-  Breach: "Bruto pero efectivo. Te abres paso con fuerza y determinación.",
-  Skye: "Naturaleza y apoyo. Siempre cuidas al equipo y lideras desde atrás.",
-  Reyna: "Individualista, agresivo, letal. Te alimentas del caos.",
-  Yoru: "Engañoso, veloz e imprevisible. Te encanta confundir.",
-  Fade: "Oscura y aterradora. Dominas el miedo como arma.",
-  Chamber: "Elegante, preciso, letal. Nunca fallas una oportunidad.",
-  Harbor: "Fuerte, calmado y fluido. Como el agua, te adaptas sin perder fuerza.",
-  Neon: "Velocidad y electricidad. Eres energía pura."
+  Jett: "Velocidad, humo y ego. Te tiras a site sin info y te quejas si no te siguen. Pesada nivel Dios.",
+  Phoenix: "Brillas más que tus jugadas. Te flasheas solo y haces como si fuera intencional. Ego con patas.",
+  Sage: "Sanadora de excusas. Te mueres y la culpa es del equipo. Curas cuando te da la gana.",
+  Sova: "Todo cálculo, poca alma. Flechas a Narnia, droneo eterno. El frikismo es real.",
+  Raze: "La reina del boom. Te explotas tú sola pero te ríes igual. Pura anarquía brasileña.",
+  Omen: "Fumas, te teleportas y desapareces. Roleplay de fantasma en bronce. Main humo y main drama.",
+  Viper: "Todo control, cero duchas. Te crees científica pero eres más tóxica que tus paredes.",
+  Killjoy: "Trapera compulsiva. Te crees genia pero solo campeas y escribes en Python. 0 amigos.",
+  Breach: "Pega fuerte y pregunta después. Si no aturdes a tres, no estás jugando. Hablas como claxon.",
+  Skye: "Guía espiritual y spam de flashes. Pones más animalitos que utilidad real. Veganismo táctico.",
+  Reyna: "Duelo o lloras. Robas kills y luego pides cura. El alma más pesada del lobby.",
+  Yoru: "Te haces invisible para fallar igual. Juegas solo, mueres solo. Eres un highlight mal editado.",
+  Fade: "Pesadillas, gatos y traumas. Pingueas más que juegas. Fan de Tim Burton.",
+  Chamber: "Sniper con acento. No pegas una pero caminas como modelo. Gabacho y orgulloso.",
+  Harbor: "Escudo humano que nadie pidió. Agua por aquí, agua por allá y ni una kill. Surfista zen.",
+  Neon: "Velocidad sin dirección. Entras a site como si fuera TikTok. Parkour pero con lag.",
+  Gekko: "Traes a la partida más bichos que sentido común. Mono, rana, tú. Ternura inútil.",
+  Astra: "Galaxias, humo y marihuana. Micromanager del zodiaco. Más tiempo en el mapa que en la partida.",
+  Deadlock: "Metódica y terca. Si pudieras, pondrías trampas en el baño de tus compis. Sucia camperaza.",
+  Tejo: "Futuro, poder y un brazo bien cabrón. Siempre entrando primero. Quieres ser main pero no sabes ni flashear.",
+  KAYO: "Antiflashes, antiemo y anticompañerismo. Te apagas y te vas. Literalmente.",
+  Cypher: "El espía eterno. Todo lo ves, todo lo sabes. Pero no sales de base.",
+  Waylay: "Sigilosa y precisa. Haces más daño psicológico que real. La main cuchillos de tu equipo.",
+  Vyse: "Visual y cerebral. Tienes un láser y aún así fallas. Robas highlights en TikTok.",
+  Brimstone: "Viejo pero confiable. Fumas más que tu tío en Navidad. Papá táctico del equipo.",
+  Iso: "Duelo o nada. Te crees John Wick y te deletean sin mirar. Mascarilla de flow, aim de bronce.",
+  Clove: "Revives, confundes y sobrevives. Te mueres y vuelves como si nada. El drama eres tú."
 };
 
 const questions = [
   {
-    question: "¿Tu frase de guerra sería…",
+    question: "¿Cómo lidias con la derrota?",
     answers: [
-      { text: "Uno menos", points: { omen: 2, reyna: 1 } },
-      { text: "Vamos equipo, juntos", points: { brimstone: 2, skye: 1 } },
-      { text: "Que empiece el caos", points: { raze: 2, yoru: 1 } },
-      { text: "Control total, victoria segura", points: { viper: 2, killjoy: 1 } }
+      { text: "Aprendo del error y sigo", points: { Sova: 2, Brimstone: 1 } },
+      { text: "Rompo cosas virtuales", points: { Raze: 2, Iso: 1 } },
+      { text: "Culpo al lag", points: { Reyna: 2, Phoenix: 1 } },
+      { text: "Medito y resucito", points: { Clove: 2, Astra: 1 } }
     ]
   },
   {
-    question: "Un buen compañero de equipo es…",
+    question: "¿Qué harías con 10 segundos antes de una ronda?",
     answers: [
-      { text: "El que cura", points: { sage: 2, skye: 1 } },
-      { text: "El que entra primero", points: { phoenix: 2, raze: 1 } },
-      { text: "El que da info", points: { fade: 2, sova: 1 } },
-      { text: "El que cubre la espalda", points: { brimstone: 2, omen: 1 } }
+      { text: "Dar instrucciones tácticas", points: { Brimstone: 2, Deadlock: 1 } },
+      { text: "Esconderme en un rincón", points: { Cypher: 2, Omen: 1 } },
+      { text: "Bailar con tu bicho", points: { Gekko: 2, Raze: 1 } },
+      { text: "Lanzar utilidad random", points: { Phoenix: 2, Yoru: 1 } }
     ]
   },
   {
-    question: "¿Cómo enfrentas un problema?",
+    question: "Si fueras un superhéroe, serías...",
     answers: [
-      { text: "Directamente y con fuego", points: { phoenix: 2, raze: 1 } },
-      { text: "Desde la sombra", points: { omen: 2, yoru: 1 } },
-      { text: "Buscando datos primero", points: { sova: 2, killjoy: 1 } },
-      { text: "Respirando hondo y ayudando", points: { sage: 2, skye: 1 } }
+      { text: "El que salva a todos", points: { Sage: 2, Skye: 1 } },
+      { text: "El que hace volar cosas", points: { Raze: 2, Neon: 1 } },
+      { text: "El que hackea sistemas", points: { Killjoy: 2, Cypher: 1 } },
+      { text: "El que viene del más allá", points: { Clove: 2, Fade: 1 } }
     ]
   },
   {
-    question: "¿Qué animal te representa mejor?",
+    question: "Te regalan un arma, eliges...",
     answers: [
-      { text: "Zorro", points: { yoru: 2, jett: 1 } },
-      { text: "Águila", points: { sova: 2, brimstone: 1 } },
-      { text: "Serpiente", points: { viper: 2, omen: 1 } },
-      { text: "Perro", points: { skye: 2, raze: 1 } }
+      { text: "Una escopeta con colorines", points: { Raze: 2, Phoenix: 1 } },
+      { text: "Un sniper elegante", points: { Chamber: 2, Vyse: 1 } },
+      { text: "Una clásica con estilo", points: { Jett: 2, Iso: 1 } },
+      { text: "Una que cure", points: { Sage: 2, Gekko: 1 } }
     ]
   },
   {
-    question: "Tu fin de semana ideal es...",
+    question: "¿Qué te saca de tus casillas?",
     answers: [
-      { text: "Montando dispositivos inteligentes", points: { killjoy: 2, sova: 1 } },
-      { text: "En una rave o fiesta loca", points: { raze: 2, phoenix: 1 } },
-      { text: "Solo, planificando todo", points: { omen: 2, viper: 1 } },
-      { text: "Explorando la naturaleza", points: { skye: 2, sage: 1 } }
+      { text: "Que ignoren tu estrategia", points: { Deadlock: 2, Brimstone: 1 } },
+      { text: "Que nadie entre a site", points: { Tejo: 2, Breach: 1 } },
+      { text: "Que nadie te siga el humo", points: { Viper: 2, Harbor: 1 } },
+      { text: "Que te roben la kill", points: { Reyna: 2, Iso: 1 } }
     ]
   },
   {
-    question: "¿Qué valoras más en combate?",
+    question: "Te obligan a jugar support, tú...",
     answers: [
-      { text: "Velocidad", points: { jett: 2, yoru: 1 } },
-      { text: "Precisión", points: { sova: 2, killjoy: 1 } },
-      { text: "Supervivencia del equipo", points: { sage: 2, brimstone: 1 } },
-      { text: "Dominar el terreno", points: { viper: 2, skye: 1 } }
+      { text: "Aceptas y brillas igual", points: { Clove: 2, Skye: 1 } },
+      { text: "Te mueres sin flashear", points: { KAYO: 2, Breach: 1 } },
+      { text: "Curar te da alergia", points: { Phoenix: 2, Reyna: 1 } },
+      { text: "Spameas curas desde base", points: { Sage: 2, Gekko: 1 } }
     ]
   },
   {
-    question: "¿Tu estilo de ropa sería…",
+    question: "¿Tu frase antes de una partida?",
     answers: [
-      { text: "Chándal con estilo", points: { raze: 2, jett: 1 } },
-      { text: "Militar funcional", points: { brimstone: 2, viper: 1 } },
-      { text: "Ropa de calle y urbana", points: { yoru: 2, phoenix: 1 } },
-      { text: "Minimalista, cómodo", points: { sage: 2, omen: 1 } }
+      { text: "Vamos a ganar esto", points: { Brimstone: 2, Deadlock: 1 } },
+      { text: "Les voy a partir la cara", points: { Iso: 2, Phoenix: 1 } },
+      { text: "Ojalá no me flasheen", points: { KAYO: 2, Cypher: 1 } },
+      { text: "Estoy aquí por el meme", points: { Raze: 2, Jett: 1 } }
     ]
   },
   {
-    question: "Cuando alguien te molesta, tú…",
+    question: "¿Cuál sería tu emoji más usado?",
     answers: [
-      { text: "Te lo tomas con calma", points: { sage: 2, skye: 1 } },
-      { text: "Explotas, literal", points: { raze: 2, phoenix: 1 } },
-      { text: "Te alejas en silencio", points: { omen: 2, yoru: 1 } },
-      { text: "Lo controlas y le das la vuelta", points: { killjoy: 2, viper: 1 } }
+      { text: "🔥", points: { Reyna: 2, Phoenix: 1 } },
+      { text: "🧠", points: { Cypher: 2, Astra: 1 } },
+      { text: "💣", points: { Brimstone: 2, Omen: 1 } },
+      { text: "⚡", points: { Vyse: 2, Neon: 1 } }
     ]
   },
   {
-    question: "¿Qué gadget te gustaría tener?",
+    question: "Tu sueño frustrado es...",
     answers: [
-      { text: "Un dron espía", points: { sova: 2, fade: 1 } },
-      { text: "Un bot que cure", points: { sage: 2, skye: 1 } },
-      { text: "Granadas de pintura", points: { raze: 2, phoenix: 1 } },
-      { text: "Una trampa de humo", points: { omen: 2, viper: 1 } }
+      { text: "Dominar a todos sin hablar", points: { Omen: 2, Vyse: 1 } },
+      { text: "Ser streamer de terror", points: { Fade: 2, Brimstone: 1 } },
+      { text: "Ser influencer de moda táctica", points: { Viper: 2, Iso: 1 } },
+      { text: "Pilotar un dron real", points: { Sova: 2, Yoru: 1 } }
     ]
   },
   {
-    question: "En un grupo tú eres...",
+    question: "Tu frase de perfil sería...",
     answers: [
-      { text: "El líder natural", points: { brimstone: 2, phoenix: 1 } },
-      { text: "El estratega callado", points: { omen: 2, killjoy: 1 } },
-      { text: "El alma de la fiesta", points: { raze: 2, jett: 1 } },
-      { text: "La persona calmada", points: { sage: 2, skye: 1 } }
+      { text: "Solo Dios puede juzgarme", points: { Reyna: 2, Jett: 1 } },
+      { text: "Con estilo hasta para perder", points: { Chamber: 2, Vyse: 1 } },
+      { text: "Papá del equipo", points: { Brimstone: 2, Skye: 1 } },
+      { text: "Dominando desde las sombras", points: { Viper: 2, Tejo: 1 } }
     ]
   },
   {
-    question: "¿Cuál es tu miedo secreto?",
+    question: "¿Con qué frase cierras un clutch?",
     answers: [
-      { text: "Perder el control", points: { viper: 2, omen: 1 } },
-      { text: "Que me dejen atrás", points: { jett: 2, phoenix: 1 } },
-      { text: "No saber todo lo que pasa", points: { killjoy: 2, sova: 1 } },
-      { text: "No poder ayudar a tiempo", points: { sage: 2, skye: 1 } }
+      { text: "Easy peasy", points: { Phoenix: 2, Killjoy: 1 } },
+      { text: "Lo tenía calculado", points: { Skye: 2, Omen: 1 } },
+      { text: "Ni me sudó", points: { Waylay: 2, Clove: 1 } },
+      { text: "Ni sabía que quedaba uno", points: { Astra: 2, Tejo: 1 } }
     ]
   },
   {
-    question: "¿Cómo defines el éxito?",
+    question: "Tu peor enemigo en partida es...",
     answers: [
-      { text: "Estar siempre preparado", points: { brimstone: 2, killjoy: 1 } },
-      { text: "Marcar la diferencia", points: { jett: 2, phoenix: 1 } },
-      { text: "Control total del entorno", points: { viper: 2, omen: 1 } },
-      { text: "Salvar a los demás", points: { sage: 2, skye: 1 } }
+      { text: "Los que fuman mal", points: { Viper: 2, Omen: 1 } },
+      { text: "Los que caminan con shift en base", points: { Waylay: 2, Vyse: 1 } },
+      { text: "Los que no pinguean", points: { Clove: 2, Killjoy: 1 } },
+      { text: "Los que gritan por todo", points: { Breach: 2, Iso: 1 } }
+    ]
+  },
+  {
+    question: "¿Qué haces si el spike cae en A y tú estás en B?",
+    answers: [
+      { text: "Te teletransportas y finges no haberlo visto", points: { Omen: 2, Reyna: 1 } },
+      { text: "Te quedas cubriendo mid", points: { Fade: 2, Brimstone: 1 } },
+      { text: "Intentas hacer ninja defuse en el otro site", points: { Viper: 2, Iso: 1 } },
+      { text: "Vas caminando y mueres solo", points: { Sova: 2, Yoru: 1 } }
+    ]
+  },
+  {
+    question: "¿Qué personaje odiarías en una ranked?",
+    answers: [
+      { text: "El que tira el spike y se va", points: { Gekko: 2, Waylay: 1 } },
+      { text: "El que entra corriendo solo", points: { Tejo: 2, Neon: 1 } },
+      { text: "El que se cree sheriff del lobby", points: { Chamber: 2, Deadlock: 1 } },
+      { text: "El que dronea con el equipo muerto", points: { Omen: 2, Sova: 1 } }
+    ]
+  },
+  {
+    question: "¿Qué haces cuando vas 0-9?",
+    answers: [
+      { text: "Decir 'warmup' y seguir", points: { Reyna: 2, Jett: 1 } },
+      { text: "Decir que es culpa del matchmaking", points: { Chamber: 2, Vyse: 1 } },
+      { text: "Tirar el teclado por la ventana", points: { Brimstone: 2, Skye: 1 } },
+      { text: "Seguir flasheando a tu equipo", points: { KAYO: 2, Breach: 1 } }
     ]
   }
 ];
