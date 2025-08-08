@@ -1,0 +1,434 @@
+¡Hecho! Te dejo un único fichero HTML listo para usar, calcado en estructura y nombres de funciones al de Valorant (mismos `showQuestion`, `selectAnswer`, `goBack`, `showResult`), pero adaptado a **Pixar**. Incluye:
+
+* **20 personajes clave** de Pixar con descripciones en tono sarcástico/divertido.
+* **16 preguntas**; cada respuesta asigna puntos a **4 personajes**.
+* **Botones**: Volver, **Reiniciar**, e Inicio.
+* **Paleta** de colores pedida: `#EF476F`, `#FFD166`, `#06D6A0`, `#118AB2`, `#073B4C`.
+* Para que no dependas de imágenes externas (y evitar links rotos), las “imágenes” de cada personaje son **SVG embebidos** vía `data:` con un emoji representativo — se ven bien y cargan siempre.
+
+Copia y pega tal cual:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Qué Personaje de Pixar Eres?</title>
+  <style>
+    :root{
+      --c1:#EF476F; /* rosa/rojo */
+      --c2:#FFD166; /* amarillo */
+      --c3:#06D6A0; /* verde */
+      --c4:#118AB2; /* azul medio */
+      --c5:#073B4C; /* azul oscuro */
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--c5);
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 880px;
+      margin: auto;
+      background: #0f2a35; /* un poco más claro que el fondo */
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      margin-top: 40px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--c2);
+      text-shadow: 0 2px 0 rgba(0,0,0,0.4);
+    }
+    .tagline{
+      text-align:center;
+      margin-top:-18px;
+      margin-bottom: 18px;
+      color: #dbeff4;
+      opacity:.8;
+      font-size:14px;
+    }
+    .btn-nav {
+      display: inline-block;
+      margin: 10px 6px;
+      padding: 10px 16px;
+      font-size: 14px;
+      background: linear-gradient(180deg, var(--c4), #0e6f92);
+      border-radius: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: transform .05s ease, filter .2s ease, background .2s ease;
+    }
+    .btn-nav:hover { filter: brightness(1.05); }
+    .btn-nav:active { transform: translateY(1px); }
+    .btn-secondary{
+      background: linear-gradient(180deg, var(--c1), #bf3253);
+    }
+    .btn-tertiary{
+      background: linear-gradient(180deg, var(--c3), #049a79);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: var(--c2);
+    }
+    .options button {
+      background-color: #123846;
+      border: 2px solid var(--c1);
+      border-radius: 12px;
+      padding: 12px;
+      margin: 6px 0;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s, transform .05s;
+      color: #ffffff;
+    }
+    .options button:hover { background-color: #163f4f; }
+    .options button:active { transform: translateY(1px); }
+    #navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #result {
+      text-align: center;
+      margin-top: 34px;
+    }
+    #result img {
+      max-width: 220px;
+      margin-top: 16px;
+      border-radius: 18px;
+      border: 3px solid var(--c3);
+      background:#0d2c38;
+      padding:10px;
+    }
+    .score-note{
+      margin-top:10px;
+      font-size:13px;
+      color:#bfe9ff;
+      opacity:.75;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué Personaje de Pixar Eres?</h1>
+    <p class="tagline">16 preguntas. Humor ligero, ego moderado, drama garantizado. 🎬</p>
+    <div id="quiz"></div>
+    <div id="navigation">
+      <button class="btn-nav btn-secondary" onclick="restartQuiz()">🔁 Reiniciar</button>
+      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+      <a href="../index.html" class="btn-nav btn-tertiary">🏠 Inicio</a>
+    </div>
+    <div id="result"></div>
+  </div>
+
+<script>
+/**
+ * Para evitar links rotos de imágenes externas, usamos SVG embebidos (data:)
+ * con un emoji representativo para cada personaje.
+ * Si en el futuro quieres imágenes reales, solo cambia el valor en agents[Personaje]
+ * por una URL directa de imagen y listo.
+ */
+function emojiToDataURI(emoji, bg="#0d2c38"){
+  const svg = encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512'>
+      <rect width='100%' height='100%' rx='28' ry='28' fill='${bg}'/>
+      <text x='50%' y='54%' font-size='220' text-anchor='middle' dominant-baseline='middle'>${emoji}</text>
+    </svg>`
+  );
+  return `data:image/svg+xml;utf8,${svg}`;
+}
+
+const agents = {
+  "Woody": emojiToDataURI("🤠","#123846"),
+  "Buzz Lightyear": emojiToDataURI("🚀","#0b4a60"),
+  "Jessie": emojiToDataURI("🧢","#134e5b"),
+  "Mr. Incredible": emojiToDataURI("💪","#0e3f52"),
+  "Elastigirl": emojiToDataURI("🕶️","#0c3a4c"),
+  "Edna Mode": emojiToDataURI("👓","#0a3444"),
+  "Lightning McQueen": emojiToDataURI("🏎️","#123846"),
+  "Mater": emojiToDataURI("🛻","#0b4a60"),
+  "Sulley": emojiToDataURI("👹","#134e5b"),
+  "Mike Wazowski": emojiToDataURI("👁️","#0e3f52"),
+  "Nemo": emojiToDataURI("🐠","#0c3a4c"),
+  "Dory": emojiToDataURI("🐟","#0a3444"),
+  "Remy": emojiToDataURI("🐭","#123846"),
+  "WALL·E": emojiToDataURI("🤖","#0b4a60"),
+  "EVE": emojiToDataURI("🛰️","#134e5b"),
+  "Merida": emojiToDataURI("🏹","#0e3f52"),
+  "Joy": emojiToDataURI("😀","#0c3a4c"),
+  "Sadness": emojiToDataURI("😢","#0a3444"),
+  "Miguel": emojiToDataURI("🎸","#123846"),
+  "Carl Fredricksen": emojiToDataURI("🎈","#0b4a60")
+};
+
+const descriptions = {
+  "Woody": "Líder nato con complejo de sheriff. Mucho discurso, poca batería. Si hay drama, tú ya tienes guion.",
+  "Buzz Lightyear": "Héroe épico de manual. Gritas ‘¡al infinito y más allá!’… y tropiezas en el primer escalón.",
+  "Jessie": "Energía de rodeo y corazón gigante. Te subes a cualquier tren emocional sin mirar destino.",
+  "Mr. Incredible": "Fuerza bruta y espalda crujida. Arreglas problemas a golpes… y creas otros dos.",
+  "Elastigirl": "Flexibilidad física y mental. Estiras plazos, paciencia y la realidad para que todo funcione.",
+  "Edna Mode": "Moda, genio y cero filtros. Tu crítica constructiva destruye egos por deporte.",
+  "Lightning McQueen": "Velocidad, ego aerodinámico y frases de anuncio. Das vueltas hasta aprender la lección.",
+  "Mater": "Caos entrañable con acento de taller. Tu plan B es improvisar y rezar.",
+  "Sulley": "Tierno camuflado de monstruo. Asustas el problema… luego lo abrazas.",
+  "Mike Wazowski": "Motivación con una sola pupila. Excesivamente optimista, peligrosamente torpe.",
+  "Nemo": "Pequeño pero cabezón. Te pierdes a menudo, pero siempre encuentras algo mejor.",
+  "Dory": "Olvidas el desastre y sigues. Ideal para perdonar… también para repetir errores.",
+  "Remy": "Chef Michelin clandestino. Haces magia con migas y cero permisos sanitarios.",
+  "WALL·E": "Romanticismo reciclable. Limpias desastres ajenos mientras sueñas con un baile.",
+  "EVE": "Eficiencia letal, corazón en beta. Primera en disparar, última en admitir sentimientos.",
+  "Merida": "Independencia con arco. Causas el problema por libre y también lo solucionas, por libre.",
+  "Joy": "Optimismo tóxico cuando conviene. Pintas sonrisas incluso en emergencias.",
+  "Sadness": "Realista disfrazada de bajona. Si algo puede salir mal, llevas kleenex.",
+  "Miguel": "Arte, familia y rebeldía musical. Sigues la guitarra aunque el mundo diga ‘shh’.",
+  "Carl Fredricksen": "Gruñón premium con corazón de helio. Te resistes al cambio… y luego lo adoptas."
+};
+
+const questions = [
+  {
+    question: "Te proponen un plan improvisado un viernes a las 23:30. ¿Qué haces?",
+    answers: [
+      { text: "¡Aventura! Ya dormiré en otra vida.", points: { "Merida": 2, "Buzz Lightyear": 2, "Jessie": 1, "Dory": 1 } },
+      { text: "Planifico la logística y vamos.", points: { "Elastigirl": 2, "Edna Mode": 1, "WALL·E": 1, "Mike Wazowski": 1 } },
+      { text: "No, gracias. Mi sofá me necesita.", points: { "Carl Fredricksen": 2, "Sadness": 1, "Woody": 1, "Mater": 1 } },
+      { text: "Voy, pero me pierdo por el camino.", points: { "Dory": 2, "Nemo": 1, "Mater": 1, "Mike Wazowski": 1 } }
+    ]
+  },
+  {
+    question: "Se estropea la cena y hay que salvarla en 10 minutos.",
+    answers: [
+      { text: "Yo cocino. Confía en mi instinto (y en el ajo).", points: { "Remy": 2, "Elastigirl": 1, "Joy": 1, "WALL·E": 1 } },
+      { text: "Pido comida y hago presentación ‘gourmet’.", points: { "Edna Mode": 2, "Woody": 1, "Lightning McQueen": 1, "Mike Wazowski": 1 } },
+      { text: "Microondas a potencia nuclear.", points: { "WALL·E": 2, "Mater": 1, "Dory": 1, "Sadness": 1 } },
+      { text: "Bah, nos reímos y pedimos postre doble.", points: { "Joy": 2, "Jessie": 1, "Miguel": 1, "Sulley": 1 } }
+    ]
+  },
+  {
+    question: "Tu grupo está perdido. ¿Quién toma el mando?",
+    answers: [
+      { text: "Yo. Alguien tiene que poner orden.", points: { "Woody": 2, "Mr. Incredible": 1, "Elastigirl": 1, "Merida": 1 } },
+      { text: "Propongo una ruta y motivación absurda.", points: { "Mike Wazowski": 2, "Joy": 1, "Buzz Lightyear": 1, "Mater": 1 } },
+      { text: "Me callo y observo, pero salvo los muebles.", points: { "EVE": 2, "WALL·E": 1, "Edna Mode": 1, "Sulley": 1 } },
+      { text: "Sigo a cualquiera… y luego me distraigo.", points: { "Dory": 2, "Nemo": 1, "Mater": 1, "Sadness": 1 } }
+    ]
+  },
+  {
+    question: "Un amigo está triste. Tu reacción:",
+    answers: [
+      { text: "Escuchar y abrazar. Sin discursos.", points: { "Sulley": 2, "WALL·E": 1, "Woody": 1, "Dory": 1 } },
+      { text: "Chistes y plan para distraer.", points: { "Joy": 2, "Mike Wazowski": 1, "Mater": 1, "Jessie": 1 } },
+      { text: "Validar la tristeza y preparar mantita.", points: { "Sadness": 2, "Carl Fredricksen": 1, "EVE": 1, "Remy": 1 } },
+      { text: "Retoque de look y speech motivacional.", points: { "Edna Mode": 2, "Elastigirl": 1, "Merida": 1, "Buzz Lightyear": 1 } }
+    ]
+  },
+  {
+    question: "¿Cómo solucionas un problema técnico?",
+    answers: [
+      { text: "A golpes controlados. Funciona o se rinde.", points: { "Mr. Incredible": 2, "Lightning McQueen": 1, "Carl Fredricksen": 1, "Woody": 1 } },
+      { text: "Con manual y método.", points: { "Elastigirl": 2, "WALL·E": 1, "EVE": 1, "Edna Mode": 1 } },
+      { text: "Lo desconecto y vuelvo a conectar.", points: { "WALL·E": 2, "Mater": 1, "Dory": 1, "Mike Wazowski": 1 } },
+      { text: "Le canto una canción, por si acaso.", points: { "Miguel": 2, "Joy": 1, "Nemo": 1, "Jessie": 1 } }
+    ]
+  },
+  {
+    question: "Te hacen una crítica dura.",
+    answers: [
+      { text: "La convierto en gasolina para correr más.", points: { "Lightning McQueen": 2, "Buzz Lightyear": 1, "Merida": 1, "Mr. Incredible": 1 } },
+      { text: "Tomo notas, mejoro y vuelvo más fuerte.", points: { "Elastigirl": 2, "Edna Mode": 1, "Remy": 1, "Woody": 1 } },
+      { text: "Me da bajón pero aprendo algo.", points: { "Sadness": 2, "Carl Fredricksen": 1, "WALL·E": 1, "Nemo": 1 } },
+      { text: "¿Crítica? Yo sigo feliz.", points: { "Joy": 2, "Dory": 1, "Mater": 1, "Mike Wazowski": 1 } }
+    ]
+  },
+  {
+    question: "Tu habilidad secreta en el grupo es…",
+    answers: [
+      { text: "Organizar el caos sin que se note.", points: { "Elastigirl": 2, "Woody": 1, "EVE": 1, "Edna Mode": 1 } },
+      { text: "Hacer reír hasta en emergencias.", points: { "Mike Wazowski": 2, "Mater": 1, "Joy": 1, "Jessie": 1 } },
+      { text: "Convertir basura en magia útil.", points: { "WALL·E": 2, "Remy": 1, "Dory": 1, "Sulley": 1 } },
+      { text: "Liderar a ritmo de música.", points: { "Miguel": 2, "Merida": 1, "Buzz Lightyear": 1, "Lightning McQueen": 1 } }
+    ]
+  },
+  {
+    question: "Te pierdes en una ciudad nueva.",
+    answers: [
+      { text: "Mapa en mano y plan B, C y D.", points: { "Woody": 2, "Elastigirl": 1, "EVE": 1, "Edna Mode": 1 } },
+      { text: "Pregunta y hace amigos en 5 minutos.", points: { "Joy": 2, "Jessie": 1, "Mater": 1, "Sulley": 1 } },
+      { text: "Selfie, canción y a ver qué sale.", points: { "Miguel": 2, "Buzz Lightyear": 1, "Mike Wazowski": 1, "Dory": 1 } },
+      { text: "Pánico pero sobrevivo.", points: { "Nemo": 2, "Sadness": 1, "WALL·E": 1, "Carl Fredricksen": 1 } }
+    ]
+  },
+  {
+    question: "En un proyecto, ¿qué rol prefieres?",
+    answers: [
+      { text: "Líder que decide y asume.", points: { "Woody": 2, "Mr. Incredible": 1, "Merida": 1, "Elastigirl": 1 } },
+      { text: "Creativo que cocina ideas.", points: { "Remy": 2, "Miguel": 1, "Edna Mode": 1, "Joy": 1 } },
+      { text: "Técnico que lo hace posible.", points: { "EVE": 2, "WALL·E": 1, "Lightning McQueen": 1, "Mike Wazowski": 1 } },
+      { text: "Apoyo moral y risas.", points: { "Mater": 2, "Jessie": 1, "Sulley": 1, "Dory": 1 } }
+    ]
+  },
+  {
+    question: "Te toca cambiar algo importante en tu vida.",
+    answers: [
+      { text: "Resisto primero, luego vuelo.", points: { "Carl Fredricksen": 2, "Woody": 1, "Sadness": 1, "WALL·E": 1 } },
+      { text: "Lo abrazo y aprovecho el impulso.", points: { "Merida": 2, "Buzz Lightyear": 1, "Joy": 1, "Elastigirl": 1 } },
+      { text: "Improviso hasta que encaje.", points: { "Mater": 2, "Dory": 1, "Jessie": 1, "Mike Wazowski": 1 } },
+      { text: "Lo planifico con precisión.", points: { "EVE": 2, "Edna Mode": 1, "Remy": 1, "WALL·E": 1 } }
+    ]
+  },
+  {
+    question: "Un niño te pide consejo.",
+    answers: [
+      { text: "Sé valiente y pide perdón cuando toque.", points: { "Merida": 2, "Woody": 1, "Sulley": 1, "Mr. Incredible": 1 } },
+      { text: "Sigue tu música aunque hagan ruido.", points: { "Miguel": 2, "Joy": 1, "Dory": 1, "Remy": 1 } },
+      { text: "Planifica, comparte y sé amable.", points: { "Elastigirl": 2, "EVE": 1, "Nemo": 1, "WALL·E": 1 } },
+      { text: "No capas. ¡Moda funcional!.", points: { "Edna Mode": 2, "Buzz Lightyear": 1, "Lightning McQueen": 1, "Carl Fredricksen": 1 } }
+    ]
+  },
+  {
+    question: "¿Qué te describe mejor en una crisis?",
+    answers: [
+      { text: "Sereno, práctico y eficaz.", points: { "EVE": 2, "Elastigirl": 1, "WALL·E": 1, "Woody": 1 } },
+      { text: "Risas nerviosas y chistes.", points: { "Mike Wazowski": 2, "Mater": 1, "Joy": 1, "Jessie": 1 } },
+      { text: "Fuerza y empuje arrebatado.", points: { "Mr. Incredible": 2, "Lightning McQueen": 1, "Merida": 1, "Sulley": 1 } },
+      { text: "Me hundo un poco, luego resurjo.", points: { "Sadness": 2, "Carl Fredricksen": 1, "Nemo": 1, "Dory": 1 } }
+    ]
+  },
+  {
+    question: "En vacaciones prefieres…",
+    answers: [
+      { text: "Ruta intensa y aventuras.", points: { "Buzz Lightyear": 2, "Merida": 1, "Jessie": 1, "Lightning McQueen": 1 } },
+      { text: "Descanso con orden y wifi.", points: { "Elastigirl": 2, "EVE": 1, "Edna Mode": 1, "Carl Fredricksen": 1 } },
+      { text: "Perderme por ahí y ya.", points: { "Dory": 2, "Nemo": 1, "Mater": 1, "Joy": 1 } },
+      { text: "Plan gastronómico serio.", points: { "Remy": 2, "WALL·E": 1, "Sulley": 1, "Mike Wazowski": 1 } }
+    ]
+  },
+  {
+    question: "Te ofrecen un reto imposible.",
+    answers: [
+      { text: "Acepto. La épica me llama.", points: { "Buzz Lightyear": 2, "Mr. Incredible": 1, "Merida": 1, "Woody": 1 } },
+      { text: "Primero prueba piloto.", points: { "EVE": 2, "Elastigirl": 1, "Edna Mode": 1, "WALL·E": 1 } },
+      { text: "Voy, pero con banda sonora.", points: { "Miguel": 2, "Joy": 1, "Jessie": 1, "Lightning McQueen": 1 } },
+      { text: "No puedo… bueno, quizá sí.", points: { "Sadness": 2, "Carl Fredricksen": 1, "Nemo": 1, "Dory": 1 } }
+    ]
+  },
+  {
+    question: "En el grupo, te acusan de ‘protagonista’.",
+    answers: [
+      { text: "Obvio. Alguien tiene que brillar.", points: { "Lightning McQueen": 2, "Buzz Lightyear": 1, "Woody": 1, "Miguel": 1 } },
+      { text: "Yo prefiero bastidores… pero mando.", points: { "Elastigirl": 2, "Edna Mode": 1, "EVE": 1, "WALL·E": 1 } },
+      { text: "Protagonista del caos adorable.", points: { "Mater": 2, "Dory": 1, "Mike Wazowski": 1, "Jessie": 1 } },
+      { text: "Ninguno. Soy secundario icónico.", points: { "Carl Fredricksen": 2, "Sadness": 1, "Remy": 1, "Sulley": 1 } }
+    ]
+  },
+  {
+    question: "Tu frase de perfil sería…",
+    answers: [
+      { text: "‘Al infinito y más allá (pero con GPS)’", points: { "Buzz Lightyear": 2, "Woody": 1, "Mike Wazowski": 1, "Jessie": 1 } },
+      { text: "‘Sin capas. Con estilo.’", points: { "Edna Mode": 2, "Elastigirl": 1, "Mr. Incredible": 1, "EVE": 1 } },
+      { text: "‘Ka-chow y nos vemos en meta’", points: { "Lightning McQueen": 2, "Mater": 1, "Miguel": 1, "Joy": 1 } },
+      { text: "‘A veces triste, siempre auténticx’", points: { "Sadness": 2, "Carl Fredricksen": 1, "Nemo": 1, "WALL·E": 1 } }
+    ]
+  },
+  {
+    question: "Última: ¿Cuál es tu superpoder cotidiano?",
+    answers: [
+      { text: "Convertir líos en planes.", points: { "Elastigirl": 2, "Woody": 1, "EVE": 1, "Edna Mode": 1 } },
+      { text: "Alegrar el día ajeno.", points: { "Joy": 2, "Mike Wazowski": 1, "Jessie": 1, "Mater": 1 } },
+      { text: "Reparar y reciclar lo imposible.", points: { "WALL·E": 2, "Remy": 1, "Sulley": 1, "Dory": 1 } },
+      { text: "Resistir y seguir adelante.", points: { "Carl Fredricksen": 2, "Sadness": 1, "Nemo": 1, "Mr. Incredible": 1 } }
+    ]
+  }
+];
+
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const questionHTML = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>`;
+  quizContainer.innerHTML = questionHTML;
+  resultContainer.innerHTML = "";
+}
+
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let agent in selected.points) {
+    scores[agent] = (scores[agent] || 0) + selected.points[agent];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let agent in lastAnswer.points) {
+      scores[agent] -= lastAnswer.points[agent];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function restartQuiz(){
+  currentQuestion = 0;
+  scores = {};
+  history = [];
+  showQuestion();
+  resultContainer.innerHTML = "";
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null;
+  let max = -1;
+  for (let agent in scores) {
+    if (scores[agent] > max) {
+      max = scores[agent];
+      best = agent;
+    }
+  }
+  const description = descriptions[best];
+  const image = agents[best];
+  resultContainer.innerHTML = `
+    <h2>¡Eres <span style="color:var(--c1)">${best}</span>!</h2>
+    <img src="${image}" alt="${best}" />
+    <p style="font-size:18px; margin-top:15px;">${description}</p>
+    <div class="score-note">Puntaje total: ${max} • Personajes evaluados: ${Object.keys(scores).length}</div>
+  `;
+}
+
+showQuestion();
+</script>
+</body>
+</html>
+```
