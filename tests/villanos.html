@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>¿Qué villano eres?</title>
+<style>
+  /* Paleta (color-hex 1051847) adaptada a la UI */
+  :root{
+    --bg:#2c2c54;        /* fondo principal */
+    --card:#40407a;      /* contenedor */
+    --border:#5959a6;    /* bordes suaves */
+    --btn:#706fd3;       /* botón base */
+    --btn-hover:#8c8af0; /* hover btn */
+    --accent:#f5cd79;    /* acento */
+    --text:#ffffff;      /* texto principal */
+  }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: var(--card);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+  }
+  h1 {
+    text-align: center;
+    margin: 0 0 22px;
+    color: var(--accent);
+  }
+  .btn-nav {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: var(--btn);
+    border-radius: 8px;
+    text-decoration: none;
+    color: #ffffff;
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    transition: background .2s, transform .06s;
+  }
+  .btn-nav:hover {
+    background-color: var(--btn-hover);
+    transform: translateY(-1px);
+  }
+  .question { margin-bottom: 20px; }
+  .question h3 { font-size: 20px; margin-bottom: 10px; }
+  .options button {
+    background-color: var(--card);
+    border: 2px solid var(--btn);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 5px 0;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s, border-color 0.2s;
+    color: #ffffff;
+  }
+  .options button:hover { background-color: var(--btn); border-color: var(--btn-hover); }
+  #navigation { text-align: center; margin-top: 20px; }
+  #result { text-align: center; margin-top: 28px; }
+  #result img {
+    max-width: 260px;
+    width: 100%;
+    margin-top: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 20px rgba(0,0,0,.35);
+  }
+  .subtle { color:#e7e7ff; opacity:.9; font-size:14px; margin-top:6px;}
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué dictador de ficción eres?</h1>
+    <div id="quiz"></div>
+    <div id="navigation">
+      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+      <a href="../index.html" class="btn-nav">🏠 Inicio</a>
+    </div>
+    <div id="result"></div>
+  </div>
+
+<script>
+/* ==========
+   Personajes (9) + imágenes y descripciones
+   ========== */
+const characters = {
+  "Palpatine": {
+    img: "https://upload.wikimedia.org/wikipedia/en/8/8f/Emperor_RotJ.png",
+    aka: "Darth Sidious",
+    desc: "Maestro del poder en la sombra. Si no estás conspirando, estás estorbando."
+  },
+  "Voldemort": {
+    img: "https://upload.wikimedia.org/wikipedia/en/a/a3/Lordvoldemort.jpg",
+    aka: "El-Que-No-Debe-Ser-Nombrado",
+    desc: "Obsesión por la pureza, cero nariz y cero empatía. Buenas noches a la diversidad."
+  },
+  "Sauron": {
+    img: "https://upload.wikimedia.org/wikipedia/en/6/6b/Sauron%27s_eye.jpg",
+    aka: "Señor Oscuro",
+    desc: "Ojo omnipresente, adicto a los anillos y al micromanagement desde Mordor."
+  },
+  "Cersei Lannister": {
+    img: "https://upload.wikimedia.org/wikipedia/en/9/94/Cersei_Lannister-Lena_Headey.jpg",
+    aka: "Reina Cersei",
+    desc: "Reinar antes que querer. El vino es política exterior, interior y postre."
+  },
+  "Darth Vader": {
+    img: "https://upload.wikimedia.org/wikipedia/en/7/76/Darth_Vader.jpg",
+    aka: "El del asma con sable",
+    desc: "Drama familiar, respiración intensa y teletrabajo por estrangulamiento remoto."
+  },
+  "Sr. Burns": {
+    img: "https://upload.wikimedia.org/wikipedia/en/5/56/Mr_Burns.png",
+    aka: "Monty",
+    desc: "Riqueza infinita, ética inexistente. Excelente. (El sindicato llora en 3, 2, 1...)"
+  },
+  "Scar": {
+    img: "https://upload.wikimedia.org/wikipedia/en/3/3d/Scar_%28The_Lion_King%29.png",
+    aka: "León del Drama",
+    desc: "Arruinas reuniones familiares con musical incluido. Preferiblemente con hienas."
+  },
+  "Jafar": {
+    img: "https://upload.wikimedia.org/wikipedia/en/9/9e/Jafar_Disney.png",
+    aka: "Gran Visir",
+    desc: "Magia, ambición y un loro que te supera en KPI. Tu plan: ‘ser sultán pero con drip’."
+  },
+  "Cruella de Vil": {
+    img: "https://upload.wikimedia.org/wikipedia/en/0/0b/Cruella_de_Vil.png",
+    aka: "Señora de los Abrigos",
+    desc: "Estilo impecable, moral en liquidación. Si es de lunares, lo quiero."
+  }
+};
+
+/* ==========
+   Preguntas (9) — solo textos
+   Usaremos un generador para repartir 3-2-1 equilibrado entre los 9 personajes.
+   ========== */
+const Q_TEXT = [
+  { q: "¿Qué harías para conseguir el poder absoluto?",
+    a: ["Manipular desde las sombras", "Eliminar a la competencia", "Comprar y corromper"] },
+  { q: "Tu estilo de liderazgo es...",
+    a: ["Miedo + discursos teatrales", "Carisma tóxico y chantaje emocional", "Dinero y control económico"] },
+  { q: "Si te desafían en público, tú…",
+    a: ["Speech y humillación final", "Demostración de poder inmediata", "Sonrisa, contrato y adiós"] },
+  { q: "Tu plan de fin de semana:",
+    a: ["Conquistar territorio nuevo", "Campaña de imagen omnipresente", "Invento raro que asusta"] },
+  { q: "Lo peor que te pueden hacer es…",
+    a: ["Ignorarte", "Superarte en popularidad", "Quitarte el control"] },
+  { q: "Como meme, serías…",
+    a: ["‘Yo soy inevitable’", "‘Yo soy el peligro’", "‘No soy malo, solo incomprendido’"] },
+  { q: "Tu lema motivacional:",
+    a: ["El miedo es la mejor herramienta", "El show debe continuar… conmigo", "Si no puedes ser bueno, sé memorable"] },
+  { q: "Tu despedida a un enemigo caído:",
+    a: ["Mirada de desprecio y ya", "Frase demoledora y teatral", "Ni me molesto, ya no existe"] },
+  { q: "Tu accesorio imprescindible:",
+    a: ["Bastón/arma mística", "Capa que ondee dramáticamente", "Artilugio peligroso y absurdo"] }
+];
+
+/* ==========
+   Balance PERFECTO 3-2-1
+   Idea: en cada pregunta damos puntos a TODOS los personajes (9 por pregunta),
+   agrupados en 3 respuestas de 3 personajes cada una, con puntos [3,2,1].
+   Rotamos la lista en cada pregunta -> cada personaje ocupa posiciones 0..8 una vez.
+   Mapeo pos%3 => 0:3pts, 1:2pts, 2:1pt -> al final cada uno recibe exactamente
+   3 veces 3pts, 3 veces 2pts, 3 veces 1pt.
+   ========== */
+const NAMES = Object.keys(characters); // 9
+const POINTS = [3,2,1];
+
+function buildQuestionsBalanced(){
+  const questions = [];
+  for (let qi=0; qi<Q_TEXT.length; qi++){
+    // Rotación simple por pregunta
+    const base = NAMES.slice(qi).concat(NAMES.slice(0,qi)); // 9 items
+    // Partir en 3 grupos de 3 (una respuesta por grupo)
+    const groups = [
+      base.slice(0,3),
+      base.slice(3,6),
+      base.slice(6,9)
+    ];
+    const answers = [];
+    for (let ai=0; ai<3; ai++){
+      const points = {};
+      const group = groups[ai];
+      // Dentro del grupo asignamos 3,2,1 según subposición
+      for (let sub=0; sub<3; sub++){
+        const who = group[sub];
+        points[who] = POINTS[sub]; // 3,2,1
+      }
+      answers.push({ text: Q_TEXT[qi].a[ai], points });
+    }
+    questions.push({ question: Q_TEXT[qi].q, answers });
+  }
+  return questions;
+}
+
+const questions = buildQuestionsBalanced();
+
+/* ==========
+   LÓGICA QUIZ (UI básica)
+   ========== */
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const html = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>
+    <p class="subtle">Pregunta ${currentQuestion+1} de ${questions.length}</p>
+  `;
+  quizContainer.innerHTML = html;
+  resultContainer.innerHTML = "";
+}
+
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let who in selected.points) {
+    scores[who] = (scores[who] || 0) + selected.points[who];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let who in lastAnswer.points) {
+      scores[who] -= lastAnswer.points[who];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null, max = -Infinity;
+  for (let who in scores) {
+    if (scores[who] > max) { max = scores[who]; best = who; }
+  }
+  // Desempate aleatorio si hiciera falta (muy raro con 3-2-1 equilibrado)
+  const top = Math.max(...Object.values(scores));
+  const ties = Object.entries(scores).filter(([k,v])=>v===top).map(([k])=>k);
+  if (ties.length>1) best = ties[Math.floor(Math.random()*ties.length)];
+
+  const { img, aka, desc } = characters[best];
+  resultContainer.innerHTML = `
+    <h2>Te salió <span style="color:var(--accent)">${best}</span> <small>(${aka})</small></h2>
+    <img src="${img}" alt="${best}"
+         onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300.png?text=${encodeURIComponent(best)}';">
+    <p style="font-size:18px; margin-top:15px;">${desc}</p>
+  `;
+}
+
+showQuestion();
+
+/* ==========
+   (Opcional) Validador en consola
+   Ejecuta validate() para comprobar el reparto exacto 3×(3,2,1) por personaje.
+   ========== */
+function validate(){
+  const tally = Object.fromEntries(NAMES.map(n=>[n,{p3:0,p2:0,p1:0,total:0}]));
+  for (const q of questions){
+    for (const a of q.answers){
+      for (const [k,v] of Object.entries(a.points)){
+        if (v===3) tally[k].p3++;
+        if (v===2) tally[k].p2++;
+        if (v===1) tally[k].p1++;
+        tally[k].total += v;
+      }
+    }
+  }
+  console.table(Object.entries(tally).map(([k,v])=>({
+    Personaje:k, "3pts":v.p3, "2pts":v.p2, "1pt":v.p1, Total:v.total
+  })));
+}
+</script>
+</body>
+</html>
