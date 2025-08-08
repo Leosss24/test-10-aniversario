@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>¿Qué Hamburguesa Eres?</title>
+  <style>
+    :root{
+      --c1:#6F1D1B; /* vino tinto */
+      --c2:#BB9457; /* dorado tostado */
+      --c3:#432818; /* marrón oscuro */
+      --c4:#99582A; /* caramelo */
+      --c5:#FFE6A7; /* crema */
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--c3);
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #2c1a10;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+      margin-top: 40px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 6px;
+      color: var(--c5);
+      text-shadow: 0 2px 0 rgba(0,0,0,0.35);
+    }
+    .tagline{
+      text-align:center;
+      margin: 0 0 22px 0;
+      color: #ffecc0;
+      opacity:.9;
+      font-size:14px;
+    }
+    .btn-nav {
+      display: inline-block;
+      margin: 10px 6px;
+      padding: 10px 16px;
+      font-size: 14px;
+      background: linear-gradient(180deg, var(--c2), #a67f49);
+      border-radius: 10px;
+      text-decoration: none;
+      color: #2c1a10;
+      border: 1px solid rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform .05s ease, filter .2s ease, background .2s ease;
+      font-weight:600;
+    }
+    .btn-nav:hover { filter: brightness(1.05); }
+    .btn-nav:active { transform: translateY(1px); }
+    .btn-secondary{
+      background: linear-gradient(180deg, var(--c1), #561513);
+      color: #fff;
+      border-color: rgba(255,255,255,0.15);
+    }
+    .btn-tertiary{
+      background: linear-gradient(180deg, var(--c4), #7b4522);
+      color: #fff;
+      border-color: rgba(255,255,255,0.15);
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: var(--c5);
+    }
+    .options button {
+      background-color: #3a2417;
+      border: 2px solid var(--c1);
+      border-radius: 12px;
+      padding: 12px;
+      margin: 6px 0;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s, transform .05s;
+      color: #fff8e6;
+    }
+    .options button:hover { background-color: #432818; }
+    .options button:active { transform: translateY(1px); }
+    #navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #result {
+      text-align: center;
+      margin-top: 34px;
+    }
+    #result img {
+      max-width: 220px;
+      margin-top: 16px;
+      border-radius: 18px;
+      border: 3px solid var(--c2);
+      background:#2b190f;
+      padding:10px;
+    }
+    .score-note{
+      margin-top:10px;
+      font-size:13px;
+      color:#ffecc0;
+      opacity:.85;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¿Qué Hamburguesa Eres?</h1>
+    <p class="tagline">15 preguntas. Zero ensalada, máximo salseo. 🍔</p>
+    <div id="quiz"></div>
+    <div id="navigation">
+      <button class="btn-nav btn-secondary" onclick="restartQuiz()">🔁 Reiniciar</button>
+      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+      <a href="../index.html" class="btn-nav btn-tertiary">🏠 Inicio</a>
+    </div>
+    <div id="result"></div>
+  </div>
+
+<script>
+/* ======= Imágenes SVG embebidas (emoji) para evitar links rotos ======= */
+function emojiToDataURI(emoji, bg="#2b190f"){
+  const svg = encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512'>
+      <rect width='100%' height='100%' rx='28' ry='28' fill='${bg}'/>
+      <text x='50%' y='54%' font-size='220' text-anchor='middle' dominant-baseline='middle'>${emoji}</text>
+    </svg>`
+  );
+  return `data:image/svg+xml;utf8,${svg}`;
+}
+
+/* ======= Catálogo de hamburguesas ======= */
+const agents = {
+  "Big Mac (McDonald’s)": emojiToDataURI("🍔","#3a2417"),
+  "Whopper (Burger King)": emojiToDataURI("🔥","#432818"),
+  "Kevin Bacon (Goiko)": emojiToDataURI("🥓","#3a2417"),
+  "Cheeseburger (Five Guys)": emojiToDataURI("🧀","#2f1d13"),
+  "Famous Star (Carl’s Jr.)": emojiToDataURI("⭐","#3a2417"),
+  "Clásica (TGB)": emojiToDataURI("🍞","#2f1d13"),
+  "Director’s Choice (Foster’s)": emojiToDataURI("🎬","#3a2417"),
+  "Cheeseburger (VICIO)": emojiToDataURI("📸","#2f1d13"),
+  "Queens (New York Burger)": emojiToDataURI("🗽","#3a2417")
+};
+
+const descriptions = {
+  "Big Mac (McDonald’s)": "Doble piso de nostalgia con salsa secreta que ya no es secreta. La pides por tradición y pura pereza mental. Ícono cómodo.",
+  "Whopper (Burger King)": "Ahumado de marketing y lechuga escapista. Grande, ruidosa y con ego grill. Si arde, te gusta más.",
+  "Kevin Bacon (Goiko)": "Culto al crujir. Panceta, queso y devoción ciega. Si fuera serie, tendría tres spin-offs y foros peleados.",
+  "Cheeseburger (Five Guys)": "‘Sencilla’ como tu recibo: mantequilla, queso y toppings sin freno. Minimalista premium para paladar exigente y cartera en llanto.",
+  "Famous Star (Carl’s Jr.)": "Salsita dulce y pose californiana. Fast food que se cree surfer pro y sube selfies a la playa aunque viva tierra adentro.",
+  "Clásica (TGB)": "Sobria, correcta y sin discursos. Pan tierno, carne apañada y cero drama. La del ‘cumple y calla’.",
+  "Director’s Choice (Foster’s)": "Bacon, cheddar y banda sonora de blockbuster. Puro espectáculo: sales del cine con servilleta en el bolsillo.",
+  "Cheeseburger (VICIO)": "Smash porn y foto para IG. Delivery premium para sentirte foodie sin levantarte del sofá. Culpa cero, queso máximo.",
+  "Queens (New York Burger)": "Seriedad neoyorquina y punto de carne en castellano perfecto. No presume, te educa. Respeto al bocado."
+};
+
+/* ======= Preguntas (15). Cada respuesta asigna puntos a 3 burgers (2–1–1) ======= */
+const questions = [
+  {
+    question: "Tienes 10 minutos para decidir cena:",
+    answers: [
+      { text: "Lo de siempre y a dormir.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Whopper (Burger King)": 1 } },
+      { text: "Algo con humo y actitud.", points: { "Whopper (Burger King)": 2, "Director’s Choice (Foster’s)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Premium rápido, foto y a sofá.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Queens (New York Burger)": 1 } },
+      { text: "Bacon serio o nada.", points: { "Kevin Bacon (Goiko)": 2, "Director’s Choice (Foster’s)": 1, "Famous Star (Carl’s Jr.)": 1 } }
+    ]
+  },
+  {
+    question: "¿Qué queso te representa?",
+    answers: [
+      { text: "Americano, clásico y pegajoso.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Cheddar potente para el primer plano.", points: { "Director’s Choice (Foster’s)": 2, "Whopper (Burger King)": 1, "Queens (New York Burger)": 1 } },
+      { text: "Doble queso sin vergüenza.", points: { "Cheeseburger (Five Guys)": 2, "Cheeseburger (VICIO)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Cualquiera, si está bien fundido.", points: { "Cheeseburger (VICIO)": 2, "Queens (New York Burger)": 1, "Clásica (TGB)": 1 } }
+    ]
+  },
+  {
+    question: "Tu relación con el pan:",
+    answers: [
+      { text: "Semilla y nostalgia.", points: { "Big Mac (McDonald’s)": 2, "Whopper (Burger King)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Suave pero aguanta todo.", points: { "Clásica (TGB)": 2, "Queens (New York Burger)": 1, "Director’s Choice (Foster’s)": 1 } },
+      { text: "Tostadito con mantequilla indecente.", points: { "Cheeseburger (Five Guys)": 2, "Cheeseburger (VICIO)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Me da igual, yo voy a la carne.", points: { "Queens (New York Burger)": 2, "Whopper (Burger King)": 1, "Kevin Bacon (Goiko)": 1 } }
+    ]
+  },
+  {
+    question: "¿Qué salsas invitas a la fiesta?",
+    answers: [
+      { text: "La secreta que no es secreta.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "BBQ y fuego. Mucho fuego.", points: { "Whopper (Burger King)": 2, "Director’s Choice (Foster’s)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Mayonesa ligera y orden.", points: { "Clásica (TGB)": 2, "Queens (New York Burger)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Queso líquido y pecado.", points: { "Cheeseburger (Five Guys)": 2, "Cheeseburger (VICIO)": 1, "Director’s Choice (Foster’s)": 1 } }
+    ]
+  },
+  {
+    question: "¿Cómo te gusta el punto de la carne?",
+    answers: [
+      { text: "Lo que venga, vengo con hambre.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Ahumado y marcado.", points: { "Whopper (Burger King)": 2, "Director’s Choice (Foster’s)": 1, "Queens (New York Burger)": 1 } },
+      { text: "Smash bien dorado.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Preciso, como en NY.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Cheeseburger (Five Guys)": 1 } }
+    ]
+  },
+  {
+    question: "El bacon en tu vida es…",
+    answers: [
+      { text: "Un plus simpático.", points: { "Famous Star (Carl’s Jr.)": 2, "Clásica (TGB)": 1, "Whopper (Burger King)": 1 } },
+      { text: "Pilar fundamental.", points: { "Kevin Bacon (Goiko)": 2, "Director’s Choice (Foster’s)": 1, "Cheeseburger (Five Guys)": 1 } },
+      { text: "Crujiente o nada.", points: { "Director’s Choice (Foster’s)": 2, "Kevin Bacon (Goiko)": 1, "Cheeseburger (VICIO)": 1 } },
+      { text: "Prescindible si la carne manda.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Big Mac (McDonald’s)": 1 } }
+    ]
+  },
+  {
+    question: "¿Qué papel tiene la verdura?",
+    answers: [
+      { text: "Lechuga para la conciencia.", points: { "Big Mac (McDonald’s)": 2, "Famous Star (Carl’s Jr.)": 1, "Clásica (TGB)": 1 } },
+      { text: "Tomate gordito, que manche.", points: { "Whopper (Burger King)": 2, "Queens (New York Burger)": 1, "Director’s Choice (Foster’s)": 1 } },
+      { text: "Cebolla y pepinillo a saco.", points: { "Cheeseburger (Five Guys)": 2, "Cheeseburger (VICIO)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Poca cosa, vengo a comer carne.", points: { "Queens (New York Burger)": 2, "Cheeseburger (VICIO)": 1, "Clásica (TGB)": 1 } }
+    ]
+  },
+  {
+    question: "Tu mood cuando tienes hambre:",
+    answers: [
+      { text: "Tradición o muerte.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Director’s Choice (Foster’s)": 1 } },
+      { text: "Fuego, humo y drama.", points: { "Whopper (Burger King)": 2, "Famous Star (Carl’s Jr.)": 1, "Director’s Choice (Foster’s)": 1 } },
+      { text: "Foto bonita y queso obsceno.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Seriedad y respeto al producto.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Cheeseburger (Five Guys)": 1 } }
+    ]
+  },
+  {
+    question: "¿Dónde te la comerías hoy?",
+    answers: [
+      { text: "Coche, banco del parque, lo que sea.", points: { "Big Mac (McDonald’s)": 2, "Whopper (Burger King)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "En casa con delivery bonito.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Clásica (TGB)": 1 } },
+      { text: "Local con vibes de cine.", points: { "Director’s Choice (Foster’s)": 2, "Famous Star (Carl’s Jr.)": 1, "Queens (New York Burger)": 1 } },
+      { text: "Mesa seria, punto exacto.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Kevin Bacon (Goiko)": 1 } }
+    ]
+  },
+  {
+    question: "Extra de calorías sin remordimientos. Eliges:",
+    answers: [
+      { text: "Doble piso y que sea lo que Dios quiera.", points: { "Big Mac (McDonald’s)": 2, "Director’s Choice (Foster’s)": 1, "Whopper (Burger King)": 1 } },
+      { text: "Queso + bacon + otra de queso.", points: { "Cheeseburger (Five Guys)": 2, "Kevin Bacon (Goiko)": 1, "Cheeseburger (VICIO)": 1 } },
+      { text: "Salsas de la casa a morir.", points: { "Famous Star (Carl’s Jr.)": 2, "Director’s Choice (Foster’s)": 1, "Clásica (TGB)": 1 } },
+      { text: "Carne mimada y pan perfecto.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Cheeseburger (VICIO)": 1 } }
+    ]
+  },
+  {
+    question: "Cuando recomiendas una burger a alguien:",
+    answers: [
+      { text: "La de toda la vida, cero riesgo.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Whopper (Burger King)": 1 } },
+      { text: "La fotogénica que enamora feeds.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "La que tiene bacon de verdad.", points: { "Kevin Bacon (Goiko)": 2, "Director’s Choice (Foster’s)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "La seria, para aprender a comer.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Director’s Choice (Foster’s)": 1 } }
+    ]
+  },
+  {
+    question: "Un fallo que te perdonarías hoy:",
+    answers: [
+      { text: "Que gotee salsa por todas partes.", points: { "Famous Star (Carl’s Jr.)": 2, "Big Mac (McDonald’s)": 1, "Whopper (Burger King)": 1 } },
+      { text: "Que el pan sea demasiado mantequilla.", points: { "Cheeseburger (Five Guys)": 2, "Cheeseburger (VICIO)": 1, "Clásica (TGB)": 1 } },
+      { text: "Que huela a humo de anuncio.", points: { "Whopper (Burger King)": 2, "Director’s Choice (Foster’s)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Que no tenga mucha verdura.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Kevin Bacon (Goiko)": 1 } }
+    ]
+  },
+  {
+    question: "Elige un side para acompañar:",
+    answers: [
+      { text: "Patatas clásicas con sal y ya.", points: { "Clásica (TGB)": 2, "Big Mac (McDonald’s)": 1, "Queens (New York Burger)": 1 } },
+      { text: "Patatas con queso y bacon.", points: { "Kevin Bacon (Goiko)": 2, "Director’s Choice (Foster’s)": 1, "Cheeseburger (Five Guys)": 1 } },
+      { text: "Aros de cebolla + salsas.", points: { "Famous Star (Carl’s Jr.)": 2, "Whopper (Burger King)": 1, "Cheeseburger (VICIO)": 1 } },
+      { text: "Nada, reservo para el postre.", points: { "Cheeseburger (VICIO)": 2, "Queens (New York Burger)": 1, "Clásica (TGB)": 1 } }
+    ]
+  },
+  {
+    question: "Un rasgo de tu personalidad foodie:",
+    answers: [
+      { text: "Nostálgicx funcional.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Buscador de humo y espectáculo.", points: { "Whopper (Burger King)": 2, "Director’s Choice (Foster’s)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Fotógrafx del queso fundido.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Talibán del punto perfecto.", points: { "Queens (New York Burger)": 2, "Clásica (TGB)": 1, "Cheeseburger (Five Guys)": 1 } }
+    ]
+  },
+  {
+    question: "Si esta cena fuera una peli:",
+    answers: [
+      { text: "Clásico que nunca falla.", points: { "Big Mac (McDonald’s)": 2, "Clásica (TGB)": 1, "Famous Star (Carl’s Jr.)": 1 } },
+      { text: "Blockbuster con explosiones.", points: { "Director’s Choice (Foster’s)": 2, "Whopper (Burger King)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Indie caro y bien hecho.", points: { "Cheeseburger (Five Guys)": 2, "Queens (New York Burger)": 1, "Cheeseburger (VICIO)": 1 } },
+      { text: "Corto ganador de Instagram.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Famous Star (Carl’s Jr.)": 1 } }
+    ]
+  },
+  {
+    question: "Última: ¿qué te hace decir ‘esta es la mía’?",
+    answers: [
+      { text: "Salsa mítica y doble pan.", points: { "Big Mac (McDonald’s)": 2, "Famous Star (Carl’s Jr.)": 1, "Clásica (TGB)": 1 } },
+      { text: "Carne marcada y humo serio.", points: { "Whopper (Burger King)": 2, "Queens (New York Burger)": 1, "Director’s Choice (Foster’s)": 1 } },
+      { text: "Queso obsceno + foto perfecta.", points: { "Cheeseburger (VICIO)": 2, "Cheeseburger (Five Guys)": 1, "Kevin Bacon (Goiko)": 1 } },
+      { text: "Bacon protagonista, gracias.", points: { "Kevin Bacon (Goiko)": 2, "Director’s Choice (Foster’s)": 1, "Cheeseburger (Five Guys)": 1 } }
+    ]
+  }
+];
+
+/* ======= Lógica base (misma estructura/nombres) ======= */
+let currentQuestion = 0;
+let scores = {};
+let history = [];
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  const questionHTML = `
+    <div class="question">
+      <h3>${q.question}</h3>
+      <div class="options">
+        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+      </div>
+    </div>`;
+  quizContainer.innerHTML = questionHTML;
+  resultContainer.innerHTML = "";
+}
+
+function selectAnswer(index) {
+  const selected = questions[currentQuestion].answers[index];
+  history.push(index);
+  for (let agent in selected.points) {
+    scores[agent] = (scores[agent] || 0) + selected.points[agent];
+  }
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function goBack() {
+  if (currentQuestion > 0) {
+    const lastIndex = history.pop();
+    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
+    for (let agent in lastAnswer.points) {
+      scores[agent] -= lastAnswer.points[agent];
+    }
+    currentQuestion--;
+    showQuestion();
+  }
+}
+
+function restartQuiz(){
+  currentQuestion = 0;
+  scores = {};
+  history = [];
+  showQuestion();
+  resultContainer.innerHTML = "";
+}
+
+function showResult() {
+  quizContainer.innerHTML = "";
+  let best = null;
+  let max = -1;
+  for (let agent in scores) {
+    if (scores[agent] > max) {
+      max = scores[agent];
+      best = agent;
+    }
+  }
+  const description = descriptions[best];
+  const image = agents[best];
+  resultContainer.innerHTML = `
+    <h2>¡Eres <span style="color:var(--c2)">${best}</span>!</h2>
+    <img src="${image}" alt="${best}" />
+    <p style="font-size:18px; margin-top:15px; color:#ffecc0;">${description}</p>
+    <div class="score-note">Puntuación: ${max} • Opciones evaluadas: ${Object.keys(scores).length}</div>
+  `;
+}
+
+showQuestion();
+</script>
+</body>
+</html>
