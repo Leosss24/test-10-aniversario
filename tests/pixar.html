@@ -145,11 +145,8 @@ const agents = {
   "Woody": emojiToDataURI("🤠","#123846"),
   "Buzz Lightyear": emojiToDataURI("🚀","#0b4a60"),
   "Jessie": emojiToDataURI("🧢","#134e5b"),
-  "Mr. Incredible": emojiToDataURI("💪","#0e3f52"),
   "Elastigirl": emojiToDataURI("🕶️","#0c3a4c"),
-  "Edna Mode": emojiToDataURI("👓","#0a3444"),
   "Lightning McQueen": emojiToDataURI("🏎️","#123846"),
-  "Mater": emojiToDataURI("🛻","#0b4a60"),
   "Sulley": emojiToDataURI("👹","#134e5b"),
   "Mike Wazowski": emojiToDataURI("👁️","#0e3f52"),
   "Nemo": emojiToDataURI("🐠","#0c3a4c"),
@@ -160,7 +157,6 @@ const agents = {
   "Merida": emojiToDataURI("🏹","#0e3f52"),
   "Joy": emojiToDataURI("😀","#0c3a4c"),
   "Sadness": emojiToDataURI("😢","#0a3444"),
-  "Miguel": emojiToDataURI("🎸","#123846"),
   "Carl Fredricksen": emojiToDataURI("🎈","#0b4a60")
 };
 
@@ -168,11 +164,8 @@ const descriptions = {
   "Woody": "Líder nato con complejo de sheriff. Mucho discurso, poca batería. Si hay drama, tú ya tienes guion.",
   "Buzz Lightyear": "Héroe épico de manual. Gritas ‘¡al infinito y más allá!’… y tropiezas en el primer escalón.",
   "Jessie": "Energía de rodeo y corazón gigante. Te subes a cualquier tren emocional sin mirar destino.",
-  "Mr. Incredible": "Fuerza bruta y espalda crujida. Arreglas problemas a golpes… y creas otros dos.",
   "Elastigirl": "Flexibilidad física y mental. Estiras plazos, paciencia y la realidad para que todo funcione.",
-  "Edna Mode": "Moda, genio y cero filtros. Tu crítica constructiva destruye egos por deporte.",
   "Lightning McQueen": "Velocidad, ego aerodinámico y frases de anuncio. Das vueltas hasta aprender la lección.",
-  "Mater": "Caos entrañable con acento de taller. Tu plan B es improvisar y rezar.",
   "Sulley": "Tierno camuflado de monstruo. Asustas el problema… luego lo abrazas.",
   "Mike Wazowski": "Motivación con una sola pupila. Excesivamente optimista, peligrosamente torpe.",
   "Nemo": "Pequeño pero cabezón. Te pierdes a menudo, pero siempre encuentras algo mejor.",
@@ -183,162 +176,344 @@ const descriptions = {
   "Merida": "Independencia con arco. Causas el problema por libre y también lo solucionas, por libre.",
   "Joy": "Optimismo tóxico cuando conviene. Pintas sonrisas incluso en emergencias.",
   "Sadness": "Realista disfrazada de bajona. Si algo puede salir mal, llevas kleenex.",
-  "Miguel": "Arte, familia y rebeldía musical. Sigues la guitarra aunque el mundo diga ‘shh’.",
   "Carl Fredricksen": "Gruñón premium con corazón de helio. Te resistes al cambio… y luego lo adoptas."
 };
 
 const questions = [
   {
-    question: "Te proponen un plan improvisado un viernes a las 23:30. ¿Qué haces?",
-    answers: [
-      { text: "¡Aventura! Ya dormiré en otra vida.", points: { "Merida": 2, "Buzz Lightyear": 1, "Jessie": 1, "Miguel": 1 } },
-      { text: "Planifico la logística y vamos.", points: { "Woody": 2, "Elastigirl": 1, "Edna Mode": 1, "EVE": 1 } },
-      { text: "No, gracias. Mi sofá me necesita.", points: { "Carl Fredricksen": 2, "Sadness": 1, "WALL·E": 1, "Mater": 1 } },
-      { text: "Voy, pero me pierdo por el camino.", points: { "Nemo": 2, "Dory": 1, "Mike Wazowski": 1, "Sulley": 1 } }
+    "question": "Te proponen un plan improvisado un viernes a las 23:30. ¿Qué haces?",
+    "answers": [
+      {
+        "text": "¡Aventura! Ya dormiré en otra vida.",
+        "points": { "Woody": 4, "Buzz Lightyear": 3, "Jessie": 2, "Elastigirl": 1 }
+      },
+      {
+        "text": "Planifico la logística y vamos.",
+        "points": { "Rayo McQueen": 4, "Sulley": 3, "Mike Wazowski": 2, "Nemo": 1 }
+      },
+      {
+        "text": "No, gracias. Mi sofá me necesita.",
+        "points": { "Dory": 4, "Remy": 3, "WALL·E": 2, "EVE": 1 }
+      },
+      {
+        "text": "Voy, pero me pierdo por el camino.",
+        "points": { "Merida": 4, "Joy": 3, "Tristeza": 2, "Carl Fredricksen": 1 }
+      }
     ]
   },
   {
-    question: "Se estropea la cena y hay que salvarla en 10 minutos.",
-    answers: [
-      { text: "Yo cocino. Confía en mi instinto (y en el ajo).", points: { "Remy": 2, "Elastigirl": 1, "Woody": 1, "Miguel": 1 } },
-      { text: "Pido comida y hago presentación ‘gourmet’.", points: { "Edna Mode": 2, "Joy": 1, "Lightning McQueen": 1, "Mike Wazowski": 1 } },
-      { text: "Microondas a potencia nuclear.", points: { "WALL·E": 2, "Mater": 1, "Dory": 1, "Carl Fredricksen": 1 } },
-      { text: "Bah, nos reímos y pedimos postre doble.", points: { "Joy": 2, "Jessie": 1, "Sulley": 1, "Buzz Lightyear": 1 } }
+    "question": "Se estropea la cena y hay que salvarla en 10 minutos.",
+    "answers": [
+      {
+        "text": "Yo cocino. Confía en mi instinto (y en el ajo).",
+        "points": { "Buzz Lightyear": 4, "Jessie": 3, "Elastigirl": 2, "Rayo McQueen": 1 }
+      },
+      {
+        "text": "Pido comida y hago presentación ‘gourmet’.",
+        "points": { "Sulley": 4, "Mike Wazowski": 3, "Nemo": 2, "Dory": 1 }
+      },
+      {
+        "text": "Microondas a potencia nuclear.",
+        "points": { "Remy": 4, "WALL·E": 3, "EVE": 2, "Merida": 1 }
+      },
+      {
+        "text": "Bah, nos reímos y pedimos postre doble.",
+        "points": { "Joy": 4, "Tristeza": 3, "Carl Fredricksen": 2, "Woody": 1 }
+      }
     ]
   },
   {
-    question: "Tu grupo está perdido. ¿Quién toma el mando?",
-    answers: [
-      { text: "Yo. Alguien tiene que poner orden.", points: { "Mr. Incredible": 2, "Woody": 1, "Elastigirl": 1, "Edna Mode": 1 } },
-      { text: "Propongo una ruta y motivación absurda.", points: { "Mike Wazowski": 2, "Joy": 1, "Mater": 1, "Jessie": 1 } },
-      { text: "Me callo y observo, pero salvo los muebles.", points: { "Carl Fredricksen": 2, "EVE": 1, "WALL·E": 1, "Sulley": 1 } },
-      { text: "Sigo a cualquiera… y luego me distraigo.", points: { "Nemo": 2, "Dory": 1, "Buzz Lightyear": 1, "Sadness": 1 } }
+    "question": "Tu grupo está perdido. ¿Quién toma el mando?",
+    "answers": [
+      {
+        "text": "Yo. Alguien tiene que poner orden.",
+        "points": { "Jessie": 4, "Elastigirl": 3, "Rayo McQueen": 2, "Sulley": 1 }
+      },
+      {
+        "text": "Propongo una ruta y motivación absurda.",
+        "points": { "Mike Wazowski": 4, "Nemo": 3, "Dory": 2, "Remy": 1 }
+      },
+      {
+        "text": "Me callo y observo, pero salvo los muebles.",
+        "points": { "WALL·E": 4, "EVE": 3, "Merida": 2, "Joy": 1 }
+      },
+      {
+        "text": "Sigo a cualquiera… y luego me distraigo.",
+        "points": { "Tristeza": 4, "Carl Fredricksen": 3, "Woody": 2, "Buzz Lightyear": 1 }
+      }
     ]
   },
   {
-    question: "Un amigo está triste. Tu reacción:",
-    answers: [
-      { text: "Escuchar y abrazar. Sin discursos.", points: { "Sulley": 2, "WALL·E": 1, "Woody": 1, "Nemo": 1 } },
-      { text: "Chistes y plan para distraer.", points: { "Jessie": 2, "Joy": 1, "Mike Wazowski": 1, "Mater": 1 } },
-      { text: "Validar la tristeza y preparar mantita.", points: { "Sadness": 2, "Carl Fredricksen": 1, "EVE": 1, "Remy": 1 } },
-      { text: "Retoque de look y speech motivacional.", points: { "Elastigirl": 2, "Edna Mode": 1, "Miguel": 1, "Buzz Lightyear": 1 } }
+    "question": "Un amigo está triste. Tu reacción:",
+    "answers": [
+      {
+        "text": "Escuchar y abrazar. Sin discursos.",
+        "points": { "Elastigirl": 4, "Rayo McQueen": 3, "Sulley": 2, "Mike Wazowski": 1 }
+      },
+      {
+        "text": "Chistes y plan para distraer.",
+        "points": { "Nemo": 4, "Dory": 3, "Remy": 2, "WALL·E": 1 }
+      },
+      {
+        "text": "Validar la tristeza y preparar mantita.",
+        "points": { "EVE": 4, "Merida": 3, "Joy": 2, "Tristeza": 1 }
+      },
+      {
+        "text": "Retoque de look y speech motivacional.",
+        "points": { "Carl Fredricksen": 4, "Woody": 3, "Buzz Lightyear": 2, "Jessie": 1 }
+      }
     ]
   },
   {
-    question: "¿Cómo solucionas un problema técnico?",
-    answers: [
-      { text: "A golpes controlados. Funciona o se rinde.", points: { "Mr. Incredible": 2, "Lightning McQueen": 1, "Woody": 1, "Sulley": 1 } },
-      { text: "Con manual y método.", points: { "Edna Mode": 2, "EVE": 1, "Elastigirl": 1, "WALL·E": 1 } },
-      { text: "Lo desconecto y vuelvo a conectar.", points: { "WALL·E": 2, "Mater": 1, "Dory": 1, "Mike Wazowski": 1 } },
-      { text: "Le canto una canción, por si acaso.", points: { "Miguel": 2, "Joy": 1, "Nemo": 1, "Jessie": 1 } }
+    "question": "¿Cómo solucionas un problema técnico?",
+    "answers": [
+      {
+        "text": "A golpes controlados. Funciona o se rinde.",
+        "points": { "Rayo McQueen": 4, "Sulley": 3, "Mike Wazowski": 2, "Nemo": 1 }
+      },
+      {
+        "text": "Con manual y método.",
+        "points": { "Dory": 4, "Remy": 3, "WALL·E": 2, "EVE": 1 }
+      },
+      {
+        "text": "Lo desconecto y vuelvo a conectar.",
+        "points": { "Merida": 4, "Joy": 3, "Tristeza": 2, "Carl Fredricksen": 1 }
+      },
+      {
+        "text": "Le canto una canción, por si acaso.",
+        "points": { "Woody": 4, "Buzz Lightyear": 3, "Jessie": 2, "Elastigirl": 1 }
+      }
     ]
   },
   {
-    question: "Te hacen una crítica dura.",
-    answers: [
-      { text: "La convierto en gasolina para correr más.", points: { "Lightning McQueen": 2, "Buzz Lightyear": 1, "Merida": 1, "Mr. Incredible": 1 } },
-      { text: "Tomo notas, mejoro y vuelvo más fuerte.", points: { "EVE": 2, "Elastigirl": 1, "Woody": 1, "Edna Mode": 1 } },
-      { text: "Me da bajón pero aprendo algo.", points: { "Sadness": 2, "Carl Fredricksen": 1, "WALL·E": 1, "Nemo": 1 } },
-      { text: "¿Crítica? Yo sigo feliz.", points: { "Joy": 2, "Dory": 1, "Mater": 1, "Mike Wazowski": 1 } }
+    "question": "Te hacen una crítica dura.",
+    "answers": [
+      {
+        "text": "La convierto en gasolina para correr más.",
+        "points": { "Sulley": 4, "Mike Wazowski": 3, "Nemo": 2, "Dory": 1 }
+      },
+      {
+        "text": "Tomo notas, mejoro y vuelvo más fuerte.",
+        "points": { "Remy": 4, "WALL·E": 3, "EVE": 2, "Merida": 1 }
+      },
+      {
+        "text": "Me da bajón pero aprendo algo.",
+        "points": { "Joy": 4, "Tristeza": 3, "Carl Fredricksen": 2, "Woody": 1 }
+      },
+      {
+        "text": "¿Crítica? Yo sigo feliz.",
+        "points": { "Buzz Lightyear": 4, "Jessie": 3, "Elastigirl": 2, "Rayo McQueen": 1 }
+      }
     ]
   },
   {
-    question: "Tu habilidad secreta en el grupo es…",
-    answers: [
-      { text: "Organizar el caos sin que se note.", points: { "Woody": 2, "Elastigirl": 1, "EVE": 1, "Edna Mode": 1 } },
-      { text: "Hacer reír hasta en emergencias.", points: { "Mike Wazowski": 2, "Mater": 1, "Joy": 1, "Jessie": 1 } },
-      { text: "Convertir basura en magia útil.", points: { "WALL·E": 2, "Remy": 1, "Dory": 1, "Sulley": 1 } },
-      { text: "Liderar a ritmo de música.", points: { "Merida": 2, "Miguel": 1, "Buzz Lightyear": 1, "Lightning McQueen": 1 } }
+    "question": "Tu habilidad secreta en el grupo es…",
+    "answers": [
+      {
+        "text": "Organizar el caos sin que se note.",
+        "points": { "Mike Wazowski": 4, "Nemo": 3, "Dory": 2, "Remy": 1 }
+      },
+      {
+        "text": "Hacer reír hasta en emergencias.",
+        "points": { "WALL·E": 4, "EVE": 3, "Merida": 2, "Joy": 1 }
+      },
+      {
+        "text": "Convertir basura en magia útil.",
+        "points": { "Tristeza": 4, "Carl Fredricksen": 3, "Woody": 2, "Buzz Lightyear": 1 }
+      },
+      {
+        "text": "Liderar a ritmo de música.",
+        "points": { "Jessie": 4, "Elastigirl": 3, "Rayo McQueen": 2, "Sulley": 1 }
+      }
     ]
   },
   {
-    question: "Te pierdes en una ciudad nueva.",
-    answers: [
-      { text: "Mapa en mano y plan B, C y D.", points: { "Carl Fredricksen": 2, "Woody": 1, "EVE": 1, "Edna Mode": 1 } },
-      { text: "Pregunto y hago amigos en 5 minutos.", points: { "Joy": 2, "Jessie": 1, "Mater": 1, "Mike Wazowski": 1 } },
-      { text: "Selfie, canción y a ver qué sale.", points: { "Lightning McQueen": 2, "Buzz Lightyear": 1, "Dory": 1, "Miguel": 1 } },
-      { text: "Pánico pero sobrevivo.", points: { "Nemo": 2, "Sadness": 1, "WALL·E": 1, "Sulley": 1 } }
+    "question": "Te pierdes en una ciudad nueva.",
+    "answers": [
+      {
+        "text": "Mapa en mano y plan B, C y D.",
+        "points": { "Nemo": 4, "Dory": 3, "Remy": 2, "WALL·E": 1 }
+      },
+      {
+        "text": "Pregunto y hago amigos en 5 minutos.",
+        "points": { "EVE": 4, "Merida": 3, "Joy": 2, "Tristeza": 1 }
+      },
+      {
+        "text": "Selfie, canción y a ver qué sale.",
+        "points": { "Carl Fredricksen": 4, "Woody": 3, "Buzz Lightyear": 2, "Jessie": 1 }
+      },
+      {
+        "text": "Pánico pero sobrevivo.",
+        "points": { "Elastigirl": 4, "Rayo McQueen": 3, "Sulley": 2, "Mike Wazowski": 1 }
+      }
     ]
   },
   {
-    question: "En un proyecto, ¿qué rol prefieres?",
-    answers: [
-      { text: "Líder que decide y asume.", points: { "Woody": 2, "Mr. Incredible": 1, "Merida": 1, "Sulley": 1 } },
-      { text: "Creativo que cocina ideas.", points: { "Remy": 2, "Miguel": 1, "Edna Mode": 1, "Joy": 1 } },
-      { text: "Técnico que lo hace posible.", points: { "WALL·E": 2, "EVE": 1, "Lightning McQueen": 1, "Buzz Lightyear": 1 } },
-      { text: "Apoyo moral y risas.", points: { "Mike Wazowski": 2, "Mater": 1, "Jessie": 1, "Dory": 1 } }
+    "question": "En un proyecto, ¿qué rol prefieres?",
+    "answers": [
+      {
+        "text": "Líder que decide y asume.",
+        "points": { "Dory": 4, "Remy": 3, "WALL·E": 2, "EVE": 1 }
+      },
+      {
+        "text": "Creativo que cocina ideas.",
+        "points": { "Merida": 4, "Joy": 3, "Tristeza": 2, "Carl Fredricksen": 1 }
+      },
+      {
+        "text": "Técnico que lo hace posible.",
+        "points": { "Woody": 4, "Buzz Lightyear": 3, "Jessie": 2, "Elastigirl": 1 }
+      },
+      {
+        "text": "Apoyo moral y risas.",
+        "points": { "Rayo McQueen": 4, "Sulley": 3, "Mike Wazowski": 2, "Nemo": 1 }
+      }
     ]
   },
   {
-    question: "Te toca cambiar algo importante en tu vida.",
-    answers: [
-      { text: "Resisto primero, luego vuelo.", points: { "Carl Fredricksen": 2, "Woody": 1, "Sadness": 1, "WALL·E": 1 } },
-      { text: "Lo abrazo y aprovecho el impulso.", points: { "Merida": 2, "Buzz Lightyear": 1, "Joy": 1, "Lightning McQueen": 1 } },
-      { text: "Improviso hasta que encaje.", points: { "Dory": 2, "Mater": 1, "Jessie": 1, "Mike Wazowski": 1 } },
-      { text: "Lo planifico con precisión.", points: { "Edna Mode": 2, "EVE": 1, "Remy": 1, "Elastigirl": 1 } }
+    "question": "Te toca cambiar algo importante en tu vida.",
+    "answers": [
+      {
+        "text": "Resisto primero, luego vuelo.",
+        "points": { "Remy": 4, "WALL·E": 3, "EVE": 2, "Merida": 1 }
+      },
+      {
+        "text": "Lo abrazo y aprovecho el impulso.",
+        "points": { "Joy": 4, "Tristeza": 3, "Carl Fredricksen": 2, "Woody": 1 }
+      },
+      {
+        "text": "Improviso hasta que encaje.",
+        "points": { "Buzz Lightyear": 4, "Jessie": 3, "Elastigirl": 2, "Rayo McQueen": 1 }
+      },
+      {
+        "text": "Lo planifico con precisión.",
+        "points": { "Sulley": 4, "Mike Wazowski": 3, "Nemo": 2, "Dory": 1 }
+      }
     ]
   },
   {
-    question: "Un niño te pide consejo.",
-    answers: [
-      { text: "Sé valiente y pide perdón cuando toque.", points: { "Merida": 2, "Woody": 1, "Sulley": 1, "Mr. Incredible": 1 } },
-      { text: "Sigue tu música aunque hagan ruido.", points: { "Miguel": 2, "Joy": 1, "Dory": 1, "Remy": 1 } },
-      { text: "Planifica, comparte y sé amable.", points: { "Elastigirl": 2, "EVE": 1, "Nemo": 1, "WALL·E": 1 } },
-      { text: "No capas. ¡Moda funcional!.", points: { "Buzz Lightyear": 2, "Edna Mode": 1, "Lightning McQueen": 1, "Carl Fredricksen": 1 } }
+    "question": "Un niño te pide consejo.",
+    "answers": [
+      {
+        "text": "Sé valiente y pide perdón cuando toque.",
+        "points": { "WALL·E": 4, "EVE": 3, "Merida": 2, "Joy": 1 }
+      },
+      {
+        "text": "Sigue tu música aunque hagan ruido.",
+        "points": { "Tristeza": 4, "Carl Fredricksen": 3, "Woody": 2, "Buzz Lightyear": 1 }
+      },
+      {
+        "text": "Planifica, comparte y sé amable.",
+        "points": { "Jessie": 4, "Elastigirl": 3, "Rayo McQueen": 2, "Sulley": 1 }
+      },
+      {
+        "text": "No capas. ¡Moda funcional!.",
+        "points": { "Mike Wazowski": 4, "Nemo": 3, "Dory": 2, "Remy": 1 }
+      }
     ]
   },
   {
-    question: "¿Qué te describe mejor en una crisis?",
-    answers: [
-      { text: "Sereno, práctico y eficaz.", points: { "WALL·E": 2, "Elastigirl": 1, "EVE": 1, "Woody": 1 } },
-      { text: "Risas nerviosas y chistes.", points: { "Mike Wazowski": 2, "Mater": 1, "Joy": 1, "Jessie": 1 } },
-      { text: "Fuerza y empuje arrebatado.", points: { "Mr. Incredible": 2, "Lightning McQueen": 1, "Merida": 1, "Sulley": 1 } },
-      { text: "Me hundo un poco, luego resurjo.", points: { "Nemo": 2, "Carl Fredricksen": 1, "Sadness": 1, "Dory": 1 } }
+    "question": "¿Qué te describe mejor en una crisis?",
+    "answers": [
+      {
+        "text": "Sereno, práctico y eficaz.",
+        "points": { "EVE": 4, "Merida": 3, "Joy": 2, "Tristeza": 1 }
+      },
+      {
+        "text": "Risas nerviosas y chistes.",
+        "points": { "Carl Fredricksen": 4, "Woody": 3, "Buzz Lightyear": 2, "Jessie": 1 }
+      },
+      {
+        "text": "Fuerza y empuje arrebatado.",
+        "points": { "Elastigirl": 4, "Rayo McQueen": 3, "Sulley": 2, "Mike Wazowski": 1 }
+      },
+      {
+        "text": "Me hundo un poco, luego resurjo.",
+        "points": { "Nemo": 4, "Dory": 3, "Remy": 2, "WALL·E": 1 }
+      }
     ]
   },
   {
-    question: "En vacaciones prefieres…",
-    answers: [
-      { text: "Ruta intensa y aventuras.", points: { "Buzz Lightyear": 2, "Merida": 1, "Jessie": 1, "Lightning McQueen": 1 } },
-      { text: "Descanso con orden y wifi.", points: { "Carl Fredricksen": 2, "Elastigirl": 1, "EVE": 1, "Edna Mode": 1 } },
-      { text: "Perderme por ahí y ya.", points: { "Dory": 2, "Nemo": 1, "Mater": 1, "Joy": 1 } },
-      { text: "Plan gastronómico serio.", points: { "Remy": 2, "WALL·E": 1, "Sulley": 1, "Mike Wazowski": 1 } }
+    "question": "En vacaciones prefieres…",
+    "answers": [
+      {
+        "text": "Ruta intensa y aventuras.",
+        "points": { "Merida": 4, "Joy": 3, "Tristeza": 2, "Carl Fredricksen": 1 }
+      },
+      {
+        "text": "Descanso con orden y wifi.",
+        "points": { "Woody": 4, "Buzz Lightyear": 3, "Jessie": 2, "Elastigirl": 1 }
+      },
+      {
+        "text": "Perderme por ahí y ya.",
+        "points": { "Rayo McQueen": 4, "Sulley": 3, "Mike Wazowski": 2, "Nemo": 1 }
+      },
+      {
+        "text": "Plan gastronómico serio.",
+        "points": { "Dory": 4, "Remy": 3, "WALL·E": 2, "EVE": 1 }
+      }
     ]
   },
   {
-    question: "Te ofrecen un reto imposible.",
-    answers: [
-      { text: "Acepto. La épica me llama.", points: { "Buzz Lightyear": 2, "Mr. Incredible": 1, "Merida": 1, "Woody": 1 } },
-      { text: "Primero prueba piloto.", points: { "Edna Mode": 2, "EVE": 1, "Elastigirl": 1, "WALL·E": 1 } },
-      { text: "Voy, pero con banda sonora.", points: { "Lightning McQueen": 2, "Miguel": 1, "Jessie": 1, "Joy": 1 } },
-      { text: "No puedo… bueno, quizá sí.", points: { "Carl Fredricksen": 2, "Sadness": 1, "Nemo": 1, "Dory": 1 } }
+    "question": "Te ofrecen un reto imposible.",
+    "answers": [
+      {
+        "text": "Acepto. La épica me llama.",
+        "points": { "Joy": 4, "Tristeza": 3, "Carl Fredricksen": 2, "Woody": 1 }
+      },
+      {
+        "text": "Primero prueba piloto.",
+        "points": { "Buzz Lightyear": 4, "Jessie": 3, "Elastigirl": 2, "Rayo McQueen": 1 }
+      },
+      {
+        "text": "Voy, pero con banda sonora.",
+        "points": { "Sulley": 4, "Mike Wazowski": 3, "Nemo": 2, "Dory": 1 }
+      },
+      {
+        "text": "No puedo… bueno, quizá sí.",
+        "points": { "Remy": 4, "WALL·E": 3, "EVE": 2, "Merida": 1 }
+      }
     ]
   },
   {
-    question: "En el grupo, te acusan de ‘protagonista’.",
-    answers: [
-      { text: "Obvio. Alguien tiene que brillar.", points: { "Lightning McQueen": 2, "Buzz Lightyear": 1, "Woody": 1, "Miguel": 1 } },
-      { text: "Yo prefiero bastidores… pero mando.", points: { "EVE": 2, "Elastigirl": 1, "Edna Mode": 1, "WALL·E": 1 } },
-      { text: "Protagonista del caos adorable.", points: { "Jessie": 2, "Mater": 1, "Mike Wazowski": 1, "Dory": 1 } },
-      { text: "Ninguno. Soy secundario icónico.", points: { "Remy": 2, "Carl Fredricksen": 1, "Sadness": 1, "Sulley": 1 } }
+    "question": "En el grupo, te acusan de ‘protagonista’.",
+    "answers": [
+      {
+        "text": "Obvio. Alguien tiene que brillar.",
+        "points": { "Tristeza": 4, "Carl Fredricksen": 3, "Woody": 2, "Buzz Lightyear": 1 }
+      },
+      {
+        "text": "Yo prefiero bastidores… pero mando.",
+        "points": { "Jessie": 4, "Elastigirl": 3, "Rayo McQueen": 2, "Sulley": 1 }
+      },
+      {
+        "text": "Protagonista del caos adorable.",
+        "points": { "Mike Wazowski": 4, "Nemo": 3, "Dory": 2, "Remy": 1 }
+      },
+      {
+        "text": "Ninguno. Soy secundario icónico.",
+        "points": { "WALL·E": 4, "EVE": 3, "Merida": 2, "Joy": 1 }
+      }
     ]
   },
   {
-    question: "Tu frase de perfil sería…",
-    answers: [
-      { text: "‘Al infinito y más allá (pero con GPS)’", points: { "Buzz Lightyear": 2, "Woody": 1, "Mike Wazowski": 1, "Jessie": 1 } },
-      { text: "‘Sin capas. Con estilo.’", points: { "Edna Mode": 2, "Elastigirl": 1, "Mr. Incredible": 1, "EVE": 1 } },
-      { text: "‘Ka-chow y nos vemos en meta’", points: { "Lightning McQueen": 2, "Mater": 1, "Miguel": 1, "Joy": 1 } },
-      { text: "‘A veces triste, siempre auténticx’", points: { "WALL·E": 2, "Carl Fredricksen": 1, "Nemo": 1, "Sadness": 1 } }
-    ]
-  },
-  {
-    question: "Última: ¿Cuál es tu superpoder cotidiano?",
-    answers: [
-      { text: "Convertir líos en planes.", points: { "Elastigirl": 2, "Woody": 1, "EVE": 1, "Edna Mode": 1 } },
-      { text: "Alegrar el día ajeno.", points: { "Joy": 2, "Mike Wazowski": 1, "Jessie": 1, "Mater": 1 } },
-      { text: "Reparar y reciclar lo imposible.", points: { "WALL·E": 2, "Remy": 1, "Sulley": 1, "Dory": 1 } },
-      { text: "Resistir y seguir adelante.", points: { "Mr. Incredible": 2, "Carl Fredricksen": 1, "Nemo": 1, "Sadness": 1 } }
+    "question": "Tu frase de perfil sería… / Última: ¿Cuál es tu superpoder cotidiano?",
+    "answers": [
+      {
+        "text": "‘Al infinito y más allá (pero con GPS)’ / Convertir líos en planes.",
+        "points": { "Carl Fredricksen": 4, "Woody": 3, "Buzz Lightyear": 2, "Jessie": 1 }
+      },
+      {
+        "text": "‘Sin capas. Con estilo.’ / Alegrar el día ajeno.",
+        "points": { "Elastigirl": 4, "Rayo McQueen": 3, "Sulley": 2, "Mike Wazowski": 1 }
+      },
+      {
+        "text": "‘Ka-chow y nos vemos en meta’ / Reparar y reciclar lo imposible.",
+        "points": { "Nemo": 4, "Dory": 3, "Remy": 2, "WALL·E": 1 }
+      },
+      {
+        "text": "‘A veces triste, siempre auténticx’ / Resistir y seguir adelante.",
+        "points": { "EVE": 4, "Merida": 3, "Joy": 2, "Tristeza": 1 }
+      }
     ]
   }
 ];
