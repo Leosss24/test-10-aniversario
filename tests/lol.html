@@ -1,255 +1,403 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>¿Qué Campeón de League of Legends Eres?</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #efdbff, #e1bee7);
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      margin-top: 40px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .btn-nav {
-      display: inline-block;
-      margin: 10px 5px;
-      padding: 10px 15px;
-      font-size: 14px;
-      background-color: #eee;
-      border-radius: 8px;
-      text-decoration: none;
-      color: #333;
-      border: 1px solid #ccc;
-      cursor: pointer;
-    }
-    .btn-nav:hover {
-      background-color: #ddd;
-    }
-    .question {
-      margin-bottom: 20px;
-    }
-    .question h3 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    .options button {
-      background-color: #f3e5f5;
-      border: 2px solid #ccc;
-      border-radius: 12px;
-      padding: 12px;
-      margin: 5px 0;
-      width: 100%;
-      text-align: left;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background 0.3s;
-    }
-    .options button:hover {
-      background-color: #e1bee7;
-    }
-    #navigation {
-      text-align: center;
-      margin-top: 20px;
-    }
-    #result {
-      text-align: center;
-      margin-top: 40px;
-    }
-    #result img {
-      max-width: 200px;
-      margin-top: 20px;
-      border-radius: 16px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>¿Qué Campeón de LoL Eres?</title>
+<style>
+  :root{
+    /* Paleta base tomada del enlace (adaptación a roles UI) */
+    --primary:#2f2a38;   /* fondo principal profundo */
+    --secondary:#4a3f5f; /* tarjetas/contraste */
+    --accent:#9f7aea;    /* acento violeta */
+    --accent-2:#f59e0b;  /* acento cálido */
+    --text:#F8F5FF;
+    --muted:#cbbde7;
+    --chip:#3d334f;
+    --border:#5b4a73;
+    --btn:#7c66a6;
+    --btn-hover:#8b75b6;
+    --ok:#10b981;
+    --warn:#fbbf24;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    background:
+      radial-gradient(1000px 600px at 20% -10%, #3a3250 0%, transparent 60%),
+      radial-gradient(800px 600px at 110% 10%, #201b2b 0%, transparent 60%),
+      linear-gradient(180deg, var(--primary), #1c1724 50%, #161220);
+    color: var(--text);
+    margin:0;
+    padding:0;
+  }
+  .container{
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--secondary);
+    border:1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.45);
+    overflow:hidden;
+  }
+  header{
+    padding: 24px 28px 10px;
+    border-bottom:1px solid var(--border);
+    background: linear-gradient(180deg, #3b2f52, #34294b);
+  }
+  h1{
+    margin:0 0 6px;
+    color: var(--accent-2);
+    letter-spacing:.2px;
+    text-align:center;
+  }
+  .sub{
+    margin:0 0 10px;
+    color: var(--muted);
+    text-align:center;
+    font-size:14px;
+  }
+  main{ padding: 22px 28px 10px; }
+  .badge{
+    display:inline-block;
+    padding:4px 10px;
+    font-size:12px;
+    border-radius:999px;
+    background: var(--chip);
+    border:1px solid var(--border);
+    color: var(--muted);
+    margin-bottom:8px;
+  }
+  .question{ margin-bottom: 18px; }
+  .question h3{ margin:6px 0 10px; font-size:20px; color:#efe7ff; }
+  .options button{
+    width:100%;
+    text-align:left;
+    background:#2b2439;
+    color:#f1eaff;
+    border:2px solid var(--border);
+    border-radius:12px;
+    padding:12px 14px;
+    margin:7px 0;
+    font-size:16px;
+    cursor:pointer;
+    transition: background .2s, border-color .2s, transform .06s;
+  }
+  .options button:hover{ background:#352b49; border-color: var(--btn); transform: translateY(-1px); }
+  #navigation{
+    text-align:center;
+    padding: 4px 0 16px;
+    border-top:1px dashed var(--border);
+  }
+  .btn-nav{
+    display:inline-block;
+    margin: 10px 6px;
+    padding:10px 16px;
+    font-size:14px;
+    background: var(--btn);
+    color:#f8f5ff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    text-decoration:none;
+    cursor:pointer;
+    transition: background .2s, transform .06s;
+  }
+  .btn-nav:hover{ background: var(--btn-hover); transform: translateY(-1px);}
+  #result{
+    text-align:center;
+    padding: 8px 20px 28px;
+  }
+  .champ-img{
+    width:180px; height:180px; border-radius:16px;
+    background:#1f1a28; border:1px solid var(--border);
+    margin: 12px auto 8px; display:flex; align-items:center; justify-content:center;
+    color:#d8c8ff; font-weight:700; letter-spacing:.5px;
+  }
+  .desc{ max-width:740px; margin:10px auto; color:#e9e0ff; }
+  .share{ margin-top:14px; }
+  @media (max-width:720px){
+    main{ padding:18px 16px; }
+    .container{ margin: 22px 12px; }
+    .question h3{ font-size:18px; }
+    .options button{ font-size:15px; }
+  }
+</style>
 </head>
 <body>
   <div class="container">
-    <h1>¿Qué Campeón de LoL Eres?</h1>
-    <div id="quiz"></div>
-    <div id="navigation">
-      <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
-      <a href="../index.html" class="btn-nav">🏠 Inicio</a>
-    </div>
-    <div id="result"></div>
+    <header>
+      <h1>¿Qué Campeón de LoL Eres?</h1>
+      <p class="sub">16 preguntas. 32 iconos. Humor dudoso. Balance perfecto.</p>
+    </header>
+    <main>
+      <div id="quiz"></div>
+      <div id="navigation">
+        <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
+        <a href="../index.html" class="btn-nav">🏠 Inicio</a>
+      </div>
+      <div id="result"></div>
+    </main>
   </div>
 
 <script>
-const champions = {
-  Ahri: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
-  Jinx: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg",
-  Garen: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg",
-  Thresh: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Thresh_0.jpg",
-  Yasuo: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
-  Lux: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lux_0.jpg"
-};
-
-const descriptions = {
-  Ahri: "Eres carismático, astuto y encantador. Siempre sabes qué decir en el momento justo. Mueves las emociones como nadie.",
-  Jinx: "El caos es tu segundo nombre. Energía impredecible, humor desbordante y una creatividad que roza la locura (pero bien).",
-  Garen: "Honor, deber y fuerza. Siempre estás para los demás, aunque a veces te tilden de clásico. Eres el escudo del grupo.",
-  Thresh: "Oscuro, filosófico y misterioso. Das miedo… pero también curiosidad. Nadie sabe qué tramas, y tú prefieres que sea así.",
-  Yasuo: "Solitario pero profundo. Tienes estilo, drama y habilidad. A veces te malinterpretan, pero sabes quién eres.",
-  Lux: "Eres alegría, luz y esperanza. Inspiras con tu energía positiva y siempre buscas el lado bueno, incluso en tiempos oscuros."
-};
-
-const questions = [
-  { question: "¿Tu café ideal sería…", answers: [
-    { text: "Un café con leche, clásico pero confiable.", points: {Garen: 2, Lux: 1} },
-    { text: "Un espresso intenso, rápido y directo.", points: {Yasuo: 2, Thresh: 1} },
-    { text: "Una bebida rara que nadie entienda, pero tú sí.", points: {Jinx: 2, Ahri: 1} }
-  ]},
-  { question: "¿Qué prefieres en una pelea?", answers: [
-    { text: "Ir de frente y con honor.", points: {Garen: 2} },
-    { text: "Jugar con la mente del rival.", points: {Ahri: 2, Thresh: 1} },
-    { text: "Explotar cosas sin pensar mucho.", points: {Jinx: 2} }
-  ]},
-  { question: "¿En una cita tú…", answers: [
-    { text: "Encantas con tu conversación.", points: {Ahri: 2, Lux: 1} },
-    { text: "Llegas tarde pero con una flor robada.", points: {Yasuo: 2, Jinx: 1} },
-    { text: "Hablas poco, pero eres puro magnetismo.", points: {Thresh: 2} }
-  ]},
-  { question: "¿Cuál de estas frases te representa mejor?", answers: [
-    { text: "La justicia prevalecerá.", points: {Garen: 2} },
-    { text: "¿Quién necesita razón cuando tienes explosivos?", points: {Jinx: 2} },
-    { text: "La espada recuerda.", points: {Yasuo: 2} }
-  ]},
-  { question: "¿Tu entorno ideal es…", answers: [
-    { text: "Una ciudad vibrante y moderna.", points: {Ahri: 2, Lux: 1} },
-    { text: "Una cabaña solitaria entre montañas.", points: {Yasuo: 2, Thresh: 1} },
-    { text: "Un campo de batalla, donde probar tu valía.", points: {Garen: 2} }
-  ]},
-  { question: "¿Te gusta destacar?", answers: [
-    { text: "Sí, brillo sin miedo.", points: {Ahri: 2, Lux: 2} },
-    { text: "No, prefiero pasar desapercibido.", points: {Thresh: 2, Yasuo: 1} },
-    { text: "¡Sí, con fuegos artificiales!", points: {Jinx: 2} }
-  ]},
-  { question: "¿Eres más de estrategia o impulso?", answers: [
-    { text: "Estrategia fría.", points: {Thresh: 2, Garen: 1} },
-    { text: "Un poco de ambos.", points: {Ahri: 2, Lux: 1} },
-    { text: "Puro instinto y locura.", points: {Jinx: 2, Yasuo: 1} }
-  ]},
-  { question: "¿Cómo reaccionas cuando te critican?", answers: [
-    { text: "Lo acepto y mejoro.", points: {Garen: 2, Lux: 1} },
-    { text: "Exploto, literal o figuradamente.", points: {Jinx: 2} },
-    { text: "Me alejo y reflexiono solo.", points: {Yasuo: 2, Thresh: 1} }
-  ]},
-  { question: "¿Qué harías con una lámpara mágica?", answers: [
-    { text: "Pediría paz mundial.", points: {Lux: 2} },
-    { text: "Pediría caos solo por diversión.", points: {Jinx: 2} },
-    { text: "Rechazaría el deseo y seguiría mi camino.", points: {Yasuo: 2, Thresh: 1} }
-  ]},
-  { question: "¿Tu lema secreto sería…", answers: [
-    { text: "Lo importante es lo que ocultas, no lo que muestras.", points: {Thresh: 2, Ahri: 1} },
-    { text: "Hazlo con estilo, o no lo hagas.", points: {Yasuo: 2, Lux: 1} },
-    { text: "¡BOOM!", points: {Jinx: 2} }
-  ]},
-  { question: "¿Cuál es tu hobby favorito?", answers: [
-    { text: "Leer sobre historia o filosofía.", points: {Thresh: 2, Garen: 1} },
-    { text: "Bailar o hacer tik toks.", points: {Ahri: 2, Lux: 1} },
-    { text: "Explorar lugares abandonados.", points: {Yasuo: 2, Jinx: 1} }
-  ]},
-  { question: "¿Cómo manejas el estrés?", answers: [
-    { text: "Respiro hondo y sigo adelante.", points: {Garen: 2, Lux: 1} },
-    { text: "Lo transformo en arte o caos.", points: {Jinx: 2} },
-    { text: "Desaparezco por un rato.", points: {Yasuo: 2, Thresh: 1} }
-  ]},
-  { question: "¿Cuál es tu mayor virtud?", answers: [
-    { text: "La valentía.", points: {Garen: 2} },
-    { text: "El ingenio.", points: {Ahri: 2} },
-    { text: "El misterio.", points: {Thresh: 2} }
-  ]},
-  { question: "¿Eres más de seguir reglas o romperlas?", answers: [
-    { text: "Seguirlas, son necesarias.", points: {Garen: 2, Lux: 1} },
-    { text: "Romperlas, claramente.", points: {Jinx: 2, Yasuo: 1} },
-    { text: "Hacer que parezca que las sigo.", points: {Ahri: 2, Thresh: 1} }
-  ]},
-  { question: "¿Qué tipo de música prefieres?", answers: [
-    { text: "Épica y orquestal.", points: {Garen: 2, Lux: 1} },
-    { text: "Rock o electrónica agresiva.", points: {Jinx: 2, Yasuo: 1} },
-    { text: "Ambiental o lo-fi oscuro.", points: {Thresh: 2, Ahri: 1} }
-  ]},
-  { question: "¿Qué opinas del trabajo en equipo?", answers: [
-    { text: "Indispensable.", points: {Lux: 2, Garen: 1} },
-    { text: "A veces útil… pero no siempre lo uso.", points: {Yasuo: 2, Ahri: 1} },
-    { text: "¿Eso qué es? Yo solo necesito mi locura.", points: {Jinx: 2} }
-  ]}
+/* =========
+   Campeones (32): incluye principales de Arcane
+   ========= */
+const champs = [
+  "Jinx","Vi","Caitlyn","Jayce","Viktor","Heimerdinger","Ekko",
+  "Ahri","Yasuo","Yone","Zed","Lux","Garen","Darius","Katarina","Lee Sin",
+  "Thresh","Ashe","Riven","Miss Fortune","Draven","Teemo","Blitzcrank","Morgana",
+  "Kayle","Shen","Rengar","Ezreal","Sona","Sylas","Fiora","Orianna"
 ];
 
+/* =========
+   Imágenes (placeholder con el nombre, para no depender de versiones)
+   ========= */
+const champImages = {
+  Jinx: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg",
+  Vi: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Vi_0.jpg",
+  Caitlyn: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Caitlyn_0.jpg",
+  Jayce: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jayce_0.jpg",
+  Viktor: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viktor_0.jpg",
+  Heimerdinger: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Heimerdinger_0.jpg",
+  Ekko: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ekko_0.jpg",
+  Ahri: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
+  Yasuo: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
+  Yone: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yone_0.jpg",
+  Zed: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zed_0.jpg",
+  Lux: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lux_0.jpg",
+  Garen: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg",
+  Darius: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Darius_0.jpg",
+  Katarina: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Katarina_0.jpg",
+  "Lee Sin": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg",
+  Thresh: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Thresh_0.jpg",
+  Ashe: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg",
+  Riven: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Riven_0.jpg",
+  "Miss Fortune": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MissFortune_0.jpg",
+  Draven: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Draven_0.jpg",
+  Teemo: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg",
+  Blitzcrank: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Blitzcrank_0.jpg",
+  Morgana: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Morgana_0.jpg",
+  Kayle: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Kayle_0.jpg",
+  Shen: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Shen_0.jpg",
+  Rengar: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Rengar_0.jpg",
+  Ezreal: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ezreal_0.jpg",
+  Sona: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Sona_0.jpg",
+  Sylas: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Sylas_0.jpg",
+  Fiora: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Fiora_0.jpg",
+  Orianna: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Orianna_0.jpg"
+};
+
+/* =========
+   Descripciones con tono pícaro
+   ========= */
+const champDesc = {
+  Jinx: "Caos con sonrisa. Si explota y hace ruido, te sirve. Product manager del desastre.",
+  Vi: "Puños primero, preguntas nunca. RH teme tus feedbacks ‘prácticos’.",
+  Caitlyn: "Calma, precisión y té. Te encanta tener razón… desde lejos.",
+  Jayce: "Innovación con ego. Presentación, demo y selfie: en ese orden.",
+  Viktor: "Perfeccionista en beta eterna. Actualizas hasta la tostadora.",
+  Heimerdinger: "Torreta ahora, pregunta luego. Tu mesa es un laboratorio.",
+  Ekko: "Plan B, C y rebobinar. Siempre llegas tarde… para llegar perfecto.",
+  Ahri: "Encanto con colmillo. Te ríes y luego firmas el contrato.",
+  Yasuo: "Mucho viento, poco ticket cerrado. Pero qué highlight, eh.",
+  Yone: "Seriedad mística. Llevas el drama con elegancia letal.",
+  Zed: "Trabajo en sombras: eficiente, inquietante y sin horas extra declaradas.",
+  Lux: "Luz, optimismo y stun sorpresa. PR te adora.",
+  Garen: "Honor, moral alta y PowerPoint en mayúsculas.",
+  Darius: "Si hay cuello, hay ‘reset’. Citas al KPI con hacha.",
+  Katarina: "Objetivos múltiples, cero apego. ‘Ya si eso’ en área.",
+  Lee_Sin: "No ve el problema, lo siente. Y lo patea a producción.",
+  Thresh: "Networking agresivo. Nadie se te escapa del LinkedIn.",
+  Ashe: "Plan helado y ejecución fría. Lideras sin subir la voz.",
+  Riven: "Refactorizas tu vida a golpe de espada. Funciona.",
+  Miss_Fortune: "Carisma y bala. Marketing en ráfaga.",
+  Draven: "Marca personal: tú. KPI: aplausos.",
+  Teemo: "Sonrisa + trampa. Compliance te observa.",
+  Blitzcrank: "Soporte que no pregunta, arrastra.",
+  Morgana: "Contrato con letra pequeña. Justicia, pero edgy.",
+  Kayle: "Excel celestial. Si no es perfecto, no es.",
+  Shen: "Teleport al problema correcto. Zen con prisa.",
+  Rengar: "Ambush profesional. Caza bugs (y egos).",
+  Ezreal: "Aventura y postureo. Si no hay selfie, no pasó.",
+  Sona: "Brief musical. Hablas poco, dices mucho.",
+  Sylas: "Robas ideas… para mejorarlas (guiño).",
+  Fiora: "Duelo de egos con florete. Normalmente ganas.",
+  Orianna: "Precisión mecánica. Emoción en versión 1.0"
+};
+// Normalizar claves con espacios
+champDesc["Lee Sin"] = champDesc["Lee_Sin"]; delete champDesc["Lee_Sin"];
+champDesc["Miss Fortune"] = champDesc["Miss_Fortune"]; delete champDesc["Miss_Fortune"];
+
+/* =========
+   Preguntas (16) con 4 opciones
+   ========= */
+const Q = [
+  {q:"Tu plan de victoria suena a…",
+   a:["Macro impecable","5v5 de frente","Pick off elegante","Caos calculado"]},
+  {q:"Tu café ideal:",
+   a:["Filtro con calma","Doble espresso sin azúcar","Cold brew ‘porque sí’","Té porque soy civilizado/a"]},
+  {q:"En teamfight eres…",
+   a:["Frontline con honor","Carry con ego","Flanqueo ninja","Soporte con agenda"]},
+  {q:"Tu mayor debilidad:",
+   a:["El ego (del resto)","La prisa","El drama","El Excel"]},
+  {q:"Roadtrip del finde:",
+   a:["Ruta preciosa con paradas","Autopista y música a tope","Atajo raro por emoción","No salgo, build casera"]},
+  {q:"En ranked te define:",
+   a:["Shotcaller zen","Micro brutal","Map awareness absurdo","Tilt-resistente y meme"]},
+  {q:"Cita ideal:",
+   a:["Museo y charla","Plan adrenalina","Callejear con fotos","Cocinar juntos"]},
+  {q:"Tu escritorio es…",
+   a:["Minimalista clínico","Creativo desordenado","RGB con orgullo","Pila de post-its"]},
+  {q:"Manager favorito:",
+   a:["El que inspira","El que empuja","El que cuida","El que no molesta"]},
+  {q:"Tu superpoder real:",
+   a:["Predecir errores","Motivar equipos","Solucionar en silencio","Hacer reír y unir"]},
+  {q:"Cuando hay crisis:",
+   a:["Reúno y alineo","Entro primero","Espero el momento","Cubro a todos"]},
+  {q:"Si fueras villano/a:",
+   a:["Clase y monólogo","Caos con estilo","Silencio y sombra","Sonrisa y contrato"]},
+  {q:"Vacaciones soñadas:",
+   a:["Norte frío y auroras","Islas y deportes","Ciudades con historia","Cabaña y cocina"]},
+  {q:"En el curro te dicen:",
+   a:["‘Capitán/a’","‘Highlight humano’","‘Cerebrito’","‘El pegamento’"]},
+  {q:"Tu meme spirit animal:",
+   a:["Perro estoico","Gato parkour","Rana pensativa","Pato con sombrero"]},
+  {q:"Última: ¿Qué te frena?",
+   a:["Nada, honestamente","El reloj","La burocracia","La Wi-Fi del siglo XIX"]}
+];
+
+/* =========
+   Generador de reparto 8–7–6–5–4–3–2–1 ULTRA-BALANCEADO
+   Lógica:
+   - 16 preguntas, 4 respuestas cada una -> 64 respuestas.
+   - En cada respuesta se puntúa a 8 campeones (de 32) con 8..1.
+   - Por pregunta q, rotamos la lista 32 por q y la partimos en 4 grupos de 8 (uno por respuesta).
+   - Dentro de cada grupo, el índice pos (0..7) determina el valor: score = 8 - pos.
+   - Como pos avanza con q, cada campeón recibe dos veces cada valor 8..1 en total.
+   ========= */
+const SCORE_FROM_POS = [8,7,6,5,4,3,2,1];
+
+function buildQuestionsBalanced(){
+  const questions = [];
+  for (let q=0; q<Q.length; q++){
+    const base = champs.slice(q).concat(champs.slice(0,q)); // rotación por pregunta
+    const groups = [
+      base.slice(0,8),
+      base.slice(8,16),
+      base.slice(16,24),
+      base.slice(24,32)
+    ];
+    const answers = [];
+    for (let ai=0; ai<4; ai++){
+      const points = {};
+      const group = groups[ai];
+      for (let pos=0; pos<8; pos++){
+        const who = group[pos];
+        points[who] = SCORE_FROM_POS[pos]; // 8..1
+      }
+      answers.push({ text: Q[q].a[ai], points });
+    }
+    questions.push({ question: Q[q].q, answers });
+  }
+  return questions;
+}
+
+const questions = buildQuestionsBalanced();
+
+/* =========
+   Validadores (opcionales en consola)
+   ========= */
+function validateDistribution(){
+  // Cada campeón debe tener 2 veces cada puntuación 8..1
+  const need = {8:2,7:2,6:2,5:2,4:2,3:2,2:2,1:2};
+  const tally = Object.fromEntries(champs.map(c => [c, {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0}]));
+  questions.forEach(q => q.answers.forEach(a => {
+    Object.entries(a.points).forEach(([k,v]) => tally[k][v]++);
+  }));
+  const issues = [];
+  for (const c of champs){
+    for (const s of [1,2,3,4,5,6,7,8]){
+      if (tally[c][s] !== need[s]) issues.push(`${c} -> ${s}pts = ${tally[c][s]} (esperado ${need[s]})`);
+    }
+  }
+  if (issues.length===0){ console.log("%cOK: Distribución perfecta 8..1 (2 veces c/u)","color:#10b981"); }
+  else{ console.warn("Ajustes necesarios:", issues); }
+  return tally;
+}
+// Abre consola y ejecuta: validateDistribution();
+
+/* =========
+   LÓGICA QUIZ
+   ========= */
+const quizEl = document.getElementById("quiz");
+const resEl = document.getElementById("result");
 let currentQuestion = 0;
 let scores = {};
 let history = [];
-const quizContainer = document.getElementById("quiz");
-const resultContainer = document.getElementById("result");
 
-function showQuestion() {
+function showQuestion(){
   const q = questions[currentQuestion];
-  const questionHTML = `
+  const html = `
+    <span class="badge">Pregunta ${currentQuestion+1} de ${questions.length}</span>
     <div class="question">
       <h3>${q.question}</h3>
       <div class="options">
-        ${q.answers.map((a, i) => `<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
+        ${q.answers.map((a,i)=>`<button onclick="selectAnswer(${i})">${a.text}</button>`).join("")}
       </div>
-    </div>`;
-  quizContainer.innerHTML = questionHTML;
-  resultContainer.innerHTML = "";
+    </div>
+  `;
+  quizEl.innerHTML = html;
+  resEl.innerHTML = "";
 }
 
-function selectAnswer(index) {
-  const selected = questions[currentQuestion].answers[index];
-  history.push(index);
-  for (let champ in selected.points) {
-    scores[champ] = (scores[champ] || 0) + selected.points[champ];
+function selectAnswer(i){
+  const sel = questions[currentQuestion].answers[i];
+  history.push(i);
+  for (const [c,pts] of Object.entries(sel.points)){
+    scores[c] = (scores[c]||0) + pts;
   }
   currentQuestion++;
-  if (currentQuestion < questions.length) {
-    showQuestion();
-  } else {
-    showResult();
-  }
+  if (currentQuestion < questions.length) showQuestion();
+  else showResult();
 }
 
-function goBack() {
-  if (currentQuestion > 0) {
+function goBack(){
+  if (currentQuestion > 0){
     const lastIndex = history.pop();
-    const lastAnswer = questions[currentQuestion - 1].answers[lastIndex];
-    for (let champ in lastAnswer.points) {
-      scores[champ] -= lastAnswer.points[champ];
+    const lastAns = questions[currentQuestion-1].answers[lastIndex];
+    for (const [c,pts] of Object.entries(lastAns.points)){
+      scores[c] -= pts;
     }
     currentQuestion--;
     showQuestion();
   }
 }
 
-function showResult() {
-  quizContainer.innerHTML = "";
-  let best = null;
-  let max = -1;
-  for (let champ in scores) {
-    if (scores[champ] > max) {
-      max = scores[champ];
-      best = champ;
-    }
+function showResult(){
+  quizEl.innerHTML = "";
+  let best = null, max = -Infinity;
+  for (const [c,pts] of Object.entries(scores)){
+    if (pts > max){ max = pts; best = c; }
   }
-  const description = descriptions[best];
-  const image = champions[best];
-  resultContainer.innerHTML = `
-    <h2>¡Eres <span style="color:#8e24aa">${best}</span>!</h2>
-    <img src="${image}" alt="${best}" />
-    <p style="font-size:18px; margin-top:15px;">${description}</p>
+  // Desempate aleatorio si hiciera falta
+  const topPts = Math.max(...Object.values(scores));
+  const ties = Object.entries(scores).filter(([c,p])=>p===topPts).map(([c])=>c);
+  if (ties.length>1){ best = ties[Math.floor(Math.random()*ties.length)]; }
+
+  const img = champImages[best];
+  const desc = champDesc[best] || "Leyenda misteriosa. Probablemente baneado/a en tu elo.";
+  const tweet = `Salió ${best} en el test de campeones de LoL. Sí, me pega. ¿Y a ti qué te sale?`;
+  const url = encodeURIComponent(location.href);
+  const share = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}&url=${url}`;
+
+  resEl.innerHTML = `
+    <div class="champ-img">${best}</div>
+    <h2 style="margin:6px 0 0;color:var(--accent-2)">¡Eres <span style="color:#fff">${best}</span>!</h2>
+    <p class="desc">${desc}</p>
+    <div class="share">
+      <a class="btn-nav" href="${share}" target="_blank">Compartir en X/Twitter</a>
+    </div>
   `;
 }
 
