@@ -5,85 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>¿Qué Pokémon Inicial Eres?</title>
   <style>
+    :root{
+      --primario:#E0A542;
+      --secundario:#2B191A;
+      --acento:#874037;
+      --texto:#FFEBD2;
+      --card:#3a2324;
+      --borde:#5a2d2a;
+    }
+    *{box-sizing:border-box}
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #cceaff, #fff6f6);
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+      background: radial-gradient(1200px 800px at 20% 0%, #3c2223 0%, var(--secundario) 60%);
+      color: var(--texto);
       margin: 0;
       padding: 0;
     }
     .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      margin-top: 40px;
+      max-width: 860px;
+      margin: 40px auto;
+      background: var(--card);
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+      border: 1px solid var(--borde);
     }
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      margin: 0 0 18px;
+      color: var(--primario);
+      letter-spacing: .5px;
+    }
+    .sub {
+      text-align:center;
+      margin: 0 0 24px;
+      color: #f7d9a0;
+      opacity:.9;
+      font-size:14px;
     }
     .btn-nav {
       display: inline-block;
-      margin: 10px 5px;
-      padding: 10px 15px;
+      margin: 10px 6px;
+      padding: 10px 16px;
       font-size: 14px;
-      background-color: #eee;
-      border-radius: 8px;
+      background-color: var(--acento);
+      border-radius: 10px;
       text-decoration: none;
-      color: #333;
-      border: 1px solid #ccc;
+      color: #ffe6d0;
+      border: 1px solid #a24a40;
       cursor: pointer;
+      transition: transform .08s ease, background .2s ease;
     }
-    .btn-nav:hover {
-      background-color: #ddd;
-    }
-    .question {
-      margin-bottom: 20px;
-    }
-    .question h3 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
+    .btn-nav:hover { background-color: #9a493f; transform: translateY(-1px); }
+    .question { margin-bottom: 18px; }
+    .question h3 { font-size: 20px; margin: 6px 0 10px; color:#ffdba0; }
     .options button {
-      background-color: #f0f8ff;
-      border: 2px solid #ccc;
+      background-color: #2f1c1d;
+      border: 2px solid var(--borde);
       border-radius: 12px;
-      padding: 12px;
-      margin: 5px 0;
+      padding: 12px 14px;
+      margin: 6px 0;
       width: 100%;
       text-align: left;
       cursor: pointer;
       font-size: 16px;
-      transition: background 0.3s;
+      transition: background 0.2s, border-color .2s;
+      color: #ffe6d0;
     }
-    .options button:hover {
-      background-color: #d0ebff;
-    }
-    #navigation {
-      text-align: center;
-      margin-top: 20px;
-    }
-    #result {
-      text-align: center;
-      margin-top: 40px;
-    }
+    .options button:hover { background-color: #3a2324; border-color: var(--acento); }
+    #navigation { text-align: center; margin-top: 14px; }
+    #result { text-align: center; margin-top: 28px; }
     #result img {
-      max-width: 200px;
-      margin-top: 20px;
+      max-width: 160px;
+      margin-top: 14px;
+      image-rendering: pixelated;
+      background:#1f1213;
+      border-radius: 16px;
+      padding: 12px;
+      border:1px solid var(--borde);
     }
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-        margin-top: 20px;
-      }
+    .badge {
+      display:inline-block; padding:4px 10px; border-radius:999px;
+      background: #4b2a2a; border:1px solid var(--borde); color:#ffdba0; font-size:12px
+    }
+    @media (max-width: 640px) {
+      .container { padding: 20px; margin: 20px auto; border-radius: 14px;}
+      .question h3 { font-size: 18px; }
+      .options button { font-size: 15px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>¿Qué Pokémon Inicial Eres?</h1>
+    <p class="sub">12 starters. 12 preguntas. 0 excusas. Responde con el corazón (y algo de humor).</p>
     <div id="quiz"></div>
     <div id="navigation">
       <button class="btn-nav" onclick="goBack()">⬅ Volver</button>
@@ -93,73 +108,150 @@
   </div>
 
 <script>
+/* =========================
+   DATA: imágenes y descripciones
+   ========================= */
 const pokemonImages = {
-  Bulbasaur: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-  Snivy: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/495.png",
+  Bulbasaur:  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+  Snivy:      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/495.png",
   Sprigatito: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/906.png",
   Charmander: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
-  Scorbunny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/813.png",
-  Fuecoco: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/909.png",
-  Squirtle: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
-  Froakie: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/656.png",
-  Quaxly: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/912.png",
+  Scorbunny:  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/813.png",
+  Fuecoco:    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/909.png",
+  Squirtle:   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
+  Froakie:    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/656.png",
+  Quaxly:     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/912.png",
+  Chikorita:  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/152.png",
+  Cyndaquil:  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/155.png",
+  Totodile:   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/158.png"
 };
 
 const pokemonDescriptions = {
-  Bulbasaur: "Eres tranquilo, leal y te adaptas a cualquier situación. Tienes una energía verde que calma a todos a tu alrededor.",
-  Snivy: "Eres estratega y elegante, con una inteligencia sutil. No hablas mucho, pero cuando lo haces, todos escuchan.",
-  Sprigatito: "Creativo, curioso y con carisma natural. Amas lo bonito y tienes la habilidad de hacer que todo sea más estético.",
-  Charmander: "Pasión y chispa son tu motor. Aunque puedes ser impulsivo, tu energía es contagiosa y empuja a otros a moverse.",
-  Scorbunny: "Inquieto, divertido y competitivo. Donde tú estás, hay movimiento. Nunca sabes quedarte quieto… ni aburrido.",
-  Fuecoco: "El alma caótica del grupo. No te importa parecer raro si eso significa disfrutar el momento. Tienes más profundidad de la que dejas ver.",
-  Squirtle: "Relajado y confiable. Eres el que mantiene la calma cuando todo arde. Siempre encuentras una salida práctica.",
-  Froakie: "Observador, reservado y muy adaptable. Aunque no lo digas, lo ves todo. Eres un ninja emocional.",
-  Quaxly: "Estilo y seguridad. Tienes personalidad para rato y una confianza que arrastras sin esfuerzo. Eres la diva elegante del grupo."
+  Bulbasaur:  "Zen con hojas. Tienes paciencia de santo y olfato para lo que suma. Eres el ‘buff’ silencioso del equipo.",
+  Snivy:      "Estratega con cara de ‘yo ya lo sabía’. Hablas poco, calculas mucho. Elegancia pasivo-agresiva.",
+  Sprigatito: "Creativo con chispa adorable. Todo lo haces bonito — incluso el caos (que, casualmente, provocas tú).",
+  Charmander: "Energía y drama en proporciones perfectas. Si no brilla, lo prendes fuego. Metafóricamente… casi siempre.",
+  Scorbunny:  "Velocidad de meme. Compites hasta por quién bosteza menos. Entusiasmo que contagia y desordena a la vez.",
+  Fuecoco:    "Caos buena onda. Improvisas con sonrisa de ‘esto saldrá increíble’ y, oye, muchas veces sale.",
+  Squirtle:   "Frío en la cabeza, cálido en el grupo. Paragolpes oficial cuando todo arde. Soluciones prácticas, cero postureo.",
+  Froakie:    "Sigilo de ninja social. Observas primero, saltas después. Te salen los planes limpios.",
+  Quaxly:     "Estética y actitud. Entras como si hubiera alfombra roja. Sorprendentemente, sueles tener razón.",
+  Chikorita:  "Amabilidad tocha. Te preocupas por todos, incluso por los que no lo merecen. Cuidas, pero también lideras.",
+  Cyndaquil:  "Introvertido con fuego interior. Calmas por fuera, detonas por dentro. Cuando haces click, no hay quien te pare.",
+  Totodile:   "Risa fácil y cero miedo al ridículo. Vas de cabeza y ya veremos. A veces sale épico; otras, meme. Bien igual."
 };
 
-const questions = [
+/* =========================
+   CONFIGURACIÓN DE BALANCE 3–2–1
+   - 12 Pokémon
+   - 12 preguntas x 4 respuestas
+   - Cada respuesta puntúa a 3 Pokémon (3,2,1)
+   - Cada Pokémon aparece exactamente 12 veces:
+       4 veces con 3 puntos, 4 con 2, 4 con 1
+   ========================= */
+const starters = [
+  "Bulbasaur","Snivy","Sprigatito",
+  "Charmander","Scorbunny","Fuecoco",
+  "Squirtle","Froakie","Quaxly",
+  "Chikorita","Cyndaquil","Totodile"
+];
+
+// Textos de 12 preguntas con 4 opciones (sin puntos aún)
+const questionTexts = [
   {
-    question: "¿Cuál de estas actividades disfrutas más en tu tiempo libre?",
-    answers: [
-      { text: "Leer un buen libro bajo un árbol.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
-      { text: "Salir a correr o hacer ejercicio.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
-      { text: "Relajarme viendo una serie o película.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
-    ]
+    q: "Plan de sábado perfecto:",
+    a: ["Paseo chill y picnic.", "Quedar para algo de deporte.", "Tour de cafeterías bonitas.", "Quedar en casa con juegos y snacks."]
   },
   {
-    question: "Si te invitan a una fiesta, ¿cómo sueles comportarte?",
-    answers: [
-      { text: "Soy el alma tranquila y calmada del lugar.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
-      { text: "Me gusta ser el centro de atención y bailar mucho.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
-      { text: "Prefiero observar y conversar con pocos amigos.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
-    ]
+    q: "Tu rol espontáneo en el grupo:",
+    a: ["El que calma y organiza.", "El que enciende el ánimo.", "El que observa y ejecuta.", "El que hace reír y rompe el hielo."]
   },
   {
-    question: "¿Cuál es tu comida favorita?",
-    answers: [
-      { text: "Ensaladas y comidas saludables.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
-      { text: "Comida picante y con mucho sabor.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
-      { text: "Comidas reconfortantes y dulces.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
-    ]
+    q: "Si fuera una app, serías:",
+    a: ["Calendario con stickers.", "Cronómetro de sprints.", "Notas minimalistas.", "Editor de fotos con filtros."]
   },
   {
-    question: "¿Cómo te describirías en una palabra?",
-    answers: [
-      { text: "Tranquilo y paciente.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
-      { text: "Apasionado y energético.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
-      { text: "Elegante y reservado.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
-    ]
+    q: "Tu merienda ideal:",
+    a: ["Algo verde y fresco.", "Picante o nada.", "Un clásico dulce.", "Lo que haya, pero bonito."]
   },
   {
-    question: "¿Qué prefieres hacer en un día lluvioso?",
-    answers: [
-      { text: "Leer o hacer manualidades.", points: {Bulbasaur: 2, Snivy: 2, Sprigatito: 2} },
-      { text: "Salir a bailar o jugar videojuegos.", points: {Charmander: 2, Scorbunny: 2, Fuecoco: 2} },
-      { text: "Ver películas o descansar.", points: {Squirtle: 2, Froakie: 2, Quaxly: 2} },
-    ]
+    q: "En crisis, tu primera reacción:",
+    a: ["Respirar y evaluar.", "Actuar ya y ajustar en marcha.", "Buscar info y datos.", "Hacer reír para desatascar."]
+  },
+  {
+    q: "Look que te define:",
+    a: ["Cómodo funcional.", "Sport con toque llamativo.", "Sencillo y limpio.", "Estético y arriesgado."]
+  },
+  {
+    q: "Juego de mesa, ¿qué eliges?",
+    a: ["Cooperativo estratégico.", "Competitivo rápido.", "Puzzle/escape.", "Party game absurdo."]
+  },
+  {
+    q: "Tu hora favorita del día:",
+    a: ["Mañana con calma.", "Mediodía con ritmo.", "Tarde concentrada.", "Noche creativa."]
+  },
+  {
+    q: "Viajando, priorizas:",
+    a: ["Naturaleza y caminar.", "Actividades y adrenalina.", "Museos y aprender.", "Cafés y fotos top."]
+  },
+  {
+    q: "Cuando te bloqueas:",
+    a: ["Pausa y vuelvo.", "Sigo hasta que salga.", "Busco tutorial/guía.", "Cambio de tarea y vuelvo con chiste."]
+  },
+  {
+    q: "Tu cualidad secreta:",
+    a: ["Paciencia infinita.", "Motivación a prueba de todo.", "Observación quirúrgica.", "Carisma accidental."]
+  },
+  {
+    q: "Para cerrar el día:",
+    a: ["Estiramientos/lectura.", "Entrenito corto.", "Diario/planificar.", "Meme + snack."]
   }
 ];
 
+// Generador balanceado 3–2–1 con rotación latina.
+// Para cada pregunta q:
+// - rotamos el array de starters por q posiciones,
+// - lo partimos en 4 grupos de 3 (cada grupo es una respuesta),
+// - dentro del grupo, posiciones pos=0..2 obtienen pesos según (pos + q) % 3 -> [3,2,1]
+function buildBalancedQuestions() {
+  const weights = [3,2,1];
+  const questions = [];
+  for (let q=0; q<questionTexts.length; q++){
+    const base = starters.slice(q).concat(starters.slice(0,q)); // rotación
+    const groups = [ base.slice(0,3), base.slice(3,6), base.slice(6,9), base.slice(9,12) ];
+    const answers = [];
+    for (let ai=0; ai<4; ai++){
+      const points = {};
+      const group = groups[ai];
+      for (let pos=0; pos<3; pos++){
+        const who = group[pos];
+        const w = weights[(pos + q) % 3]; // rotación de pesos por pregunta
+        points[who] = w;
+      }
+      answers.push({ text: questionTexts[q].a[ai], points });
+    }
+    questions.push({ question: questionTexts[q].q, answers });
+  }
+  return questions;
+}
+
+// Construimos el cuestionario balanceado
+const questions = buildBalancedQuestions();
+
+// (Opcional) Validador rápido en consola: cada pokémon debe tener 4x3pts, 4x2pts, 4x1pt
+// abre la consola y ejecuta validateBalance();
+function validateBalance(){
+  const tally = {};
+  starters.forEach(s => tally[s] = {1:0,2:0,3:0});
+  questions.forEach(q => q.answers.forEach(a => {
+    Object.entries(a.points).forEach(([k,v]) => { tally[k][v]++; });
+  }));
+  console.table(tally);
+}
+
+/* =========================
+   LÓGICA DEL QUIZ
+   ========================= */
 const quizContainer = document.getElementById("quiz");
 const resultContainer = document.getElementById("result");
 
@@ -170,6 +262,7 @@ let history = [];
 function showQuestion() {
   const q = questions[currentQuestion];
   const questionHTML = `
+    <div class="badge">Pregunta ${currentQuestion+1} de ${questions.length}</div>
     <div class="question">
       <h3>${q.question}</h3>
       <div class="options">
@@ -209,24 +302,21 @@ function goBack() {
 function showResult() {
   quizContainer.innerHTML = "";
   let best = null;
-  let max = -1;
+  let max = -Infinity;
   for (let poke in scores) {
-    if (scores[poke] > max) {
-      max = scores[poke];
-      best = poke;
-    }
+    if (scores[poke] > max) { max = scores[poke]; best = poke; }
   }
-  const description = pokemonDescriptions[best];
+  const description = pokemonDescriptions[best] || "Misterioso y con potencial. Literalmente un huevo sorpresa.";
   const image = pokemonImages[best];
-  const tweetText = `¡Descubrí que soy ${best}, el Pokémon inicial! 💫🧪 ¿Y tú? Haz el test aquí:`;
-  const shareUrl = encodeURIComponent("https://tupagina.com/test-pokemon");
+  const tweetText = `¡Soy ${best} como Pokémon inicial! 🐣🔥🌿💧 ¿Y tú?`;
+  const shareUrl = encodeURIComponent(location.href);
   const tweetLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${shareUrl}`;
 
   resultContainer.innerHTML = `
-    <h2>¡Tu Pokémon inicial es <span style="color:#2d72fc">${best}</span>!</h2>
+    <h2>¡Tu Pokémon inicial es <span style="color:var(--primario)">${best}</span>!</h2>
     <img src="${image}" alt="${best}" />
-    <p style="font-size:18px; margin-top:15px;">${description}</p>
-    <a href="${tweetLink}" target="_blank" class="btn-nav" style="background:#1da1f2; color:white;">Compartir en Twitter/X</a>
+    <p style="font-size:18px; margin-top:12px;">${description}</p>
+    <a href="${tweetLink}" target="_blank" class="btn-nav" style="background:#1da1f2; border-color:#198cd1;">Compartir en X/Twitter</a>
   `;
 }
 
