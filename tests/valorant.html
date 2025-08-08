@@ -91,6 +91,9 @@
   </div>
 
 <script>
+// =======================
+// Agentes (iconos oficiales)
+// =======================
 const agents = {
   Jett: "https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/displayicon.png",
   Phoenix: "https://media.valorant-api.com/agents/eb93336a-449b-9c1b-0a54-a891f7921d69/displayicon.png",
@@ -121,6 +124,9 @@ const agents = {
   Clove: "https://media.valorant-api.com/agents/1dbf2edd-4729-0984-3115-daa5eed44993/displayicon.png"
 };
 
+// =======================
+// Descripciones (tus textos)
+// =======================
 const descriptions = {
   Jett: "Velocidad, humo y ego. Te tiras a site sin info y te quejas si no te siguen. Pesada nivel Dios.",
   Phoenix: "Brillas más que tus jugadas. Te flasheas solo y haces como si fuera intencional. Ego con patas.",
@@ -151,144 +157,110 @@ const descriptions = {
   Clove: "Revives, confundes y sobrevives. Te mueres y vuelves como si nada. El drama eres tú."
 };
 
-const questions = [
-  {
-    question: "¿Cómo lidias con la derrota?",
-    answers: [
-      { text: "Aprendo del error y sigo", points: { Sova: 2, Brimstone: 1, Deadlock: 2, Cypher: 1 } },
-      { text: "Rompo cosas virtuales", points: { Raze: 2, Iso: 1, Clove: 2, Tejo: 1 } },
-      { text: "Culpo al lag", points: { Reyna: 2, Phoenix: 1, Clove: 2, Harbor: 1 } },
-      { text: "Medito y resucito", points: { Clove: 2, Astra: 1, Iso: 2, Gekko: 1 } }
-    ]
-  },
-  {
-    question: "¿Qué harías con 10 segundos antes de una ronda?",
-    answers: [
-      { text: "Dar instrucciones tácticas", points: { Brimstone: 2, Deadlock: 1, Killjoy: 2, Waylay: 1 } },
-      { text: "Esconderme en un rincón", points: { Cypher: 2, Omen: 1, Gekko: 2, Sova: 1 } },
-      { text: "Bailar con tu bicho", points: { Gekko: 2, Raze: 1, Omen: 2, Harbor: 1 } },
-      { text: "Lanzar utilidad random", points: { Phoenix: 2, Yoru: 1, Sage: 2, Sova: 1 } }
-    ]
-  },
-  {
-    question: "Si fueras un superhéroe, serías...",
-    answers: [
-      { text: "El que salva a todos", points: { Sage: 2, Skye: 1, Sova: 2, Reyna: 1 } },
-      { text: "El que hace volar cosas", points: { Raze: 2, Neon: 1, Astra: 2, Phoenix: 1 } },
-      { text: "El que hackea sistemas", points: { Killjoy: 2, Cypher: 1, Iso: 2, Clove: 1 } },
-      { text: "El que viene del más allá", points: { Clove: 2, Fade: 1, Deadlock: 2, Brimstone: 1 } }
-    ]
-  },
-  {
-    question: "Te regalan un arma, eliges...",
-    answers: [
-      { text: "Una escopeta con colorines", points: { Raze: 2, Phoenix: 1, Sage: 2, Yoru: 1 } },
-      { text: "Un sniper elegante", points: { Chamber: 2, Vyse: 1, Skye: 2, Sova: 1 } },
-      { text: "Una clásica con estilo", points: { Jett: 2, Iso: 1, Deadlock: 2, Vyse: 1 } },
-      { text: "Una que cure", points: { Sage: 2, Gekko: 1, Deadlock: 2, Chamber: 1 } }
-    ]
-  },
-  {
-    question: "¿Qué te saca de tus casillas?",
-    answers: [
-      { text: "Que ignoren tu estrategia", points: { Deadlock: 2, Brimstone: 1, Neon: 2, Sage: 1 } },
-      { text: "Que nadie entre a site", points: { Tejo: 2, Breach: 1, Reyna: 2, Harbor: 1 } },
-      { text: "Que nadie te siga el humo", points: { Viper: 2, Harbor: 1, Gekko: 2, Omen: 1 } },
-      { text: "Que te roben la kill", points: { Reyna: 2, Iso: 1, Deadlock: 2, Tejo: 1 } }
-    ]
-  },
-  {
-    question: "Te obligan a jugar support, tú...",
-    answers: [
-      { text: "Aceptas y brillas igual", points: { Clove: 2, Skye: 1, Brimstone: 2, Killjoy: 1 } },
-      { text: "Te mueres sin flashear", points: { KAYO: 2, Breach: 1, Chamber: 2, Cypher: 1 } },
-      { text: "Curar te da alergia", points: { Phoenix: 2, Reyna: 1, Yoru: 2, Jett: 1 } },
-      { text: "Spameas curas desde base", points: { Sage: 2, Gekko: 1, Tejo: 2, Clove: 1 } }
-    ]
-  },
-  {
-    question: "¿Tu frase antes de una partida?",
-    answers: [
-      { text: "Vamos a ganar esto", points: { Brimstone: 2, Deadlock: 1, Astra: 2, Viper: 1 } },
-      { text: "Les voy a partir la cara", points: { Iso: 2, Phoenix: 1, Raze: 2, Yoru: 1 } },
-      { text: "Ojalá no me flasheen", points: { KAYO: 2, Cypher: 1, Sage: 2, Raze: 1 } },
-      { text: "Estoy aquí por el meme", points: { Raze: 2, Jett: 1, Clove: 2, Astra: 1 } }
-    ]
-  },
-  {
-    question: "Tu emoji más usado sería...",
-    answers: [
-      { text: "🔥", points: { Reyna: 2, Phoenix: 1, Iso: 2, Breach: 1 } },
-      { text: "🧠", points: { Cypher: 2, Astra: 1, Killjoy: 2, Vyse: 1 } },
-      { text: "💣", points: { Brimstone: 2, Raze: 1, Chamber: 2, Deadlock: 1 } },
-      { text: "🌱", points: { Skye: 2, Sage: 1, Gekko: 2, Clove: 1 } }
-    ]
-  },
-  {
-    question: "Tu sueño frustrado es...",
-    answers: [
-      { text: "Dominar a todos sin hablar", points: { Omen: 2, Vyse: 1, KAYO: 2, Sage: 1 } },
-      { text: "Ser streamer de terror", points: { Fade: 2, Brimstone: 1, Breach: 2, Tejo: 1 } },
-      { text: "Ser influencer de moda táctica", points: { Viper: 2, Iso: 1, Chamber: 2, Fade: 1 } },
-      { text: "Pilotar un dron real", points: { Sova: 2, Yoru: 1, Chamber: 2, KAYO: 1 } }
-    ]
-  },
-  {
-    question: "Tu frase de perfil sería...",
-    answers: [
-      { text: "Solo Dios puede juzgarme", points: { Reyna: 2, Jett: 1, Viper: 2, Breach: 1 } },
-      { text: "Con estilo hasta para perder", points: { Chamber: 2, Vyse: 1, Waylay: 2, Phoenix: 1 } },
-      { text: "Papá del equipo", points: { Brimstone: 2, Skye: 1, Reyna: 2, Raze: 1 } },
-      { text: "Dominando desde las sombras", points: { Viper: 2, Tejo: 1, Chamber: 2, Harbor: 1 } }
-    ]
-  },
-  {
-    question: "¿Con qué frase cierras un clutch?",
-    answers: [
-      { text: "Easy peasy", points: { Phoenix: 2, Killjoy: 1, Sage: 2, Deadlock: 1 } },
-      { text: "Lo tenía calculado", points: { Skye: 2, Omen: 1, Raze: 2, Reyna: 1 } },
-      { text: "Ni me sudó", points: { Waylay: 2, Clove: 1, Reyna: 2, Chamber: 1 } },
-      { text: "Ni sabía que quedaba uno", points: { Astra: 2, Tejo: 1, Viper: 2, Chamber: 1 } }
-    ]
-  },
-  {
-    question: "Tu peor enemigo en partida es...",
-    answers: [
-      { text: "Los que fuman mal", points: { Viper: 2, Omen: 1, Raze: 2, Killjoy: 1 } },
-      { text: "Los que caminan con shift en base", points: { Waylay: 2, Vyse: 1, Sova: 2, Tejo: 1 } },
-      { text: "Los que no pinguean", points: { Clove: 2, Killjoy: 1, Brimstone: 2, Yoru: 1 } },
-      { text: "Los que gritan por todo", points: { Breach: 2, Iso: 1, Tejo: 2, KAYO: 1 } }
-    ]
-  },
-  {
-    question: "¿Qué haces si el spike cae en A y tú estás en B?",
-    answers: [
-      { text: "Te teletransportas y finges no haberlo visto", points: { Omen: 2, Reyna: 1, Chamber: 2, Cypher: 1 } },
-      { text: "Te quedas cubriendo mid", points: { Fade: 2, Brimstone: 1, Skye: 2, Raze: 1 } },
-      { text: "Intentas hacer ninja defuse en el otro site", points: { Viper: 2, Iso: 1, Clove: 2, Astra: 1 } },
-      { text: "Vas caminando y mueres solo", points: { Sova: 2, Yoru: 1, KAYO: 2, Phoenix: 1 } }
-    ]
-  },
-  {
-    question: "¿Qué personaje odiarías en una ranked?",
-    answers: [
-      { text: "El que tira el spike y se va", points: { Gekko: 2, Waylay: 1, Killjoy: 2, Sova: 1 } },
-      { text: "El que entra corriendo solo", points: { Tejo: 2, Neon: 1, Sage: 2, Iso: 1 } },
-      { text: "El que se cree sheriff del lobby", points: { Chamber: 2, Deadlock: 1, Waylay: 2, Reyna: 1 } },
-      { text: "El que dronea con el equipo muerto", points: { Omen: 2, Sova: 1, Neon: 2, Brimstone: 1 } }
-    ]
-  },
-  {
-    question: "¿Qué haces cuando vas 0-9?",
-    answers: [
-      { text: "Decir 'warmup' y seguir", points: { Reyna: 2, Jett: 1, Brimstone: 2, Iso: 1 } },
-      { text: "Decir que es culpa del matchmaking", points: { Chamber: 2, Vyse: 1, Yoru: 2, Breach: 1 } },
-      { text: "Tirar el teclado por la ventana", points: { Brimstone: 2, Skye: 1, Chamber: 2, Fade: 1 } },
-      { text: "Seguir flasheando a tu equipo", points: { KAYO: 2, Breach: 1, Sage: 2, Omen: 1 } }
-    ]
-  }
+// =======================
+// Textos de preguntas (tus preguntas) — sin puntos
+// =======================
+const QT = [
+  { q: "¿Cómo lidias con la derrota?",
+    a: ["Aprendo del error y sigo","Rompo cosas virtuales","Culpo al lag","Medito y resucito"] },
+  { q: "¿Qué harías con 10 segundos antes de una ronda?",
+    a: ["Dar instrucciones tácticas","Esconderme en un rincón","Bailar con tu bicho","Lanzar utilidad random"] },
+  { q: "Si fueras un superhéroe, serías...",
+    a: ["El que salva a todos","El que hace volar cosas","El que hackea sistemas","El que viene del más allá"] },
+  { q: "Te regalan un arma, eliges...",
+    a: ["Una escopeta con colorines","Un sniper elegante","Una clásica con estilo","Una que cure"] },
+  { q: "¿Qué te saca de tus casillas?",
+    a: ["Que ignoren tu estrategia","Que nadie entre a site","Que nadie te siga el humo","Que te roben la kill"] },
+  { q: "Te obligan a jugar support, tú...",
+    a: ["Aceptas y brillas igual","Te mueres sin flashear","Curar te da alergia","Spameas curas desde base"] },
+  { q: "¿Tu frase antes de una partida?",
+    a: ["Vamos a ganar esto","Les voy a partir la cara","Ojalá no me flasheen","Estoy aquí por el meme"] },
+  { q: "Tu emoji más usado sería...",
+    a: ["🔥","🧠","💣","🌱"] },
+  { q: "Tu sueño frustrado es...",
+    a: ["Dominar a todos sin hablar","Ser streamer de terror","Ser influencer de moda táctica","Pilotar un dron real"] },
+  { q: "Tu frase de perfil sería...",
+    a: ["Solo Dios puede juzgarme","Con estilo hasta para perder","Papá del equipo","Dominando desde las sombras"] },
+  { q: "¿Con qué frase cierras un clutch?",
+    a: ["Easy peasy","Lo tenía calculado","Ni me sudó","Ni sabía que quedaba uno"] },
+  { q: "Tu peor enemigo en partida es...",
+    a: ["Los que fuman mal","Los que caminan con shift en base","Los que no pinguean","Los que gritan por todo"] },
+  { q: "¿Qué haces si el spike cae en A y tú estás en B?",
+    a: ["Te teletransportas y finges no haberlo visto","Te quedas cubriendo mid","Intentas hacer ninja defuse en el otro site","Vas caminando y mueres solo"] },
+  { q: "¿Qué personaje odiarías en una ranked?",
+    a: ["El que tira el spike y se va","El que entra corriendo solo","El que se cree sheriff del lobby","El que dronea con el equipo muerto"] },
+  { q: "¿Qué haces cuando vas 0-9?",
+    a: ["Decir 'warmup' y seguir","Decir que es culpa del matchmaking","Tirar el teclado por la ventana","Seguir flasheando a tu equipo"] }
 ];
 
+// =======================
+// Balanceador 27 agentes -> 9 por respuesta (9..1)
+// - 15 preguntas * 4 respuestas = 60 respuestas
+// - 60 * 9 = 540 asignaciones -> 540 / 27 = 20 apariciones por agente
+// - Rotaciones coprimas con 27 para repartir pesos
+// =======================
+const AGENTS = [
+  "Jett","Phoenix","Sage","Sova","Raze","Omen","Viper","Killjoy","Breach",
+  "Skye","Reyna","Yoru","Fade","Chamber","Harbor","Neon","Gekko","Astra",
+  "Deadlock","Tejo","KAYO","Cypher","Waylay","Vyse","Brimstone","Iso","Clove"
+];
+
+const K = 9; // agentes por respuesta
+const SCORE = [9,8,7,6,5,4,3,2,1];
+const STEP_Q = 11; // avance por pregunta (coprimo con 27)
+const STEP_A = 7;  // avance por respuesta (coprimo con 27)
+const N = AGENTS.length;
+
+function buildBalancedQuestions() {
+  const questions = [];
+  for (let qi = 0; qi < QT.length; qi++) {
+    const answers = [];
+    for (let ai = 0; ai < 4; ai++) {
+      const start = (qi * STEP_Q + ai * STEP_A) % N;
+      const block = [];
+      for (let t = 0; t < K; t++) block.push(AGENTS[(start + t) % N]);
+      const points = {};
+      for (let p = 0; p < K; p++) points[block[p]] = SCORE[p];
+      answers.push({ text: QT[qi].a[ai], points });
+    }
+    questions.push({ question: QT[qi].q, answers });
+  }
+  return questions;
+}
+
+const questions = buildBalancedQuestions();
+
+// ===== (Opcional) utilidades en consola =====
+// validateAppearances(): verifica apariciones y puntos totales por agente
+// simulateWinrate(30000): simula resultados para ver winrates aproximados
+function validateAppearances() {
+  const count = Object.fromEntries(AGENTS.map(a => [a, {apps:0,pts:0}]));
+  for (const q of questions) for (const a of q.answers)
+    for (const [who,pts] of Object.entries(a.points)) {
+      count[who].apps++; count[who].pts += pts;
+    }
+  console.table(Object.entries(count).map(([k,v])=>({Agente:k, Apariciones:v.apps, Puntos:v.pts}))
+    .sort((a,b)=>b.Puntos-a.Puntos));
+}
+function simulateWinrate(runs=30000){
+  const wins = Object.fromEntries(AGENTS.map(a=>[a,0]));
+  for (let r=0;r<runs;r++){
+    const sc = Object.fromEntries(AGENTS.map(a=>[a,0]));
+    for (const q of questions){
+      const ans = q.answers[Math.floor(Math.random()*q.answers.length)];
+      for (const [who,pts] of Object.entries(ans.points)) sc[who]+=pts;
+    }
+    const max = Math.max(...Object.values(sc));
+    const ties = Object.entries(sc).filter(([k,v])=>v===max).map(([k])=>k);
+    wins[ties[Math.floor(Math.random()*ties.length)]]++;
+  }
+  console.table(Object.entries(wins).map(([k,v])=>({Agente:k, Winrate:(v/runs*100).toFixed(2)+"%"}))
+    .sort((a,b)=>parseFloat(b.Winrate)-parseFloat(a.Winrate)));
+}
+
+// =======================
+// Lógica del quiz (tu misma UI)
+// =======================
 let currentQuestion = 0;
 let scores = {};
 let history = [];
@@ -344,6 +316,11 @@ function showResult() {
       best = agent;
     }
   }
+  // Desempate aleatorio si hubiera empate exacto
+  const top = Math.max(...Object.values(scores));
+  const ties = Object.entries(scores).filter(([k,v])=>v===top).map(([k])=>k);
+  if (ties.length>1) best = ties[Math.floor(Math.random()*ties.length)];
+
   const description = descriptions[best];
   const image = agents[best];
   resultContainer.innerHTML = `
