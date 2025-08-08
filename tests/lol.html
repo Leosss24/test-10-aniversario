@@ -355,7 +355,6 @@ function showResult(){
   for (const [c,pts] of Object.entries(scores)){
     if (pts > max){ max = pts; best = c; }
   }
-  // Desempate aleatorio si hay empate exacto
   const topPts = Math.max(...Object.values(scores));
   const ties = Object.entries(scores).filter(([c,p])=>p===topPts).map(([c])=>c);
   if (ties.length>1){ best = ties[Math.floor(Math.random()*ties.length)]; }
@@ -367,7 +366,8 @@ function showResult(){
   const share = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}&url=${url}`;
 
   resEl.innerHTML = `
-    <img class="splash" src="${img}" alt="${best}" />
+    <img class="splash" src="${img}" alt="${best}"
+         onerror="this.onerror=null; this.src='https://via.placeholder.com/820x360.jpg?text=${encodeURIComponent(best)}';" />
     <h2 style="margin:10px 0 0;color:var(--accent-2)">¡Eres <span style="color:#fff">${best}</span>!</h2>
     <p class="desc">${desc}</p>
     <div class="share">
